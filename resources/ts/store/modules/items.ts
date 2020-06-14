@@ -1,0 +1,183 @@
+import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
+import { Item } from '@/types/item';
+import { ItemType } from '@/enums/ItemType';
+import axios from "@/plugins/axios";
+
+@Module({ namespaced: true })
+class Items extends VuexModule {
+    public item: Item | null = null;
+    public items: Array<Item> = [];
+    public loading = false;
+    public single_loading = false;
+    public adding = false;
+    public add_errors: Array<string> = [];
+
+
+    @Mutation
+    public setItems(items: Array<Item>): void {
+        this.items = items;
+    }
+    @Mutation
+    public setSingle(item: Item) {
+        this.item = item;
+    }
+    @Mutation
+    public deleteItem(item_id: number) {
+        this.items = this.items.filter(item => item.id !== item_id);
+    }
+    @Mutation
+    public setLoading(loading: boolean) {
+        this.loading = loading;
+    }
+    @Mutation
+    public setSingleLoading(single_loading: boolean) {
+        this.single_loading = single_loading;
+    }
+    @Mutation
+    public setAdding(adding: boolean) {
+        this.adding = adding;
+    }
+    @Mutation
+    public setAddErrors(add_errors: Array<string>) {
+        this.add_errors = add_errors;
+    }
+
+
+    @Action({ rawError: true })
+    public fetchItems(type: ItemType): Promise<Array<Item>> {
+        return new Promise((resolve, reject) => {
+            const url = type === ItemType.Movie ?
+                '/get_movies' :
+                '/get_series';
+
+            this.context.commit('setLoading', true);
+
+            axios.get(url).then(({ data }) => {
+                this.context.commit('setItems', data);
+                resolve(data);
+            }).catch(error => {
+                reject(error);
+            }).finally(() => {
+                this.context.commit('setLoading', false);
+            })
+        });
+    }
+    @Action({ rawError: true })
+    public fetchSingleMovie(movie_id: number): Promise<Item> {
+        return this.context.dispatch('fetchSingle', {
+            item_id: movie_id,
+            type: ItemType.Movie
+        })
+    }
+    @Action({ rawError: true })
+    public fetchSingleSerie(serie_id: number): Promise<Item> {
+        return this.context.dispatch('fetchSingle', {
+            item_id: serie_id,
+            type: ItemType.Serie
+        })
+    }
+    @Action({ rawError: true })
+    public fetchSingle(item_id: number, type: ItemType): Promise<Item> {
+        return new Promise((resolve, reject) => {
+            this.context.commit('setSingleLoading', true);
+            this.context.commit('setSingle', null);
+
+            const url = type === ItemType.Movie ?
+                `/${item_id}/get_movie` :
+                `/${item_id}/get_serie`;
+
+            axios.get(url).then(({ data }) => {
+                if (data.id) {
+                    this.context.commit('setSingle', data);
+                }
+
+                resolve(data);
+            }).catch(error => {
+                this.context.dispatch('notifications/notify', {
+                    type: 'error',
+                    title: 'Error!',
+                    content: error.response.data.message || 'Internal Server Error!',
+                }, {root: true});
+                reject(error);
+            }).finally(() => {
+                this.context.commit('setSingleLoading', false);
+            });
+        });
+    }
+    @Action({ rawError: true })
+    public deleteMovie(movie_id: number): Promise<boolean> {
+        return this.context.dispatch('delete', {
+            item_id: movie_id,
+            type: ItemType.Movie
+        })
+    }
+    @Action({ rawError: true })
+    public deleteSerie(serie_id: number): Promise<boolean> {
+        return this.context.dispatch('delete', {
+            item_id: serie_id,
+            type: ItemType.Serie
+        })
+    }
+    @Action({ rawError: true })
+    public delete(item_id: number, type: ItemType): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const url = type === ItemType.Movie ?
+                '/delete_movie':
+                '/delete_serie';
+
+            axios.post(url, {
+                item_id: item_id
+            }).then(() => {
+                this.context.commit('deleteItem', item_id);
+                resolve(true);
+            }).catch(error => {
+                this.context.dispatch('notifications/notify', {
+                    type: 'success',
+                    title: 'Item deletion failed!',
+                    content: error.response.data.message || 'Internal Server Error!',
+                }, {root: true});
+
+                reject(false);
+            });
+        });
+    }
+    @Action({ rawError: true })
+    public addItem(item: Item, profile: number, seasons: Array<number>|null, type: ItemType): Promise<Item> {
+        return new Promise((resolve, reject) => {
+            const url = type === ItemType.Movie ?
+                '/add_movie':
+                '/add_serie';
+
+            this.context.commit('setAdding', true);
+
+            axios.post(url, {
+                item: item,
+                profile: profile,
+                seasons: seasons
+            }).then(({ data }) => {
+                this.context.commit('setAddErrors', []);
+                this.context.commit('setItems', data);
+
+                this.context.dispatch('notifications/notify', {
+                    type: 'success',
+                    title: 'Item added!',
+                    content: 'Refresh movies in a second to load new data.',
+                }, {root: true});
+
+                resolve(data);
+            }).catch(error => {
+                const data = error.response.data;
+
+                if (Array.isArray(data)) {
+                    this.context.commit('setAddErrors', data.reverse().map(item => item.errorMessage));
+                    return;
+                }
+
+                reject(error);
+            }).finally(() => {
+                this.context.commit('setAdding', false);
+            });
+        });
+    }
+}
+export default Items;

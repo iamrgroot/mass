@@ -1,0 +1,186 @@
+version: "3.7"
+services:
+  mass:
+    build:
+      args:
+        user: mass
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: php:7.4-fpm
+    container_name: mass
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - mass
+  
+  db:
+    image: mysql:latest
+    container_name: mass-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - mass
+
+  nginx:
+    image: nginx:alpine
+    container_name: mass-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - mass
+
+  # plex:
+  #   image: linuxserver/plex:latest
+  #   container_name: plex
+  #   network_mode: host
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Europe/Amsterdam
+  #     - VERSION=docker
+  #   ports:
+  #     - 32400:32400
+  #   volumes:
+  #     - /mnt/data/movies:/data/movies
+  #     - /mnt/data/tvseries:/data/tvshows
+  #     - ./media/plex/config/:/config
+  #     - /tmp:/transcode
+  #   devices:
+  #     - /dev/dri:/dev/dri
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - transmission
+  #     - sonarr
+  #     - radarr
+
+  # nord_vpn:
+  #   image: bubuntux/nordvpn
+  #   container_name: nord_vpn
+  #   cap_add:
+  #     - net_admin
+  #   devices:
+  #     - /dev/net/tun
+  #   environment:
+  #     - USER=vpn@rgroot.nl
+  #     - PASS=LN&Ne6xP6GE&jLMs@HT4co%xjMAxYgG9go!Bi22VjL
+  #     - COUNTRY=Netherlands
+  #     - PROTOCOL=UDP
+  #     - CATEGORY=P2P
+  #     - NETWORK=192.168.178.0/24
+  #     - OPENVPN_OPTS=--pull-filter ignore "ping-restart" --ping-exit 180
+  #     - TZ=Europe/Amsterdam
+  #   ports:
+  #     - 8080:80
+  #     - 9091:9091
+  #   restart: unless-stopped
+  #   networks:
+  #     - mass
+
+  transmission:
+    image: linuxserver/transmission:latest
+    container_name: transmission
+    # network_mode: service:nord_vpn
+    networks:
+      - mass
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - ./docker-compose/transmission/config/:/config
+      - /mnt/data/downloads/:/downloads
+    restart: unless-stopped
+    ports:
+      - 9091:9091
+    # depends_on:
+    #   - nord_vpn
+    
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    networks:
+      - mass
+    volumes:
+      - /dev/rtc:/dev/rtc:ro
+      - ./docker-compose/sonarr/config:/config
+      - /mnt/data/downloads/:/downloads
+      - /mnt/data/tvseries/:/tv
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    depends_on:
+      - transmission
+
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    networks:
+      - mass
+    volumes:
+      - /dev/rtc:/dev/rtc:ro
+      - ./docker-compose/radarr/config:/config
+      - /mnt/data/downloads/:/downloads
+      - /mnt/data/movies/:/movies
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    depends_on:
+      - transmission
+
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    volumes:
+      - ./docker-compose/sonarr/config:/config
+      - /mnt/data/movies/:/movies
+      - /mnt/data/tvseries/:/tv
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  jackett:
+    image: linuxserver/jackett:latest
+    container_name: jackett
+    networks:
+      - mass
+    ports:
+      - 9117:9117
+    volumes:
+      - ./docker-compose/jackett/config/:/config
+      - /mnt/data/downloads/:/downloads
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    restart: unless-stopped
+
+networks:
+  mass:
+    driver: bridge
