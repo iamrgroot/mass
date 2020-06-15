@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Notifications\Notifiable;
 
 class User extends BaseUser
 {
     use Notifiable;
+
+    public const ADMIN = 1;
 
     /**
      * The attributes that are not mass assignable.

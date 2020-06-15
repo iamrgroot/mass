@@ -18,3 +18,5 @@ Route::get('/phpinfo', function () {
 
 Route::get('/test', 'TestController@test')
     ->name('test');
+
+// Auth::routes();
