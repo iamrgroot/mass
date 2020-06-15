@@ -37,7 +37,6 @@ class DatabaseTest extends TestCase
             [
                 'failed_jobs',
                 'migrations',
-                'password_resets',
                 'users',
             ], 
             $tables
