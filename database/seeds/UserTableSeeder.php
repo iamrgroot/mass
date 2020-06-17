@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class UserTableSeeder extends Seeder
@@ -14,8 +13,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         if (! $user->exists) {
-            $user->name = 'admin';
-            $user->email = 'admin@admin.com';
+            $user->username = 'admin';
             $user->password = bcrypt(config('app.admin_password'));
             $user->save();
         }
