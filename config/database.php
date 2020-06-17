@@ -57,6 +57,7 @@ return [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', base_path('docker-compose/sonarr/config/nzbdrone.db')),
             'prefix' => '',
+            'database' => 'main',
         ],
 
     ],
