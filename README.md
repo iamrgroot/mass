@@ -4,13 +4,7 @@ Media Assistant
 ## Get started
 
 ```bash
+cp .env.example .env
 docker-compose up -d
+docker exec mass composer initialize[-dev]
 ```
-
-Run following commands in docker (after `docker exec -it mass bash`)
-
-```bash
-composer initialize[-dev]
-```
-
-

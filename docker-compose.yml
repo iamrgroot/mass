@@ -16,7 +16,7 @@ services:
     networks:
       - mass
   
-  db:
+  mass-db:
     image: mysql:latest
     container_name: mass-db
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
     networks:
       - mass
 
-  nginx:
+  mass-nginx:
     image: nginx:alpine
     container_name: mass-nginx
     restart: unless-stopped

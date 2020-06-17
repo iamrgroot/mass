@@ -61,7 +61,8 @@
         ],
         "initialize": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "composer install --optimize-autoloader --no-dev",
+            "@composer install --optimize-autoloader --no-dev",
+            "@php artisan key:generate",
             "@php artisan config:cache",
             "@php artisan migrate --seed",
             "@php artisan view:cache",
@@ -70,7 +71,8 @@
         ],
         "initialize-dev": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "composer install",
+            "@composer install",
+            "@php artisan key:generate",
             "@php artisan config:cache",
             "@php artisan migrate --seed",
             "@php artisan view:cache",
