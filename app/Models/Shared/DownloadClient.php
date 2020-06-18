@@ -4,7 +4,7 @@ namespace App\Models\Shared;
 
 use App\Models\BaseModel;
 
-class DownloadClient extends BaseModel
+abstract class DownloadClient extends BaseModel
 {
     protected $table = 'DownloadClients';
 
@@ -15,14 +15,17 @@ class DownloadClient extends BaseModel
 
     public static function getDefaults(): array
     {
+        $ip = self::getIp();
+        $port = self::getPort();
+
         return [
             'Id' => '1',
             'Enable' => '1',
             'Name' => 'Transmission',
             'Implementation' => 'Transmission',
             'Settings' => "{
-                'host': '172.19.0.5',
-                'port': 9091,
+                'host': '{$ip}',
+                'port': {$port},
                 'urlBase': '/transmission/',
                 'username': '',
                 'password': '',

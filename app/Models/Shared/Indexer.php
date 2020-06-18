@@ -15,6 +15,10 @@ class Indexer extends BaseModel
 
     public static function getDefaults(): array
     {
+        $host = config('apis.jackett.host');
+        $port = config('apis.jackett.port');
+        $api_key = config('apis.jackett.port');
+
         return [
             'Id' => '1',
             'Name' => 'Jackett',
@@ -22,9 +26,9 @@ class Indexer extends BaseModel
             'Settings' => "{
                 'minimumSeeders': 1,
                 'seedCriteria': {},
-                'baseUrl': 'http://jackett:9117/torznab/all',
+                'baseUrl': 'http://{$host}:{$port}/torznab/all',
                 'apiPath': '/api',
-                'apiKey': 'fq0gi66w0rb2ln6pwdled4kc2tgiist3',
+                'apiKey': '{$api_key}',
                 'categories': [
                   5030,
                   5040

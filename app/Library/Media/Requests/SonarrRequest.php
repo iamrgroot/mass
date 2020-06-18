@@ -2,9 +2,6 @@
 
 namespace App\Library\Media\Requests;
 
-use Illuminate\Support\Facades\Storage;
-use SimpleXMLElement;
-
 abstract class SonarrRequest extends BaseRequest 
 {
     public function getHost(): string
@@ -14,20 +11,12 @@ abstract class SonarrRequest extends BaseRequest
 
     public function getPort(): int
     {
-        $config = new SimpleXMLElement(
-            Storage::disk('sonarr')->get('config/config.xml')
-        );
-
-        return (int) $config->Port;
+        return config('apis.sonarr.port');
     }
  
     public function getApiString(): string
     {
-        $config = new SimpleXMLElement(
-            Storage::disk('sonarr')->get('config/config.xml')
-        );
-
-        $api_key = (string) $config->ApiKey;
+        $api_key = config('apis.sonarr.api_key');
         
         return "?apikey={$api_key}";
     }

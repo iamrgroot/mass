@@ -2,9 +2,6 @@
 
 namespace App\Library\Media\Requests;
 
-use Illuminate\Support\Facades\Storage;
-use SimpleXMLElement;
-
 abstract class RadarrRequest extends BaseRequest
 {
     public function getHost(): string
@@ -14,20 +11,12 @@ abstract class RadarrRequest extends BaseRequest
 
     public function getPort(): int
     {
-        $config = new SimpleXMLElement(
-            Storage::disk('radarr')->get('config/config.xml')
-        );
-
-        return (int) $config->Port;
+        return config('apis.radarr.port');
     }
  
     public function getApiString(): string
     {
-        $config = new SimpleXMLElement(
-            Storage::disk('radarr')->get('config/config.xml')
-        );
-
-        $api_key = (string) $config->ApiKey;
+        $api_key = config('apis.radarr.api_key');;
         
         return "?apikey={$api_key}";
     }
