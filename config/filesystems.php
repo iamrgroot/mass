@@ -50,6 +50,14 @@ return [
             'driver' => 'local',
             'root' => base_path('docker-compose/radarr'),
         ],
+        'jackett' => [
+            'driver' => 'local',
+            'root' => base_path('docker-compose/jackett/config/Jackett'),
+        ],
+        'init-jacket-files' => [
+            'driver' => 'local',
+            'root' => storage_path('app/init-jacket-files'),
+        ],
     ],
 
     /*

@@ -7,4 +7,7 @@ Media Assistant
 cp .env.example .env
 docker-compose up -d
 docker exec mass composer initialize[-dev]
+docker restart jackett
 ```
+
+

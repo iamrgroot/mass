@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Sonarr;
+namespace App\Models\Radarr;
 
 use App\Models\Shared\DownloadClient as SharedDownloadClient;
 
 class DownloadClient extends SharedDownloadClient
 {
-    protected $connection = 'sonarr_sqlite';
+    protected $connection = 'radarr_sqlite';
 }

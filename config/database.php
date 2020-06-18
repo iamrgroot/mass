@@ -55,11 +55,14 @@ return [
         ],
         'sonarr_sqlite' => [
             'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', base_path('docker-compose/sonarr/config/nzbdrone.db')),
+            'database' => base_path('docker-compose/sonarr/config/nzbdrone.db'),
             'prefix' => '',
-            'database' => 'main',
         ],
-
+        'radarr_sqlite' => [
+            'driver' => 'sqlite',
+            'database' => base_path('docker-compose/radarr/config/nzbdrone.db'),
+            'prefix' => '',
+        ],
     ],
 
     /*
