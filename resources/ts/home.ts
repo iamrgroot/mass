@@ -1,10 +1,11 @@
 import Vue from 'vue'
-import Home from './views/Home.vue'
-import './registerServiceWorker'
-import router from './router'
-import store from './store'
-import vuetify from './plugins/vuetify';
+import vuetify from '@/plugins/vuetify'
 import '@mdi/font/css/materialdesignicons.min.css'
+
+import Home from '@/views/Home.vue'
+
+import router from '@/router'
+import store from '@/store'
 
 Vue.config.productionTip = false
 

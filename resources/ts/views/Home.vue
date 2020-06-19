@@ -11,7 +11,7 @@
 </template>
 
 <style lang="scss">
-    @import '../../node_modules/typeface-roboto/index.css';
+    @import '../../../node_modules/typeface-roboto/index.css';
 </style>
 
 <script lang="ts">

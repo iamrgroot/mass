@@ -5,9 +5,8 @@ Media Assistant
 
 ```bash
 cp .env.example .env
+docker-compose build
 docker-compose up -d
 docker exec mass composer initialize[-dev]
-docker restart jackett
+docker restart jackett mass-nginx
 ```
-
-

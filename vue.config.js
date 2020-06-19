@@ -6,14 +6,7 @@ const path = require('path');
 const pages = {
   'login': './resources/ts/login.ts',
   'me': './resources/ts/me.ts',
-  // 'home': {
-  //     entry: './src/home.ts',
-  //     chunks: ['chunk-vendors']
-  // },
-  // 'me': {
-  //     entry: './resources/ts/me.ts',
-  //     chunks: ['chunk-vendors']
-  // },
+  'home': './resources/ts/home.ts',
 }
 
 module.exports = {
@@ -39,7 +32,8 @@ module.exports = {
       config.plugins.delete('prefetch');
       config.resolve
             .alias
-            .set('@', path.resolve(__dirname, 'resources/ts'));
+            .set('@', path.resolve(__dirname, 'resources/ts'))
+            .set('@module', path.resolve(__dirname, 'node_modules'));
       
       const options = module.exports
       const pages = options.pages

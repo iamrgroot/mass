@@ -19,8 +19,9 @@ Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
                 phpinfo();
             })->name('phpinfo');
 
-            Route::get('/', 'TestController@test')
-                ->name('test');
+            Route::get('/', function () {
+                return view('home');
+            });
         });
 });
 

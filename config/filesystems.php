@@ -58,6 +58,14 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/init-jacket-files'),
         ],
+        'nginx' => [
+            'driver' => 'local',
+            'root' => base_path('docker-compose/nginx'),
+        ],
+        'nginx-stub' => [
+            'driver' => 'local',
+            'root' => storage_path('app/nginx-stub'),
+        ],
     ],
 
     /*

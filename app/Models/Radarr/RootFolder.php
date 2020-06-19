@@ -8,7 +8,7 @@ class RootFolder extends SharedRootFolder
 {
     protected $connection = 'radarr_sqlite';
 
-    protected static function getPort(): string
+    protected static function getPath(): string
     {
         return config('apis.radarr.folder');
     }
