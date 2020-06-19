@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-content>
+        <v-main>
              <v-container fluid>
                 <v-row
                     align="center"
@@ -11,7 +11,7 @@
                 >
                     <v-card>
                         <v-card-text>
-                            <v-row>
+                            <v-row >
                                 <form 
                                     ref="form"
                                     action="/login"
@@ -64,7 +64,7 @@
                     </v-card>
                 </v-row>
             </v-container>
-        </v-content>
+        </v-main>
     </v-app>
 </template>
 
@@ -74,7 +74,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import axios from "@/plugins/axios";
 
 @Component
 export default class Login extends Vue {
