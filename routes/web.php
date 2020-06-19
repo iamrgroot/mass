@@ -3,25 +3,31 @@
 use Illuminate\Support\Facades\Route;
 
 Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
-    Route::get('login', 'Auth\LoginController@page')
-        ->name('login');
+    Route::get('/login', 'Auth\LoginController@page')->name('login');
+    Route::post('/login', 'Auth\LoginController@login')->name('login');
+    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-    Route::post('login', 'Auth\LoginController@login')
-        ->name('login');
-
-    Route::get('logout', 'Auth\LoginController@logout')
-        ->name('logout');
-
-    Route::name('web.')
-        ->middleware('auth')
+    Route::middleware('auth')
         ->group(static function () {
             Route::get('/phpinfo', function () {
                 phpinfo();
             })->name('phpinfo');
 
-            Route::get('/', function () {
+            $routes = [
+                '',
+                'movies',
+                'series',
+                'movie',
+                'serie',
+                'torrents',
+            ];
+
+            $routes = array_map(fn($route) => "({$route})", $routes);
+            $routes = implode('|', $routes);
+
+            Route::get('/{route}', function () {
                 return view('home');
-            });
+            })->where('route', $routes);
         });
 });
 

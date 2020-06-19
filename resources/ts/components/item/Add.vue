@@ -13,8 +13,8 @@
                         :items="results"
                         :loading="loading"
                         :search-input.sync="search"
-                        item-text="title"
-                        item-value="tmdbId"
+                        item-text="text"
+                        item-value="tmdb_id"
                         label="Add Item"
                         placeholder="Start typing"
                         prepend-icon="mdi-database-search"
@@ -72,13 +72,13 @@ import { AxiosResponse } from 'axios';
 import axios from "@/plugins/axios";
 
 type Season = {
-    monitored: boolean
-    seasonNumber: number
+    monitored: boolean;
+    seasonNumber: number;
 }
 
 type SearchResult = {
-    id: number,
-    seasons?: Array<Season>,
+    id: number;
+    seasons?: Array<Season>;
 }
 
 const Profiles = namespace('Profiles');
@@ -97,7 +97,7 @@ export default class Add extends Vue {
 
     get loading(): boolean { return false /*this.search_axios !== null;*/ }
     get is_movie(): boolean { return this.type === ItemType.Movie; }
-    get search_url(): string { return this.is_movie ? '/search_movies' : '/search_series'; }
+    get search_url(): string { return this.is_movie ? 'movies' : 'series'; }
     
     @Profiles.State public profiles!: Array<Profile>;
     @Profiles.Action public fetchProfiles!: (type: ItemType) => Promise<AxiosResponse>;
@@ -113,7 +113,7 @@ export default class Add extends Vue {
         }
     }
     @Watch('search')
-    onSearchChange(value: string) {
+    onSearchChange() {
         this.doSearch();
     }
 
@@ -125,14 +125,14 @@ export default class Add extends Vue {
     }
 
 
-    doSearch() {
-        if (this.search === '') return;
+    doSearch() {        
+        if (! this.search) return;
 
         // if (this.search_axios !== null) this.search_axios.cancel();
 
         // this.search_axios = window.axios.CancelToken.source();
 
-        axios.get(this.search + this.search_url, {
+        axios.get(`/async/${this.search_url}/${this.search}/search`, {
             // cancelToken: this.search_axios.token
         }).then(({ data }) => {
             this.results = data;

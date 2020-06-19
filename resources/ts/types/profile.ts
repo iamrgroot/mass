@@ -1,4 +1,4 @@
 export type Profile = {
-    id: number,
-    name: string
+    id: number;
+    name: string;
 }

@@ -8,11 +8,11 @@ class MediaItem
 {
     use SnakeCaser;
 
-    protected int $id;
-    protected string $title;
-    protected int $size_on_disk;
-    protected string $imdb_id;
-    protected int $year;
+    public int $id;
+    public string $title;
+    public int $size_on_disk;
+    public string $imdb_id;
+    public int $year;
     // protected Rating $ratings;
     
 }

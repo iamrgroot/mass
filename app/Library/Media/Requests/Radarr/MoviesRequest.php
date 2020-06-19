@@ -14,11 +14,6 @@ class MoviesRequest extends RadarrRequest
         return 'api/movie';
     }
 
-    public function getMethod(): string
-    {
-        return 'GET';
-    }
-
     public function getResponseData(Response $response): ResponseInterface
     {
         return new MoviesResponse($response);

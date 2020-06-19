@@ -14,11 +14,6 @@ class ProfileRequest extends RadarrRequest
         return 'api/profile';
     }
 
-    public function getMethod(): string
-    {
-        return 'GET';
-    }
-
     public function getResponseData(Response $response): ResponseInterface
     {
         return new ProfileResponse($response);

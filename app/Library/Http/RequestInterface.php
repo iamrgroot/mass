@@ -12,5 +12,6 @@ interface RequestInterface
     public function getApiString(): string;
     public function getRoute(): string;
     public function getUrl(): string;
+    public function getParameters(): string;
     public function getResponseData(Response $response): ResponseInterface;
 }

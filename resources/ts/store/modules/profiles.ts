@@ -23,8 +23,8 @@ class Profiles extends VuexModule {
     public fetchProfiles(type: ItemType): Promise<Array<Profile>> {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?
-                'get_movie_profiles' : 
-                'get_serie_profiles';
+                '/async/profiles/from-movies' : 
+                '/async/profiles/from-series';
 
             this.context.commit('setLoading', true);
 

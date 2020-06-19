@@ -143,7 +143,11 @@ export default class List extends Vue {
 
     @Items.State public items!: Array<Item>;
     @Items.State public loading!: boolean;
+    @Items.Action public fetchItems!: (type: ItemType) => Promise<Array<Item>>
 
+    created() {
+        this.fetchItems(this.type);
+    }
     // @Watch('layout')
     // onLayoutChanged() { this.setCookie(); }
 }

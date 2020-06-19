@@ -1,3 +1,3 @@
 export type Item = {
-    id: number,
+    id: number;
 }

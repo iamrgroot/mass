@@ -47,8 +47,8 @@ class Items extends VuexModule {
     public fetchItems(type: ItemType): Promise<Array<Item>> {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?
-                '/get_movies' :
-                '/get_series';
+                '/async/movies' :
+                '/async/series';
 
             this.context.commit('setLoading', true);
 
@@ -83,8 +83,8 @@ class Items extends VuexModule {
             this.context.commit('setSingle', null);
 
             const url = type === ItemType.Movie ?
-                `/${item_id}/get_movie` :
-                `/${item_id}/get_serie`;
+                `/async/movies/${item_id}` :
+                `/async/series/${item_id}`;
 
             axios.get(url).then(({ data }) => {
                 if (data.id) {
@@ -122,12 +122,12 @@ class Items extends VuexModule {
     public delete(item_id: number, type: ItemType): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?
-                '/delete_movie':
-                '/delete_serie';
+                `/async/movies/${item_id}/delete`:
+                `/async/series/${item_id}/delete`;
 
-            axios.post(url, {
-                item_id: item_id
-            }).then(() => {
+            axios.delete(
+                url
+            ).then(() => {
                 this.context.commit('deleteItem', item_id);
                 resolve(true);
             }).catch(error => {
@@ -145,12 +145,12 @@ class Items extends VuexModule {
     public addItem(item: Item, profile: number, seasons: Array<number>|null, type: ItemType): Promise<Item> {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?
-                '/add_movie':
-                '/add_serie';
+                '/async/movies' :
+                '/async/series';
 
             this.context.commit('setAdding', true);
 
-            axios.post(url, {
+            axios.put(url, {
                 item: item,
                 profile: profile,
                 seasons: seasons

@@ -2,11 +2,23 @@
 
 namespace App\Traits;
 
-trait PropertyExistsParent
+trait ConvertFromObject
 {
+    use SnakeCaser;
+
+    protected function fromObject(object $object): void
+    {
+        foreach($object as $key => $value) {
+            $key = self::snakeCase($key);
+
+            if (self::propertyExists($key)) {
+                $this->{$key} = $value;
+            }
+        }
+    }
+
     protected static function propertyExists(string $key): string
     {
-        return true;
         return property_exists(self::class, $key) || 
             (
                 (bool) class_parents(self::class) && 

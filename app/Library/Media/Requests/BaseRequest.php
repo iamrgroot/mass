@@ -8,6 +8,16 @@ abstract class BaseRequest implements RequestInterface
 {
     public function getUrl(): string
     {
-        return "http://{$this->getHost()}:{$this->getPort()}/{$this->getRoute()}{$this->getApiString()}";
+        return "http://{$this->getHost()}:{$this->getPort()}/{$this->getRoute()}{$this->getApiString()}{$this->getParameters()}";
+    }
+
+    public function getMethod(): string
+    {
+        return 'GET';
+    }
+
+    public function getParameters(): string
+    {
+        return '';
     }
 }

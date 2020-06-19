@@ -7,6 +7,8 @@ services:
         uid: 1000
       context: ./
       dockerfile: Dockerfile
+    environment:
+      TZ: Europe/Amsterdam
     image: php:7.4-fpm
     container_name: mass
     restart: unless-stopped
@@ -27,6 +29,7 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+      TZ: Europe/Amsterdam
     volumes:
       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
     networks:

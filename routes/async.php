@@ -1,19 +1,36 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
 
-Route::middleware('auth')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::middleware('auth')->group(static function () {
+        Route::prefix('movies')->group(static function() {
+            Route::get('', 'Media\MovieController@movies');
+            Route::put('', 'Media\MovieController@put');
+            Route::get('{id}', 'Media\MovieController@movie');
+            Route::delete('{id}/delete', 'Media\MovieController@delete');
+            Route::get('{id}/image', 'Media\MovieController@image');
+            Route::get('{search}/search', 'Media\MovieController@search');
+        });
+
+        Route::prefix('series')->group(static function() {
+            Route::get('', 'Media\SerieController@movies');
+            Route::put('', 'Media\SerieController@put');
+            Route::get('{id}', 'Media\SerieController@movie');
+            Route::delete('{id}/delete', 'Media\SerieController@delete');
+            Route::get('{id}/image', 'Media\SerieController@image');
+            Route::get('{search}/search', 'Media\SerieController@delete');
+        });
+
+        Route::prefix('profiles')->group(static function() {
+            Route::get('from-movies', 'Media\ProfileController@fromMovies');
+            Route::get('from-series', 'Media\ProfileController@fromSeries');
+        });
+
+        Route::prefix('torrents')->group(static function() {
+            Route::get('', 'Media\TorrentController@torrents');
+        });
+    });
+
 });

@@ -2,22 +2,16 @@
 
 namespace App\Library\Media\DataObjects;
 
-use App\Traits\PropertyExistsParent;
+use App\Traits\ConvertFromObject;
 
 class Movie extends MediaItem
 {
-    use PropertyExistsParent;
+    use ConvertFromObject;
 
-    protected string $sort_title;
+    public string $sort_title;
 
     public function __construct(object $object)
     {
-        foreach($object as $key => $value) {
-            $key = self::snakeCase($key);
-
-            if (self::propertyExists($key)) {
-                $this->{$key} = $value;
-            }
-        }
+        $this->fromObject($object);
     }
 }
