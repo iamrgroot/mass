@@ -39,6 +39,10 @@ services:
     image: nginx:alpine
     container_name: mass-nginx
     restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
     ports:
       - 8000:80
     volumes:

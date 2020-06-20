@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class CreateNginxConfig extends Command
 {
-    protected $signature = 'make:nginx-confg';
+    protected $signature = 'make:nginx-config';
 
     protected $description = 'Creates nginx config from stub';
 
