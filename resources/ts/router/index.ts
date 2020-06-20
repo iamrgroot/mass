@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import ListPage from '@/components/item/ListPage.vue';
+import ItemPage from '@/components/item/ItemPage.vue';
 
 Vue.use(VueRouter)
 
@@ -9,6 +10,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'home',
+  },
+  {
+      path: '/movies/:id',
+      name: 'movie',
+      component: ItemPage,
+      // TODO component: () => import('./components/Serie/Page.vue'),
   },
   {
       path: '/movies',
@@ -23,13 +30,7 @@ const routes: Array<RouteConfig> = [
   //     // TODO component: () => import(/* webpackChunkName: "list-page" */ '@/components/item/ListPage.vue'),
   // },
   // {
-  //     path: '/movie/:id',
-  //     name: 'movie',
-  //     // component: ItemPage,
-  //     // TODO component: () => import('./components/Serie/Page.vue'),
-  // },
-  // {
-  //     path: '/serie/:id',
+  //     path: '/series/:id',
   //     name: 'serie',
   //     // component: ItemPage,
   //     // TODO component: () => import('./components/Serie/Page.vue'),

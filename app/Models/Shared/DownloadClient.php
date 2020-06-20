@@ -15,8 +15,8 @@ abstract class DownloadClient extends BaseModel
 
     public static function getDefaults(): array
     {
-        $ip = self::getIp();
-        $port = self::getPort();
+        $ip = config('apis.transmission.ip');
+        $port = config('apis.transmission.port');
 
         return [
             'Id' => '1',

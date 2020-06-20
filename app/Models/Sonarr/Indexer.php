@@ -12,7 +12,7 @@ class Indexer extends SharedIndexer
     {
         $host = config('apis.jackett.host');
         $port = config('apis.jackett.port');
-        $api_key = config('apis.jackett.port');
+        $api_key = config('apis.jackett.api_key');
 
         return [
             'Id' => '1',

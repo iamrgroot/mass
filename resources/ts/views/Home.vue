@@ -25,5 +25,9 @@ import Confirm from '@/components/defaults/Confirm.vue';
     Confirm,
   }
 })
-export default class Home extends Vue { }
+export default class Home extends Vue {
+  mounted() {
+    this.$root.$confirm = (this.$refs.confirm as Confirm).open;
+  }
+}
 </script>

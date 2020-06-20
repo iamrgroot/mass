@@ -2,6 +2,7 @@
 
 namespace App\Library\Media\DataObjects;
 
+use App\Enums\ItemType;
 use App\Traits\ConvertFromObject;
 
 class Movie extends MediaItem
@@ -13,5 +14,7 @@ class Movie extends MediaItem
     public function __construct(object $object)
     {
         $this->fromObject($object);
+
+        $this->type = ItemType::Movie;
     }
 }

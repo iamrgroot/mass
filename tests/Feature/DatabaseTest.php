@@ -16,10 +16,13 @@ class DatabaseTest extends TestCase
         $connection = DB::connection('mysql');
         $this->assertEquals('mass', $connection->getDatabaseName());
 
+        /** @var Illuminate\Database\Connection $connection */
         $connection = DB::connection('sonarr_sqlite');
+        $this->assertEquals('/var/www/docker-compose/sonarr/config/nzbdrone.db', $connection->getDatabaseName());
 
-        dd($connection->getDatabaseName());
-        $this->assertEquals('mass', $connection->getDatabaseName());
+        /** @var Illuminate\Database\Connection $connection */
+        $connection = DB::connection('radarr_sqlite');
+        $this->assertEquals('/var/www/docker-compose/radarr/config/nzbdrone.db', $connection->getDatabaseName());
     }
 
     public function testDatabaseTables(): void

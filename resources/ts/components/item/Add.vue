@@ -65,21 +65,11 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
-import { Item, Profile } from '@/types/item';
-import { ItemAddArgument } from '@/types/args';
+import { Item, Profile, SearchResult } from '@/types/Item';
+import { ItemAddArgument } from '@/types/Args';
 import { ItemType } from '@/enums/ItemType';
 import { AxiosResponse } from 'axios';
 import axios from "@/plugins/axios";
-
-type Season = {
-    monitored: boolean;
-    seasonNumber: number;
-}
-
-type SearchResult = {
-    id: number;
-    seasons?: Array<Season>;
-}
 
 const Profiles = namespace('Profiles');
 const Items = namespace('Items');
@@ -99,12 +89,12 @@ export default class Add extends Vue {
     get is_movie(): boolean { return this.type === ItemType.Movie; }
     get search_url(): string { return this.is_movie ? 'movies' : 'series'; }
     
-    @Profiles.State public profiles!: Array<Profile>;
-    @Profiles.Action public fetchProfiles!: (type: ItemType) => Promise<AxiosResponse>;
+    @Profiles.State private profiles!: Array<Profile>;
+    @Profiles.Action private fetchProfiles!: (type: ItemType) => Promise<AxiosResponse>;
 
-    @Items.State public add_errors!: Array<string>;
-    @Items.State public adding!: boolean;
-    @Items.Action public addItem!: (args: ItemAddArgument) => Promise<Item>
+    @Items.State private add_errors!: Array<string>;
+    @Items.State private adding!: boolean;
+    @Items.Action private addItem!: (args: ItemAddArgument) => Promise<Item>
 
     @Watch('selected.seasons') 
     onSeasonsChanged() {

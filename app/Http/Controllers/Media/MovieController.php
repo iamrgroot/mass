@@ -4,17 +4,35 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Library\Http\Client;
+use App\Library\Media\DataObjects\Movie;
 use App\Library\Media\Requests\Radarr\AddMovieRequest;
+use App\Library\Media\Requests\Radarr\DeleteMovieRequest;
+use App\Library\Media\Requests\Radarr\MovieImageRequest;
+use App\Library\Media\Requests\Radarr\MovieRequest;
 use App\Library\Media\Requests\Radarr\MoviesRequest;
 use App\Library\Media\Requests\Radarr\SearchRequest;
+use App\Library\Media\Responses\Radarr\AddMovieResponse;
+use App\Traits\ResizedImageResponse;
+use GuzzleHttp\Exception\BadResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 
 class MovieController extends Controller
 {
+    use ResizedImageResponse;
+
     public function movies(Client $client): Collection
     {
         return $client->doRequest(new MoviesRequest())->getData();
+    }
+
+    public function movie(int $movie_id, Client $client): JsonResponse
+    {
+        return response()->json(
+            $client->doRequest(new MovieRequest($movie_id))->getData()
+        );
     }
 
     public function search(string $search, Client $client): Collection
@@ -22,7 +40,7 @@ class MovieController extends Controller
         return $client->doRequest(new SearchRequest($search))->getData();        
     }
 
-    public function put(Request $request, Client $client): Collection
+    public function put(Request $request, Client $client): JsonResponse
     {
         $validated = $request->validate([
             'item.tmdb_id' => 'required|integer',
@@ -48,8 +66,29 @@ class MovieController extends Controller
             ]
         ]);
 
-        $response = $client->doRequest($request)->getData();
+        try {
+            /** @var AddMovieResponse $response */
+            $response = $client->doRequest($request)->getData();
+        } catch (BadResponseException $exception) {
+            $errors = json_decode($exception->getResponse()->getBody()->getContents());
+            
+            return response()->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
-        return $this->movies($client);
+        return response()->json($response);
+    }
+
+    public function delete(int $movie_id, Client $client): Response
+    {
+        $client->doRequest(new DeleteMovieRequest($movie_id));
+
+        return response('ok');
+    }
+
+    public function image(int $movie_id, Client $client): Response
+    {
+        $response = $client->doRequest(new MovieImageRequest($movie_id))->getData();
+        
+        return $this->resizeResponse($response, 400);
     }
 }

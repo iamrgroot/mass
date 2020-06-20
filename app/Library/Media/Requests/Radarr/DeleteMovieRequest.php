@@ -4,36 +4,39 @@ namespace App\Library\Media\Requests\Radarr;
 
 use App\Library\Http\ResponseInterface;
 use App\Library\Media\Requests\RadarrRequest;
-use App\Library\Media\Responses\Radarr\MovieResponse;
+use App\Library\Media\Responses\Shared\StringResponse;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
-class AddMovieRequest extends RadarrRequest 
+class DeleteMovieRequest extends RadarrRequest 
 {
-    private array $json;
+    private int $movie_id;
 
-    public function __construct(array $json)
+    public function __construct(int $movie_id)
     {
-        $this->json = $json;
+        $this->movie_id = $movie_id;
     }
 
     public function getRoute(): string
     {
-        return 'api/movie';
+        return "api/movie/{$this->movie_id}";
     }
 
     public function getMethod(): string
     {
-        return Request::METHOD_POST;
+        return Request::METHOD_DELETE;
     }
 
     public function getJson(): array
     {
-        return $this->json;
+        return [
+            'deleteFiles' => true,
+            'addExclusion' => false
+        ];
     }
 
     public function getResponseData(Response $response): ResponseInterface
     {
-        return new MovieResponse($response);
+        return new StringResponse($response);
     }
 }

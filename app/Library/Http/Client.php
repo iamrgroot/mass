@@ -14,20 +14,13 @@ class Client extends GuzzleClient
 {
     public function doRequest(RequestInterface $request): ResponseInterface
     {
-        try {
-            $response = $this->request(
-                $request->getMethod(),
-                $request->getUrl(),
-                [
-                    'json' => $request->getJson()
-                ]
+        $response = $this->request(
+            $request->getMethod(),
+            $request->getUrl(),
+            [
+                'json' => $request->getJson()
+            ]
         );
-        } catch (BadResponseException $e) {
-            throw new ConnectionException($e->getResponse()->getBody()->getContents(), $e->getCode(), $e);
-        }
-        catch (Exception $e) {
-            throw ConnectionException::create($e);
-        }
 
         if ($response->getBody()->getContents() === '') {
             throw new NoResponseException('No response from ' . $request->getUrl());

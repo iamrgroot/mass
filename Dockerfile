@@ -7,14 +7,18 @@ ARG uid
 USER root
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    libmagickwand-dev
+
+# Install Imagick
+RUN pecl install imagick
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -27,6 +31,9 @@ RUN docker-php-ext-install \
     pcntl \
     bcmath \
     gd
+
+# Enable Imagick
+RUN docker-php-ext-enable imagick
 
 # Get latest Composer
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer

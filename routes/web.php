@@ -17,8 +17,8 @@ Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
                 '',
                 'movies',
                 'series',
-                'movie',
-                'serie',
+                'movies/\d+',
+                'series/\d+',
                 'torrents',
             ];
 

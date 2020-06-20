@@ -40,8 +40,8 @@ return [
         'folder' => env('RADARR_FOLDER', '/movies/'),
     ],
     'transmission' => [
-        'host' => env('RADARR_HOST', 'transmission'),
-        'ip' => gethostbyname(env('SONARR_HOST', 'transmission')),
+        'host' => env('TRANSMISSION_HOST', 'transmission'),
+        'ip' => gethostbyname(env('TRANSMISSION_HOST', 'transmission')),
         'port' => (int) $transmission_config->{'rpc-port'},
     ],
     'jackett' => [

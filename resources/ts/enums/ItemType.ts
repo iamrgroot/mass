@@ -1,4 +1,4 @@
 export enum ItemType {
-    Movie,
-    Serie,
+    Movie = 0,
+    Serie = 1,
 }

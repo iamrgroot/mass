@@ -7,22 +7,6 @@
             {{ is_movie ? 'Movies' : 'Series' }}
             <v-spacer/>
             <v-select
-                v-model="layout"
-                :items="[{
-                    text: 'Grid',
-                    value: 'grid'
-                }, {
-                    text: 'Card',
-                    value: 'card'
-                }]"
-                class="mx-4"
-                :style="{
-                    'max-width': '100px'
-                }"
-            ></v-select>
-
-            <v-select
-                v-if="this.layout === 'grid'"
                 v-model="no_columns"
                 label="# columns"
                 :items="[{
@@ -72,7 +56,7 @@
             </v-btn>
             <v-btn
                 icon
-                @click="fetch(type); refresh++;"
+                @click="fetchItems(type)"
             >
                 <v-icon>
                     mdi-refresh
@@ -80,56 +64,44 @@
             </v-btn>
         </v-card-title>
         <v-divider/>
-        <v-card-text :key="refresh">
+        <v-card-text>
             <v-row 
                 align="center"
                 justify="center"
             >
-                <template v-if="layout === 'card'">
-                    <!-- <Item 
-                        v-for="item in sorted_items"
-                        :key="item.id"
-                        :item="item"
-                        :layout="layout"
-                        class="ma-3"
-                    /> -->
-                </template>
-                
-                <v-col 
-                    v-else
+                <v-col
                     v-for="item in sorted_items"
                     :key="item.id"
                     :cols="12 / no_columns"
                 >
-                    <!-- <Item 
-                        :item="item"
-                        :layout="layout"
-                    /> -->
+                    <ItemComponent :item="item"/>
                 </v-col>
             </v-row>
         </v-card-text>
     </v-card>
 </template>
 
-
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { sortBy } from 'lodash';
-import { Item } from '@/types/item';
+import { Item } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
+import ItemComponent from '@/components/item/Item.vue';
 
 const Items = namespace('Items');
 
-@Component
+@Component({
+  components: {
+    ItemComponent,
+  }
+})
 export default class List extends Vue {
     @Prop({ required: true }) private type!: number;
 
-    private layout = 'grid';
     private no_columns = 1;
     private sorted_on = '';
-    private descending = false;
-    private refresh = 0;
+    private descending = false;    
 
     get is_movie(): boolean { return this.type === ItemType.Movie; }
     get cookie_name(): string { return this.is_movie ? 'movie_settings' : 'serie_settings'}
@@ -148,7 +120,5 @@ export default class List extends Vue {
     created() {
         this.fetchItems(this.type);
     }
-    // @Watch('layout')
-    // onLayoutChanged() { this.setCookie(); }
 }
 </script>

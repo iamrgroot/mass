@@ -1,5 +1,5 @@
 import { ItemType } from '@/enums/ItemType'
-import { Item } from './item'
+import { SearchResult } from './Item'
 
 export type ItemTypeArgument = {
     item_id: number;
@@ -7,7 +7,7 @@ export type ItemTypeArgument = {
 }
 
 export type ItemAddArgument = {
-    item: Item;
+    item: SearchResult;
     profile: number;
     seasons: Array<number>|null;
     type: ItemType;

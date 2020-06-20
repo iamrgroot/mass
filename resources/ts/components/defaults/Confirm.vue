@@ -46,12 +46,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
-type ConfirmOptions = {
-    color: string;
-    width: number;
-    zIndex: number;
-}
+import { ConfirmOptions } from '@/types/ConfirmOptions';
 
 @Component
 export default class Confirm extends Vue {
@@ -65,10 +60,11 @@ export default class Confirm extends Vue {
         zIndex: 200
     } as ConfirmOptions;
 
-    open(title: string, message: string, options: ConfirmOptions): Promise<boolean> {
+    open(title: string, message?: string, options?: ConfirmOptions): Promise<boolean> {
         this.dialog = true;
         this.title = title;
-        this.message = message;
+        
+        this.message = message || '';
         this.options = Object.assign(this.options, options);
 
         return new Promise((resolve) => {
