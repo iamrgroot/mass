@@ -34,6 +34,10 @@ module.exports = {
             .alias
             .set('@', path.resolve(__dirname, 'resources/ts'))
             .set('@module', path.resolve(__dirname, 'node_modules'));
+
+      if (config.plugins.has('copy')) {
+        config.plugins.delete('copy')
+      }
       
       const options = module.exports
       const pages = options.pages

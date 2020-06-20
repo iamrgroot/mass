@@ -13,5 +13,6 @@ interface RequestInterface
     public function getRoute(): string;
     public function getUrl(): string;
     public function getParameters(): string;
+    public function getJson(): array;
     public function getResponseData(Response $response): ResponseInterface;
 }

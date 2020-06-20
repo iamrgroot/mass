@@ -37,7 +37,7 @@ return [
         'ip' => gethostbyname(env('SONARR_HOST', 'radarr')),
         'port' => (int) $radarr_config->Port,
         'api_key' => (string) $radarr_config->ApiKey,
-        'folder' => env('SONARR_FOLDER', '/movies/'),
+        'folder' => env('RADARR_FOLDER', '/movies/'),
     ],
     'transmission' => [
         'host' => env('RADARR_HOST', 'transmission'),

@@ -8,13 +8,20 @@ use App\Library\Http\RequestInterface;
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\BadResponseException;
+use Illuminate\Support\Facades\Http;
 
 class Client extends GuzzleClient
 {
     public function doRequest(RequestInterface $request): ResponseInterface
     {
         try {
-            $response = $this->request($request->getMethod(), $request->getUrl());
+            $response = $this->request(
+                $request->getMethod(),
+                $request->getUrl(),
+                [
+                    'json' => $request->getJson()
+                ]
+        );
         } catch (BadResponseException $e) {
             throw new ConnectionException($e->getResponse()->getBody()->getContents(), $e->getCode(), $e);
         }

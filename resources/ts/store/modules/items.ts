@@ -1,5 +1,6 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import { Item } from '@/types/item';
+import { ItemTypeArgument, ItemAddArgument } from '@/types/args';
 import { ItemType } from '@/enums/ItemType';
 import axios from "@/plugins/axios";
 
@@ -77,14 +78,14 @@ class Items extends VuexModule {
         })
     }
     @Action({ rawError: true })
-    public fetchSingle(item_id: number, type: ItemType): Promise<Item> {
+    public fetchSingle(args: ItemTypeArgument): Promise<Item> {
         return new Promise((resolve, reject) => {
             this.context.commit('setSingleLoading', true);
             this.context.commit('setSingle', null);
 
-            const url = type === ItemType.Movie ?
-                `/async/movies/${item_id}` :
-                `/async/series/${item_id}`;
+            const url = args.type === ItemType.Movie ?
+                `/async/movies/${args.item_id}` :
+                `/async/series/${args.item_id}`;
 
             axios.get(url).then(({ data }) => {
                 if (data.id) {
@@ -119,16 +120,16 @@ class Items extends VuexModule {
         })
     }
     @Action({ rawError: true })
-    public delete(item_id: number, type: ItemType): Promise<boolean> {
+    public delete(args: ItemTypeArgument): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            const url = type === ItemType.Movie ?
-                `/async/movies/${item_id}/delete`:
-                `/async/series/${item_id}/delete`;
+            const url = args.type === ItemType.Movie ?
+                `/async/movies/${args.item_id}/delete`:
+                `/async/series/${args.item_id}/delete`;
 
             axios.delete(
                 url
             ).then(() => {
-                this.context.commit('deleteItem', item_id);
+                this.context.commit('deleteItem', args.item_id);
                 resolve(true);
             }).catch(error => {
                 this.context.dispatch('notifications/notify', {
@@ -142,18 +143,18 @@ class Items extends VuexModule {
         });
     }
     @Action({ rawError: true })
-    public addItem(item: Item, profile: number, seasons: Array<number>|null, type: ItemType): Promise<Item> {
-        return new Promise((resolve, reject) => {
-            const url = type === ItemType.Movie ?
+    public addItem(args: ItemAddArgument): Promise<Item> {
+        return new Promise((resolve, reject) => {            
+            const url = args.type === ItemType.Movie ?
                 '/async/movies' :
                 '/async/series';
 
             this.context.commit('setAdding', true);
 
             axios.put(url, {
-                item: item,
-                profile: profile,
-                seasons: seasons
+                item: args.item,
+                profile: args.profile,
+                seasons: args.seasons
             }).then(({ data }) => {
                 this.context.commit('setAddErrors', []);
                 this.context.commit('setItems', data);

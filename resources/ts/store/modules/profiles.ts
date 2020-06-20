@@ -1,5 +1,5 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
-import { Profile } from '@/types/profile';
+import { Profile } from '@/types/item';
 import { ItemType } from '@/enums/ItemType';
 import axios from "@/plugins/axios";
 

@@ -65,8 +65,8 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
-import { Item } from '@/types/item';
-import { Profile } from '@/types/profile';
+import { Item, Profile } from '@/types/item';
+import { ItemAddArgument } from '@/types/args';
 import { ItemType } from '@/enums/ItemType';
 import { AxiosResponse } from 'axios';
 import axios from "@/plugins/axios";
@@ -104,7 +104,7 @@ export default class Add extends Vue {
 
     @Items.State public add_errors!: Array<string>;
     @Items.State public adding!: boolean;
-    @Items.Action public addItem!: (item: Item, profile: number, seasons: Array<number>|null, type: ItemType) => Promise<Item>
+    @Items.Action public addItem!: (args: ItemAddArgument) => Promise<Item>
 
     @Watch('selected.seasons') 
     onSeasonsChanged() {
@@ -143,12 +143,12 @@ export default class Add extends Vue {
     add() {
         if (this.selected === null || this.selected_profile === null) return;
 
-        this.addItem(
-            this.selected,
-            this.selected_profile,
-            this.selected_seasons,
-            this.type
-        );
+        this.addItem({    
+            item: this.selected,
+            profile: this.selected_profile,
+            seasons: this.selected_seasons,
+            type: this.type
+        });
     }
 }
 </script>

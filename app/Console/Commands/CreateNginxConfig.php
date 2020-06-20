@@ -26,6 +26,10 @@ class CreateNginxConfig extends Command
         $content = $stub_disk->get($name);
         $content = str_replace('${SERVER_NAME}', config('app.host'), $content);
 
-        File::put($nginx_disk->path($name), $content);
+        $destination = $nginx_disk->path($name);
+
+        if (! File::exists($destination)) {
+            File::put($destination, $content);
+        }
     }
 }

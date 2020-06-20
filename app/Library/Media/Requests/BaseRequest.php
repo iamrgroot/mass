@@ -3,6 +3,7 @@
 namespace App\Library\Media\Requests;
 
 use App\Library\Http\RequestInterface;
+use Illuminate\Http\Request;
 
 abstract class BaseRequest implements RequestInterface
 {
@@ -13,11 +14,16 @@ abstract class BaseRequest implements RequestInterface
 
     public function getMethod(): string
     {
-        return 'GET';
+        return Request::METHOD_GET;
     }
 
     public function getParameters(): string
     {
         return '';
+    }
+
+    public function getJson(): array
+    {
+        return [];
     }
 }
