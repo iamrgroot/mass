@@ -12,6 +12,6 @@ import { ConfirmOptions } from '@/types/ConfirmOptions';
 declare module 'vue/types/vue' {
   // 3. Declare augmentation for Vue
   interface Vue {
-    $confirm: (title: string, message?: string, options?: ConfirmOptions) => Promise<boolean>
+    $confirm: (title: string, message?: string, options?: ConfirmOptions) => Promise<boolean>;
   }
 }

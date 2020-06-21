@@ -6,8 +6,8 @@
         "build-silent": "vue-cli-service build --silent",
         "dev": "vue-cli-service build --mode development",
         "dev-silent": "vue-cli-service build --mode development --silent",
-        "lint": "vue-cli-service lint",
-        "watch": "vue-cli-service build --mode development --watch"
+        "watch": "vue-cli-service build --mode development --watch",
+        "format-dry": "eslint --ext .ts,.vue ./resources/ts/ ./*.js"
     },
     "dependencies": {
         "@types/lodash": "^4.14.155",
