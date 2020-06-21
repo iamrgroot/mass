@@ -1,8 +1,7 @@
 
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { sortBy } from 'lodash';
+import { Component, Vue } from 'vue-property-decorator';
 import { Item } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
 
@@ -20,7 +19,11 @@ export default class ItemBase extends Vue {
         }
         return 'error';
     }
-    imageLink(item: Item): string { return `/async/movies/${item.id}/image?${Date.now()}` }
+    imageLink(item: Item): string { 
+        return this.isMovie(item) ?
+            `/async/movies/${item.id}/image?${Date.now()}` :
+            `/async/series/${item.id}/image?${Date.now()}`;
+    }
     imdbLink(item: Item): string { return `https://www.imdb.com/title/${item.imdb_id}`; }
 
 }

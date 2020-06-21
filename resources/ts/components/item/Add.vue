@@ -34,9 +34,11 @@
                         class="px-2"
                     ></v-select>
                 </v-col> 
-                <v-col cols="2">
+                <v-col 
+                    v-if="! is_movie && selected !== null"
+                    cols="2"
+                >
                     <v-select
-                        v-if="! is_movie && selected !== null"
                         v-model="selected_seasons"
                         :items="selected.seasons"
                         multiple
@@ -68,7 +70,7 @@ import { namespace } from 'vuex-class'
 import { Item, Profile, SearchResult } from '@/types/Item';
 import { ItemAddArgument } from '@/types/Args';
 import { ItemType } from '@/enums/ItemType';
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, CancelTokenSource } from 'axios';
 import axios from "@/plugins/axios";
 
 const Profiles = namespace('Profiles');
@@ -80,12 +82,12 @@ export default class Add extends Vue {
 
     private results: Array<SearchResult> = [];
     private search = '';
-    // private search_axios: 
+    private search_axios: CancelTokenSource | null = null;
     private selected: SearchResult | null = null;
     private selected_profile: number | null = null;
     private selected_seasons: Array<number> = [];
 
-    get loading(): boolean { return false /*this.search_axios !== null;*/ }
+    get loading(): boolean { return this.search_axios !== null; }
     get is_movie(): boolean { return this.type === ItemType.Movie; }
     get search_url(): string { return this.is_movie ? 'movies' : 'series'; }
     
@@ -108,26 +110,28 @@ export default class Add extends Vue {
     }
 
 
-    created() {
-        this.fetchProfiles(this.type).finally(() => {
-            if (this.profiles.length > 0) this.selected_profile = this.profiles[0].id;
-        });
+    async created() {
+        await this.fetchProfiles(this.type);
+
+        if (this.profiles.length > 0) this.selected_profile = this.profiles[0].id;
     }
 
 
     doSearch() {        
         if (! this.search) return;
 
-        // if (this.search_axios !== null) this.search_axios.cancel();
+        if (this.search_axios !== null) this.search_axios.cancel();
 
-        // this.search_axios = window.axios.CancelToken.source();
+        this.search_axios = axios.CancelToken.source();
 
         axios.get(`/async/${this.search_url}/${this.search}/search`, {
-            // cancelToken: this.search_axios.token
+            cancelToken: this.search_axios.token
         }).then(({ data }) => {
             this.results = data;
+        }).catch(() => {
+            /** Do nothing when cancelled */
         }).finally(() => {
-            // this.search_axios = null;
+            this.search_axios = null;
         });
     }
     add() {

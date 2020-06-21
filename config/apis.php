@@ -1,5 +1,9 @@
 <?php
 
+use App\Library\Http\Client;
+use App\Library\Media\Requests\TransmissionRequest;
+use GuzzleHttp\Exception\ClientException;
+
 $sonarr_config = new SimpleXMLElement(
     file_get_contents(
         base_path('docker-compose/sonarr/config/config.xml')
@@ -24,6 +28,27 @@ $transmission_config = json_decode(
     )
 );
 
+$request = new TransmissionRequest();
+
+$transmission_host = env('TRANSMISSION_HOST', 'transmission');
+$transmission_ip = gethostbyname($transmission_host);
+$transmission_port = (int) $transmission_config->{'rpc-port'};
+$transmission_session_id = '';
+
+try {
+    $client = new Client();
+    $client->request('GET', "http://{$transmission_ip}:{$transmission_port}/{$request->getRoute()}");
+} catch (ClientException $exception) {
+    $response = $exception->getResponse()->getBody()->getContents();
+
+    $matches = [];
+    preg_match('/<code>(.+)<\/code>/', $response, $matches);
+
+    if (count($matches) > 1) {
+        $transmission_session_id = trim(explode(':', $matches[1])[1]);
+    }
+}
+
 return [
     'sonarr' => [
         'host' => env('SONARR_HOST', 'sonarr'),
@@ -40,9 +65,10 @@ return [
         'folder' => env('RADARR_FOLDER', '/movies/'),
     ],
     'transmission' => [
-        'host' => env('TRANSMISSION_HOST', 'transmission'),
-        'ip' => gethostbyname(env('TRANSMISSION_HOST', 'transmission')),
-        'port' => (int) $transmission_config->{'rpc-port'},
+        'host' => $transmission_host,
+        'ip' => $transmission_ip,
+        'port' => $transmission_port,
+        'session_id' => $transmission_session_id,
     ],
     'jackett' => [
         'host' => env('RADARR_HOST', 'jackett'),

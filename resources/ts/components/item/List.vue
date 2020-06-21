@@ -9,19 +9,7 @@
             <v-select
                 v-model="no_columns"
                 label="# columns"
-                :items="[{
-                    text: 1,
-                    value: 1
-                }, {
-                    text: 2,
-                    value: 2
-                }, {
-                    text: 3,
-                    value: 3
-                }, {
-                    text: 4,
-                    value: 4
-                }]"
+                :items="[1, 2, 3, 4]"
                 class="mx-4"
                 :style="{
                     'max-width': '100px'
@@ -104,7 +92,6 @@ export default class List extends Vue {
     private descending = false;    
 
     get is_movie(): boolean { return this.type === ItemType.Movie; }
-    get cookie_name(): string { return this.is_movie ? 'movie_settings' : 'serie_settings'}
     get sorted_items(): Array<Item> {
         if(this.sorted_on === '') return this.items;
 

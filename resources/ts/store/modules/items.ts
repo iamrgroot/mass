@@ -22,6 +22,10 @@ class Items extends VuexModule {
         this.item = item;
     }
     @Mutation
+    public pushItem(item: Item): void {
+        this.items.push(item);
+    }
+    @Mutation
     public deleteItem(item_id: number): void {
         this.items = this.items.filter(item => item.id !== item_id);
     }
@@ -130,10 +134,10 @@ class Items extends VuexModule {
                 seasons: args.seasons
             }).then(({ data }) => {
                 this.context.commit('setAddErrors', []);
-                this.context.commit('setItems', data);
+                this.context.commit('pushItem', data);
 
-                this.context.dispatch('notifications/notify', {
-                    type: 'success',
+                this.context.commit('Notifications/notify', {
+                    color: 'success',
                     title: 'Item added!',
                     content: 'Refresh movies in a second to load new data.',
                 }, {root: true});

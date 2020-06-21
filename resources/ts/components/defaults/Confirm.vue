@@ -7,12 +7,11 @@
     >
     <v-card>
         <v-toolbar
-            dark
             :color="options.color"
             dense
             flat
         >
-            <v-toolbar-title class="white--text">
+            <v-toolbar-title>
                 {{ title }}
             </v-toolbar-title>
         </v-toolbar>

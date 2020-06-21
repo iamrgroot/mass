@@ -9,7 +9,7 @@ export type Item = {
     id: number;
     rating: number;
     image_url: string;
-    imdb_id: string
+    imdb_id: string;
 }
 
 export type Season = {

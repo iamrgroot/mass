@@ -14,11 +14,6 @@ class SeriesRequest extends SonarrRequest
         return 'api/series';
     }
 
-    public function getMethod(): string
-    {
-        return 'GET';
-    }
-
     public function getResponseData(Response $response): ResponseInterface
     {
         return new SeriesResponse($response);

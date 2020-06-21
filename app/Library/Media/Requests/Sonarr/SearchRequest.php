@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Library\Media\Requests\Radarr;
+namespace App\Library\Media\Requests\Sonarr;
 
 use App\Library\Http\ResponseInterface;
-use App\Library\Media\Requests\RadarrRequest;
+use App\Library\Media\Requests\SonarrRequest;
 use App\Library\Media\Responses\Shared\SearchResponse;
 use GuzzleHttp\Psr7\Response;
 
-class SearchRequest extends RadarrRequest 
+class SearchRequest extends SonarrRequest 
 {
     private string $search_term;
 
@@ -18,7 +18,7 @@ class SearchRequest extends RadarrRequest
 
     public function getRoute(): string
     {
-        return 'api/movie/lookup';
+        return 'api/series/lookup';
     }
 
     public function getParameters(): string

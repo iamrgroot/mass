@@ -22,7 +22,17 @@ abstract class BaseRequest implements RequestInterface
         return '';
     }
 
+    public function getApiString(): string
+    {        
+        return '';
+    }
+
     public function getJson(): array
+    {
+        return [];
+    }
+
+    public function getHeaders(): array
     {
         return [];
     }

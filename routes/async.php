@@ -15,12 +15,12 @@ Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
         });
 
         Route::prefix('series')->group(static function() {
-            Route::get('', 'Media\SerieController@movies');
+            Route::get('', 'Media\SerieController@series');
             Route::put('', 'Media\SerieController@put');
-            Route::get('{id}', 'Media\SerieController@movie');
+            Route::get('{id}', 'Media\SerieController@serie');
             Route::delete('{id}/delete', 'Media\SerieController@delete');
             Route::get('{id}/image', 'Media\SerieController@image');
-            Route::get('{search}/search', 'Media\SerieController@delete');
+            Route::get('{search}/search', 'Media\SerieController@search');
         });
 
         Route::prefix('profiles')->group(static function() {

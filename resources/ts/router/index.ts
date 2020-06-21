@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 
 import ListPage from '@/components/item/ListPage.vue';
 import ItemPage from '@/components/item/ItemPage.vue';
+import TorrentsPage from '@/components/torrent/TorrentsPage.vue';
 
 Vue.use(VueRouter)
 
@@ -23,24 +24,24 @@ const routes: Array<RouteConfig> = [
       component: ListPage,
       // TODO component: () => import(/* webpackChunkName: "list-page" */ '@/components/item/ListPage.vue'),
   },
-  // {
-  //     path: '/series',
-  //     name: 'series',
-  //     component: ListPage,
-  //     // TODO component: () => import(/* webpackChunkName: "list-page" */ '@/components/item/ListPage.vue'),
-  // },
-  // {
-  //     path: '/series/:id',
-  //     name: 'serie',
-  //     // component: ItemPage,
-  //     // TODO component: () => import('./components/Serie/Page.vue'),
-  // },
-  // {
-  //     path: '/torrents',
-  //     name: 'torrents',
-  //     // component: TorrentsPage,
-  //     // TODO component: () => import('./components/Serie/Page.vue'),
-  // },
+  {
+      path: '/series/:id',
+      name: 'serie',
+      component: ItemPage,
+      // TODO component: () => import('./components/Serie/Page.vue'),
+  },
+  {
+      path: '/series',
+      name: 'series',
+      component: ListPage,
+      // TODO component: () => import(/* webpackChunkName: "list-page" */ '@/components/item/ListPage.vue'),
+  },
+  {
+      path: '/torrents',
+      name: 'torrents',
+      component: TorrentsPage,
+      // TODO component: () => import('./components/Serie/Page.vue'),
+  },
   // {
   //   path: '/about',
   //   name: 'About',

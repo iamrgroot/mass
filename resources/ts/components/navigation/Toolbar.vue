@@ -8,27 +8,34 @@
             <v-spacer></v-spacer>
 
             <v-toolbar-items>
+                <v-btn text small to="/torrents">Torrents</v-btn>
                 <v-btn text small to="/movies">Movies</v-btn>
                 <v-btn text small to="/series">Series</v-btn>
                 <v-btn text small @click="logout">Log out</v-btn>
             </v-toolbar-items>
         </v-toolbar>
-
-        <!-- <notification
-            v-if="notifications.length > 0"
-            :key="notifications[0].id"
-            :notification="notifications[0]"
-            :total="notifications.length"
-            @closed="remove(notifications[0].id)"
-        /> -->
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import NotificationComponent from "@/components/defaults/Notification.vue";
+import { Notification } from '../../types/Notification';
 
-@Component
+const Notifications = namespace('Notifications');
+
+@Component({
+    components: {
+        NotificationComponent
+    }
+})
 export default class Toolbar extends Vue {
+
+    @Notifications.State private notifications!: Array<Notification>;
+
+    @Notifications.Mutation private remove!: (notification_id: number) => void;
+
     logout(): void {
         window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
     }
