@@ -9,7 +9,16 @@
                 <v-spacer />
                 <v-btn
                     icon
-                    class="ma-2"
+                    class="ma-1"
+                    @click="search"
+                >
+                    <v-icon>
+                        mdi-magnify
+                    </v-icon>
+                </v-btn>
+                <v-btn
+                    icon
+                    class="ma-1"
                     @click="fetch"
                 >
                     <v-icon>
@@ -19,6 +28,7 @@
                 <v-btn 
                     icon
                     color="error"
+                    class="ml-1"
                     @click="remove"
                 >
                     <v-icon>
@@ -121,6 +131,9 @@ export default class ItemPage extends ItemBase {
         }).catch(() => {
             this.$router.push(this.redirect);
         });
+    }
+    search(): void {
+        console.log('TODO');
     }
     remove(): void {
         const text = this.is_movie ? 'movie' : 'serie';
