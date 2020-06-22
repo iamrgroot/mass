@@ -53,18 +53,34 @@
         </v-card-title>
         <v-divider/>
         <v-card-text>
+            <v-fade-transition mode="out-in">
+                <v-alert
+                    v-if="items.length === 0"
+                    text
+                    dense
+                    min-width="99%"
+                    color="warning"
+                    icon="mdi-cloud-alert"
+                    class="text-center"
+                >
+                    No {{ is_movie ? 'movies' : 'series' }}
+                </v-alert>
             <v-row 
+                v-else
                 align="center"
                 justify="center"
             >
-                <v-col
-                    v-for="item in sorted_items"
-                    :key="item.id"
-                    :cols="12 / no_columns"
-                >
-                    <ItemComponent :item="item"/>
-                </v-col>
-            </v-row>
+                    <template>
+                        <v-col
+                            v-for="item in sorted_items"
+                            :key="item.id"
+                            :cols="12 / no_columns"
+                        >
+                            <ItemComponent :item="item"/>
+                        </v-col>
+                    </template>
+                </v-row>
+            </v-fade-transition>
         </v-card-text>
     </v-card>
 </template>

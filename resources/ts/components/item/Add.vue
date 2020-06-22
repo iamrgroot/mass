@@ -101,7 +101,7 @@ export default class Add extends Vue {
     @Watch('selected.seasons') 
     onSeasonsChanged() {
         if (this.selected?.seasons) {
-            this.selected_seasons = this.selected.seasons.map(item => item.seasonNumber);
+            this.selected_seasons = this.selected.seasons.map(item => item.season_number);
         }
     }
     @Watch('search')

@@ -43,8 +43,8 @@
         </v-list-item>
 
         <v-card-actions>
-            <!-- <v-chip
-                v-for="(chip, index) in chips(item)"
+            <v-chip
+                v-for="(chip, index) in item.features"
                 :key="`chip_${index}`"
                 class="ma-1"
                 :color="chip.color"
@@ -52,7 +52,7 @@
                 small
             >
                 {{ chip.text }}
-            </v-chip> -->
+            </v-chip>
         </v-card-actions>
     </v-card>
 </template>

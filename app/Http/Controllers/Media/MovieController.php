@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Library\Http\Client;
+use App\Library\Media\ConfigGetter;
 use App\Library\Media\Requests\Radarr\AddMovieRequest;
 use App\Library\Media\Requests\Radarr\DeleteMovieRequest;
 use App\Library\Media\Requests\Radarr\MovieImageRequest;

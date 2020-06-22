@@ -3,7 +3,9 @@
         <toolbar />
 
         <v-main>
-            <router-view :key="$route.path" />
+            <v-fade-transition mode="out-in">
+                <router-view :key="$route.path" />
+            </v-fade-transition>
 
             <v-fade-transition>
                 <NotificationComponent
@@ -25,13 +27,16 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Toolbar from '@/components/navigation/Toolbar.vue';
 import Confirm from '@/components/defaults/Confirm.vue';
 import NotificationComponent from "@/components/defaults/Notification.vue";
 import { Notification } from '@/types/Notification';
+import { Route } from 'vue-router';
 
+const Items = namespace('Items');
+const Profiles = namespace('Profiles');
 const Notifications = namespace('Notifications');
 
 @Component({
@@ -43,8 +48,22 @@ const Notifications = namespace('Notifications');
 })
 export default class Home extends Vue {
   @Notifications.State private notifications!: Array<Notification>;
-
   @Notifications.Mutation private remove!: (notification_id: number) => void;
+
+  @Items.Mutation private resetItems!: () => void;
+
+  @Profiles.Mutation private resetProfiles!: () => void;
+
+  @Watch('$route')
+  onRouteChanged(route: Route, old_route: Route) {
+    if (
+      (route.name === 'movies' && old_route.name === 'series') ||
+      (route.name === 'series' && old_route.name === 'movies')
+    ) {
+      this.resetItems();
+      this.resetProfiles();
+    }    
+  }
 
   mounted() {
     this.$root.$confirm = (this.$refs.confirm as Confirm).open;

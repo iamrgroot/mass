@@ -16,7 +16,8 @@ services:
     volumes:
       - ./:/var/www
     networks:
-      - mass
+      mass:
+        ipv4_address: 172.19.0.2
   
   mass-db:
     image: mysql:latest
@@ -33,7 +34,8 @@ services:
     volumes:
       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
     networks:
-      - mass
+      mass:
+        ipv4_address: 172.19.0.3
 
   mass-nginx:
     image: nginx:alpine
@@ -49,7 +51,8 @@ services:
       - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
-      - mass
+      mass:
+        ipv4_address: 172.19.0.4
 
   # plex:
   #   image: linuxserver/plex:latest
@@ -103,7 +106,8 @@ services:
     container_name: transmission
     # network_mode: service:nord_vpn
     networks:
-      - mass
+      mass:
+        ipv4_address: 172.19.0.5
     environment:
       - PUID=1000
       - PGID=1000
@@ -121,7 +125,8 @@ services:
     image: linuxserver/sonarr:latest
     container_name: sonarr
     networks:
-      - mass
+      mass:
+        ipv4_address: 172.19.0.6
     volumes:
       - /dev/rtc:/dev/rtc:ro
       - ./docker-compose/sonarr/config:/config
@@ -141,7 +146,8 @@ services:
     image: linuxserver/radarr:latest
     container_name: radarr
     networks:
-      - mass
+      mass:
+        ipv4_address: 172.19.0.7
     volumes:
       - /dev/rtc:/dev/rtc:ro
       - ./docker-compose/radarr/config:/config
@@ -160,6 +166,9 @@ services:
   bazarr:
     image: linuxserver/bazarr
     container_name: bazarr
+    networks:
+      mass:
+        ipv4_address: 172.19.0.8
     volumes:
       - ./docker-compose/sonarr/config:/config
       - /mnt/data/movies/:/movies
@@ -176,7 +185,8 @@ services:
     image: linuxserver/jackett:latest
     container_name: jackett
     networks:
-      - mass
+      mass:
+        ipv4_address: 172.19.0.9
     ports:
       - 9117:9117
     volumes:
@@ -191,3 +201,7 @@ services:
 networks:
   mass:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/24

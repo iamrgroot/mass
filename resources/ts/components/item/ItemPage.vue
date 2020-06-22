@@ -29,8 +29,8 @@
             <v-divider class="mx-3" />
             <v-card-text >
                 <v-row class="ml-1">
-                    <!-- <v-chip
-                        v-for="(chip, index) in chips(item)"
+                    <v-chip
+                        v-for="(chip, index) in item.features"
                         :key="`chip_${index}`"
                         class="ma-1"
                         :color="chip.color"
@@ -38,14 +38,15 @@
                         small
                     >
                         {{ chip.text }}
-                    </v-chip> -->
+                    </v-chip>
                     <v-spacer />
+                    <SeasonsButton v-if="! is_movie" />
                     <v-btn 
                         text
                         small
                         target="_blank"
                         :href="imdbLink(item)"
-                        class="mr-3"
+                        class="mx-1"
                     >
                         IMDb
                     </v-btn>
@@ -55,11 +56,6 @@
                         <v-row>
                             <v-col>
                                 {{ item.overview }}
-                            </v-col>
-                        </v-row>
-                        <v-row v-if="item.has_file">
-                            <v-col>
-                                <b>Length:</b> {{ item.duration }}
                             </v-col>
                         </v-row>
                     </v-col>
@@ -89,14 +85,19 @@
 import { Component } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { Location } from 'vue-router';
-import ItemBase from './ItemBase.vue';
 import { ItemTypeArgument } from '@/types/Args';
 import { Item } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
+import ItemBase from '@/components/item/ItemBase.vue';
+import SeasonsButton from '@/components/item/SeasonsButton.vue';
 
 const Items = namespace('Items');
 
-@Component
+@Component({
+    components: {
+        SeasonsButton
+    }
+})
 export default class ItemPage extends ItemBase {
 
     get is_movie(): boolean { return this.$route.name === 'movie' }

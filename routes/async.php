@@ -15,11 +15,12 @@ Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
         });
 
         Route::prefix('series')->group(static function() {
-            Route::get('', 'Media\SerieController@series');
             Route::put('', 'Media\SerieController@put');
+            Route::get('', 'Media\SerieController@series');
             Route::get('{id}', 'Media\SerieController@serie');
             Route::delete('{id}/delete', 'Media\SerieController@delete');
             Route::get('{id}/image', 'Media\SerieController@image');
+            Route::put('{id}/toggle-season', 'Media\SerieController@toggleSeason');
             Route::get('{search}/search', 'Media\SerieController@search');
         });
 
@@ -30,6 +31,9 @@ Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
 
         Route::prefix('torrents')->group(static function() {
             Route::get('', 'Media\TorrentController@torrents');
+
+            Route::post('{id}/stop', 'Media\TorrentController@stop');
+            Route::post('{id}/start', 'Media\TorrentController@start');
         });
     });
 

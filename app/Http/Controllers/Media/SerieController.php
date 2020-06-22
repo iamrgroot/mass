@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Library\Http\Client;
+use App\Library\Media\ConfigGetter;
+use App\Library\Media\DataObjects\Serie;
 use App\Library\Media\Requests\Sonarr\AddSerieRequest;
 use App\Library\Media\Requests\Sonarr\DeleteSerieRequest;
 use App\Library\Media\Requests\Sonarr\SearchRequest;
 use App\Library\Media\Requests\Sonarr\SerieImageRequest;
 use App\Library\Media\Requests\Sonarr\SerieRequest;
 use App\Library\Media\Requests\Sonarr\SeriesRequest;
+use App\Library\Media\Requests\Sonarr\UpdateSerieRequest;
+use App\Library\Media\Responses\Sonarr\SerieResponse;
 use App\Traits\ResizedImageResponse;
 use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\JsonResponse;
@@ -77,7 +81,7 @@ class SerieController extends Controller
         ]);
 
         try {
-            /** @var AddMovieResponse $response */
+            /** @var AddSerieRequest $response */
             $response = $client->doRequest($request)->getData();
         } catch (BadResponseException $exception) {
             $errors = json_decode($exception->getResponse()->getBody()->getContents());
@@ -100,5 +104,32 @@ class SerieController extends Controller
         $response = $client->doRequest(new SerieImageRequest($id))->getData();
         
         return $this->resizeResponse($response, 400);
+    }
+    
+    public function toggleSeason(int $id, Request $request, Client $client): JsonResponse
+    {
+        $validated = $request->validate([
+            'monitor' => 'required|boolean',
+            'season' => 'required|integer',
+        ]);
+
+        $response = $client->doRequest(new SerieRequest($id))->getResponse();
+        $raw_data = json_decode($response->getBody()->getContents());
+
+        $raw_data->seasons = array_map(
+            fn(object $season) => $season->seasonNumber === $validated['season'] ?
+                (object) [
+                    'seasonNumber' => $season->seasonNumber,
+                    'monitored' => $validated['monitor'],
+                    'statistics' => $season->statistics,
+                ] :
+                $season,
+            $raw_data->seasons
+        );
+
+        /** @var SerieResponse $response */
+        $response = $client->doRequest(new UpdateSerieRequest((array) $raw_data))->getData();
+
+        return response()->json($response);
     }
 }

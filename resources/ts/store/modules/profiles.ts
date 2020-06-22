@@ -8,7 +8,10 @@ class Profiles extends VuexModule {
     public profiles: Array<Profile> = [];
     public loading = false;
 
-
+    @Mutation
+    public resetProfiles(): void {
+        this.profiles = [];
+    }
     @Mutation
     public setProfiles(profiles: Array<Profile>): void {
         this.profiles = profiles;

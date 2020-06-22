@@ -48,8 +48,7 @@ class DockerSeeder extends Seeder
         $message = $model::getDescription();
 
         if ($model::exists()) {
-            $this->command->info("{$message} already exists!");
-            return; 
+            $model::query()->delete();
         }
 
         $model::create($model::getDefaults());

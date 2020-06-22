@@ -17,52 +17,86 @@
         </v-card-title>
         <v-divider class="mx-3" />
         <v-card-text>
-            <v-data-table
-                :headers="headers"
-                :items="torrents"
-                :items-per-page="15"
-            >
-                <template v-slot:body="{ items }">
-                    <tbody>
-                        <template v-for="item in items">
-                            <tr
-                                :key="`1_${item.id}`"
-                                class="no-border"
-                            >
-                                <td>
-                                    {{ item.status }}
-                                </td>
-                                <td>
-                                    {{ item.name }}
-                                </td>
-                                <td>
-                                    {{ item.eta > 0 ? $d(item.eta, 'time') : '∞' }}
-                                </td>
-                                <td>
-                                    {{ item.rate_download | bytesPerSecond }}
-                                </td>
-                                <td>
-                                    {{ item.rate_download | bytesPerSecond }}
-                                </td>
-                                <td>
-                                    {{ item.size_when_done | byte }}
-                                </td>
-                                <td>
-                                    {{ item.error_string }}
-                                </td>
-                            </tr>
-                            <tr 
-                                :key="`2_${item.id}`"
-                                class="progress-row pb-3"
-                            >
-                                <td :colspan="headers.length">
-                                    <v-progress-linear :value="item.percent_done * 100"></v-progress-linear>
-                                </td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </template>
-            </v-data-table>
+            <v-fade-transition mode="out-in">
+                <v-alert
+                    v-if="torrents.length === 0"
+                    text
+                    dense
+                    color="warning"
+                    icon="mdi-cloud-alert"
+                    class="text-center"
+                >
+                    No torrents
+                </v-alert>
+                <v-data-table
+                    v-else
+                    :headers="headers"
+                    :items="torrents"
+                    :items-per-page="15"
+                >
+                    <template v-slot:body="{ items }">
+                        <tbody>
+                            <template v-for="item in items">
+                                <tr
+                                    :class="{
+                                        'error--text': hasError(item)
+                                    }"
+                                    :key="`1_${item.id}`"
+                                    class="no-border"
+                                >
+                                    <td>
+                                        <v-icon
+                                            v-if="! paused(item)"
+                                            :color="color(item)"
+                                            @click="stopTorrent(item)"
+                                        >
+                                            mdi-pause
+                                        </v-icon>
+                                        <v-icon
+                                            v-else
+                                            :color="color(item)"
+                                            @click="startTorrent(item)"
+                                        >
+                                            mdi-play
+                                        </v-icon>
+                                    </td>
+                                    <td>
+                                        {{ item.name }}
+                                    </td>
+                                    <td>
+                                        {{ item.eta > 0 ? $d(item.eta, 'time') : '∞' }}
+                                    </td>
+                                    <td>
+                                        {{ item.rate_download | bytesPerSecond }}
+                                    </td>
+                                    <td>
+                                        {{ item.rate_download | bytesPerSecond }}
+                                    </td>
+                                    <td>
+                                        {{ item.size_when_done | byte }}
+                                    </td>
+                                    <td>
+                                        {{ item.error_string }}
+                                    </td>
+                                </tr>
+                                <tr 
+                                    :key="`2_${item.id}`"
+                                    class="progress-row pb-3"
+                                >
+                                    <td :colspan="headers.length">
+                                        <v-progress-linear 
+                                            :value="item.percent_done * 100"
+                                            :color="color(item)"
+                                            :buffer-value="stream(item) ? 0 : 100"
+                                            :stream="stream(item)"
+                                        />
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </template>
+                </v-data-table>
+            </v-fade-transition>
         </v-card-text>
     </v-card>
 </template>
@@ -82,6 +116,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { Torrent } from '@/types/Torrent';
 import { byte, bytesPerSecond } from "@/filters/filters";
+import { TorrentStatus } from '@/enums/TorrentStatus';
 
 const Torrents = namespace('Torrents');
 
@@ -93,8 +128,7 @@ const Torrents = namespace('Torrents');
 })
 export default class TorrentsPage extends Vue {
     private headers = [
-        { text: 'Status', value: 'status' },
-        // { text: 'Progress', value: 'percent_done' },
+        { text: '', value: 'actions', sortable: false },
         { text: 'Name', value: 'name' },
         { text: 'ETA', value: 'eta' },
         { text: 'Download', value: 'rate_download' },
@@ -102,12 +136,27 @@ export default class TorrentsPage extends Vue {
         { text: 'Size', value: 'size_when_done' },
         { text: 'Error', value: 'error_string' },
     ];
+    private torrent_fetcher!: number;
 
     @Torrents.State private torrents!: Array<Torrent>;
     @Torrents.Action private fetchTorrents!: () => Promise<Array<Torrent>>;
+    @Torrents.Action private stopTorrent!: (torrent: Torrent) => Promise<boolean>;
+    @Torrents.Action private startTorrent!: (torrent: Torrent) => Promise<boolean>;
+
+    paused(torrent: Torrent): boolean { return torrent.status === TorrentStatus.Paused; }
+    hasError(torrent: Torrent): boolean { return torrent.error_string !== null; }
+    stream(torrent: Torrent): boolean { return ! this.hasError(torrent) && ! this.paused(torrent) }
+    color(torrent: Torrent): string { return this.hasError(torrent) ? 'error' : (this.paused(torrent) ? 'grey' : 'success'); }
 
     created() {
         this.fetchTorrents();
+        this.torrent_fetcher = setInterval(
+            this.fetchTorrents,
+            2500
+        );
+    }
+    beforeDestroy() {
+        clearInterval(this.torrent_fetcher);
     }
 }
 </script>

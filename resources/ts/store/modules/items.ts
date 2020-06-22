@@ -1,18 +1,22 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import { Item } from '@/types/Item';
-import { ItemTypeArgument, ItemAddArgument } from '@/types/Args';
+import { ItemTypeArgument, ItemAddArgument, SerieUpdateArgument } from '@/types/Args';
 import { ItemType } from '@/enums/ItemType';
 import axios from "@/plugins/axios";
 
 @Module({ namespaced: true })
 class Items extends VuexModule {
-    public item?: Item;
+    public item: Item | null = null;
     public items: Array<Item> = [];
     public loading = false;
     public single_loading = true;
     public adding = false;
     public add_errors: Array<string> = [];
 
+    @Mutation
+    public resetItems(): void {
+        this.items = [];
+    }
     @Mutation
     public setItems(items: Array<Item>): void {
         this.items = items;
@@ -77,9 +81,7 @@ class Items extends VuexModule {
                 `/async/series/${args.item_id}`;
 
             axios.get(url).then(({ data }) => {
-                if (data.id) {
-                    this.context.commit('setSingle', data);
-                }
+                this.context.commit('setSingle', data);
 
                 resolve(data);
             }).catch(error => {
@@ -154,6 +156,23 @@ class Items extends VuexModule {
                 reject(error);
             }).finally(() => {
                 this.context.commit('setAdding', false);
+            });
+        });
+    }
+    @Action({ rawError: true })
+    public toggleSeason(args: SerieUpdateArgument): Promise<Item> {
+        return new Promise((resolve, reject) => {
+            axios.put(`/async/series/${args.item_id}/toggle-season`, {
+                monitor: args.monitor,
+                season: args.season
+            }).then(({ data }) => {
+                this.context.commit('setSingle', data);
+
+                resolve(data);
+            }).catch(error => {
+                console.error(error);
+
+                reject(error);
             });
         });
     }

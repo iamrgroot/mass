@@ -3,6 +3,7 @@
 namespace App\Library\Media\DataObjects;
 
 use App\Traits\SnakeCaser;
+use Illuminate\Support\Collection;
 
 class MediaItem
 {
@@ -15,6 +16,10 @@ class MediaItem
     public int $size_on_disk;
     public string $imdb_id;
     public int $year;
-    // protected Rating $ratings;
-    
+    public Collection $features;
+
+    public function __construct()
+    {
+        $this->features = collect();
+    }
 }

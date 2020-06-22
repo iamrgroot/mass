@@ -21,12 +21,35 @@ class Torrents extends VuexModule {
         return new Promise((resolve, reject) => {
             axios.get('/async/torrents').then(({ data }) => {
                 this.context.commit('setTorrents', data);
+                
                 resolve(data);
             }).catch(error => {
                 reject(error);
             }).finally(() => {
                 this.context.commit('setLoading', false);
             })
+        });
+    }
+    @Action
+    public stopTorrent(torrent: Torrent): Promise<Array<Torrent>>  {
+        return new Promise((resolve, reject) => {
+            axios.post(`/async/torrents/${torrent.id}/stop`).then(({ data }) => {
+                this.context.commit('setTorrents', data);
+                resolve(data);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    }
+    @Action
+    public startTorrent(torrent: Torrent):  Promise<Array<Torrent>>  {
+        return new Promise((resolve, reject) => {
+            axios.post(`/async/torrents/${torrent.id}/start`).then(({ data }) => {
+                this.context.commit('setTorrents', data);
+                resolve(data);
+            }).catch(error => {
+                reject(error);
+            });
         });
     }
 }

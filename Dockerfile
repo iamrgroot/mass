@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmagickwand-dev
 
 # Install Imagick
-RUN pecl install imagick
+RUN pecl install imagick || echo "^"
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -30,10 +30,11 @@ RUN docker-php-ext-install \
     exif \
     pcntl \
     bcmath \
-    gd
+    gd \
+    > /dev/null
 
 # Enable Imagick
-RUN docker-php-ext-enable imagick
+RUN docker-php-ext-enable imagick > /dev/null
 
 # Get latest Composer
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer

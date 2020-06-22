@@ -12,3 +12,9 @@ export type ItemAddArgument = {
     seasons: Array<number>|null;
     type: ItemType;
 }
+
+export type SerieUpdateArgument = {
+    item_id: number;
+    season: number;
+    monitor: boolean;
+}
