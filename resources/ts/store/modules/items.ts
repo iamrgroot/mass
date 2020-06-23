@@ -85,7 +85,7 @@ class Items extends VuexModule {
 
                 resolve(data);
             }).catch(error => {
-                console.error(error);
+                // TODO
                 // this.context.dispatch('notifications/notify', {
                 //     type: 'error',
                 //     title: 'Error!',
@@ -109,15 +109,15 @@ class Items extends VuexModule {
             ).then(() => {
                 this.context.commit('deleteItem', args.item_id);
                 resolve(true);
-            }).catch(error => {
-                console.error(error);
+            }).catch((error) => {
+                // TODO
                 // this.context.dispatch('notifications/notify', {
                 //     type: 'success',
                 //     title: 'Item deletion failed!',
                 //     content: error.response.data.message || 'Internal Server Error!',
                 // }, {root: true});
 
-                reject(false);
+                reject(error);
             });
         });
     }
@@ -170,7 +170,7 @@ class Items extends VuexModule {
 
                 resolve(data);
             }).catch(error => {
-                console.error(error);
+                // TODO
 
                 reject(error);
             });

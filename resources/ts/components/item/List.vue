@@ -39,16 +39,14 @@
                 @click="descending = ! descending"
             >
                 <v-icon>
-                    {{ descending ? 'mdi-sort-descending' : 'mdi-sort-ascending'}}
+                    {{ descending ? '$mdiSortDescending' : '$mdiSortAscending'}}
                 </v-icon>
             </v-btn>
             <v-btn
                 icon
                 @click="fetchItems(type)"
             >
-                <v-icon>
-                    mdi-refresh
-                </v-icon>
+                <v-icon>$mdiRefresh</v-icon>
             </v-btn>
         </v-card-title>
         <v-divider/>
@@ -60,7 +58,7 @@
                     dense
                     min-width="99%"
                     color="warning"
-                    icon="mdi-cloud-alert"
+                    icon="$mdiCloudAlert"
                     class="text-center"
                 >
                     No {{ is_movie ? 'movies' : 'series' }}
@@ -88,7 +86,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { sortBy } from 'lodash';
+import sortBy from 'lodash/sortBy';
 import { Item } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
 import ItemComponent from '@/components/item/Item.vue';

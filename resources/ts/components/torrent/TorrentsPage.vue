@@ -10,9 +10,7 @@
                 class="ma-2"
                 @click="fetchTorrents"
             >
-                <v-icon>
-                    mdi-refresh
-                </v-icon>
+                <v-icon>$mdiRefresh</v-icon>
             </v-btn>
         </v-card-title>
         <v-divider class="mx-3" />
@@ -23,7 +21,7 @@
                     text
                     dense
                     color="warning"
-                    icon="mdi-cloud-alert"
+                    icon="$mdiCloudAlert"
                     class="text-center"
                 >
                     No torrents
@@ -50,14 +48,14 @@
                                             :color="color(item)"
                                             @click="stopTorrent(item)"
                                         >
-                                            mdi-pause
+                                            $mdiPause
                                         </v-icon>
                                         <v-icon
                                             v-else
                                             :color="color(item)"
                                             @click="startTorrent(item)"
                                         >
-                                            mdi-play
+                                            $mdiPlay
                                         </v-icon>
                                     </td>
                                     <td>

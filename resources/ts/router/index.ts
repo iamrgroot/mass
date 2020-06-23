@@ -16,38 +16,32 @@ const routes: Array<RouteConfig> = [
       path: '/movies/:id',
       name: 'movie',
       component: ItemPage,
-      // TODO component: () => import('./components/Serie/Page.vue'),
+      // component: () => import(/* webpackChunkName: "item" */ '@/components/item/ItemPage.vue'),
   },
   {
       path: '/movies',
       name: 'movies',
       component: ListPage,
-      // TODO component: () => import(/* webpackChunkName: "list-page" */ '@/components/item/ListPage.vue'),
+      // component: () => import(/* webpackChunkName: "item-list" */ '@/components/item/ListPage.vue'),
   },
   {
       path: '/series/:id',
       name: 'serie',
       component: ItemPage,
-      // TODO component: () => import('./components/Serie/Page.vue'),
+      // component: () => import(/* webpackChunkName: "item" */ '@/components/item/ItemPage.vue'),
   },
   {
       path: '/series',
       name: 'series',
       component: ListPage,
-      // TODO component: () => import(/* webpackChunkName: "list-page" */ '@/components/item/ListPage.vue'),
+      // component: () => import(/* webpackChunkName: "item-list" */ '@/components/item/ListPage.vue'),
   },
   {
       path: '/torrents',
       name: 'torrents',
       component: TorrentsPage,
-      // TODO component: () => import('./components/Serie/Page.vue'),
+      // component: () => import(/* webpackChunkName: "torrents" */ '@/components/torrent/TorrentsPage.vue'),
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // Magic comment to make webpack chuck from the component.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({

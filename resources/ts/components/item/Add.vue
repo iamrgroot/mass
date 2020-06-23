@@ -17,7 +17,7 @@
                         item-value="tmdb_id"
                         label="Add Item"
                         placeholder="Start typing"
-                        prepend-icon="mdi-database-search"
+                        prepend-icon="$mdiDatabaseSearch"
                         return-object
                         cache-items
                         :error-messages="add_errors"
@@ -54,9 +54,7 @@
                         v-if="selected !== null"
                         @click="add"
                     >
-                        <v-icon>
-                            mdi-database-plus
-                        </v-icon>
+                        <v-icon>$mdiDatabaseSearch</v-icon>
                     </v-btn>
                 </v-col>
             </v-row>
@@ -111,7 +109,7 @@ export default class Add extends Vue {
 
 
     async created() {
-        await this.fetchProfiles(this.type);
+        await this.fetchProfiles(this.type);        
 
         if (this.profiles.length > 0) this.selected_profile = this.profiles[0].id;
     }

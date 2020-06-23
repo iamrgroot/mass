@@ -2,7 +2,7 @@
     <div>
         <v-toolbar max-height="64">
             <v-toolbar-title>
-                <v-icon>mdi-home</v-icon>
+                <v-icon>$mdiHome</v-icon>
             </v-toolbar-title>
 
             <v-spacer></v-spacer>

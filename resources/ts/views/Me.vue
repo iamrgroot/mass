@@ -32,14 +32,14 @@
                                         text icon
                                         href="https://www.linkedin.com/in/robert-groot/"
                                     >
-                                        <v-icon>mdi-account</v-icon>
+                                        <v-icon>$mdiAccount</v-icon>
                                     </v-btn>
 
                                     <v-btn
                                         text icon
                                         href="mailto:info@rgroot.nl"
                                     >
-                                        <v-icon>mdi-email</v-icon>
+                                        <v-icon>$mdiEmail</v-icon>
                                     </v-btn>
                                 </v-card-actions>
                             </v-card>

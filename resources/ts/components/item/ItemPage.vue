@@ -12,18 +12,14 @@
                     class="ma-1"
                     @click="search"
                 >
-                    <v-icon>
-                        mdi-magnify
-                    </v-icon>
+                    <v-icon>$mdiMagnify</v-icon>
                 </v-btn>
                 <v-btn
                     icon
                     class="ma-1"
                     @click="fetch"
                 >
-                    <v-icon>
-                        mdi-refresh
-                    </v-icon>
+                    <v-icon>$mdiRefresh</v-icon>
                 </v-btn>
                 <v-btn 
                     icon
@@ -31,9 +27,7 @@
                     class="ml-1"
                     @click="remove"
                 >
-                    <v-icon>
-                        mdi-delete
-                    </v-icon>
+                    <v-icon>$mdiDelete</v-icon>
                 </v-btn>
             </v-card-title>
             <v-divider class="mx-3" />
@@ -133,7 +127,7 @@ export default class ItemPage extends ItemBase {
         });
     }
     search(): void {
-        console.log('TODO');
+        // TODO
     }
     remove(): void {
         const text = this.is_movie ? 'movie' : 'serie';

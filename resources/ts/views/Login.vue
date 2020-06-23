@@ -46,7 +46,7 @@
                                 :value="error_message !== ''"
                                 dense
                                 type="error"
-                                icon="mdi-alert"
+                                icon="$mdiAlert"
                             >
                                 {{ error_message }}
                             </v-alert>
