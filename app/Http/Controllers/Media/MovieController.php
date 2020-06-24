@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Library\Http\Client;
-use App\Library\Media\ConfigGetter;
 use App\Library\Media\Requests\Radarr\AddMovieRequest;
 use App\Library\Media\Requests\Radarr\DeleteMovieRequest;
 use App\Library\Media\Requests\Radarr\MovieImageRequest;
 use App\Library\Media\Requests\Radarr\MovieRequest;
 use App\Library\Media\Requests\Radarr\MoviesRequest;
+use App\Library\Media\Requests\Radarr\RefreshRequest;
+use App\Library\Media\Requests\Radarr\SearchCommandRequest;
+use App\Library\Media\Requests\Radarr\SearchMissingRequest;
 use App\Library\Media\Requests\Radarr\SearchRequest;
 use App\Library\Media\Responses\Radarr\AddMovieResponse;
 use App\Traits\ResizedImageResponse;
@@ -90,5 +92,26 @@ class MovieController extends Controller
         $response = $client->doRequest(new MovieImageRequest($id))->getData();
         
         return $this->resizeResponse($response, 400);
+    }
+
+    public function refresh(int $id, Client $client)
+    {
+        $client->doRequest(new RefreshRequest($id));
+
+        return response('ok');
+    }
+
+    public function searchIndexer(int $id, Client $client)
+    {
+        $client->doRequest(new SearchCommandRequest($id));
+
+        return response('ok');
+    }
+
+    public function searchMissing(Client $client)
+    {
+        $client->doRequest(new SearchMissingRequest());
+
+        return response('ok');
     }
 }

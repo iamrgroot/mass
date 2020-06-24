@@ -10,14 +10,20 @@
                 <v-btn
                     icon
                     class="ma-1"
-                    @click="search"
+                    @click="searchIndexer({
+                        item_id: item.id,
+                        type: item.type
+                    })"
                 >
                     <v-icon>$mdiMagnify</v-icon>
                 </v-btn>
                 <v-btn
                     icon
                     class="ma-1"
-                    @click="fetch"
+                    @click="refresh({
+                        item_id: item.id,
+                        type: item.type
+                    })"
                 >
                     <v-icon>$mdiRefresh</v-icon>
                 </v-btn>
@@ -113,6 +119,8 @@ export default class ItemPage extends ItemBase {
 
     @Items.Action private fetchSingle!: (args: ItemTypeArgument) => Promise<Item>;
     @Items.Action private delete!: (args: ItemTypeArgument) => Promise<boolean>;
+    @Items.Action private searchIndexer!: (args: ItemTypeArgument) => Promise<boolean>;
+    @Items.Action private refresh!: (args: ItemTypeArgument) => Promise<boolean>;
 
     created() {
         this.fetch();
@@ -125,9 +133,6 @@ export default class ItemPage extends ItemBase {
         }).catch(() => {
             this.$router.push(this.redirect);
         });
-    }
-    search(): void {
-        // TODO
     }
     remove(): void {
         const text = this.is_movie ? 'movie' : 'serie';

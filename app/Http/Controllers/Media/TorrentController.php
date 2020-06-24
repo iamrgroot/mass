@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Library\Http\Client;
+use App\Library\Http\RequestInterface;
+use App\Library\Http\ResponseInterface;
+use App\Library\Media\Requests\Transmission\TorrentRemoveRequest;
 use App\Library\Media\Requests\Transmission\TorrentsRequest;
 use App\Library\Media\Requests\Transmission\TorrentStartRequest;
 use App\Library\Media\Requests\Transmission\TorrentStopRequest;
@@ -13,40 +16,42 @@ use Illuminate\Support\Facades\Artisan;
 
 class TorrentController extends Controller
 {
-    public function torrents(Client $client): Collection
+    public function torrents(): Collection
     {
-        try {
-            return $client->doRequest(new TorrentsRequest())->getData();
-        } catch (RequestException $exception) {
-            Artisan::call('config:cache');
-        }
-
-        return $client->doRequest(new TorrentsRequest())->getData();
+        return $this->doRequest(new TorrentsRequest())->getData();
     }
 
-    public function start(int $torrent_id, Client $client): Collection
+    public function delete(int $torrent_id): Collection
     {
-        try {
-            $client->doRequest(new TorrentStartRequest($torrent_id))->getData();
-        } catch (RequestException $exception) {
-            Artisan::call('config:cache');
-        }
+        $this->doRequest(new TorrentRemoveRequest($torrent_id));
 
-        $client->doRequest(new TorrentStartRequest($torrent_id))->getData();
-
-        return $this->torrents($client);
+        return $this->torrents();
     }
 
-    public function stop(int $torrent_id, Client $client): Collection
+    public function start(int $torrent_id): Collection
     {
+        $this->doRequest(new TorrentStartRequest($torrent_id));
+
+        return $this->torrents();
+    }
+
+    public function stop(int $torrent_id): Collection
+    {
+        $this->doRequest(new TorrentStopRequest($torrent_id));
+
+        return $this->torrents();
+    }
+
+    private function doRequest(RequestInterface $request): ResponseInterface
+    {
+        $client = new Client();
+
         try {
-            $client->doRequest(new TorrentStopRequest($torrent_id))->getData();
+            return $client->doRequest($request);
         } catch (RequestException $exception) {
             Artisan::call('config:cache');
         }
 
-        $client->doRequest(new TorrentStopRequest($torrent_id))->getData();
-
-        return $this->torrents($client);
+        return $client->doRequest($request);
     }
 }

@@ -76,6 +76,14 @@
                                     <td>
                                         {{ item.error_string }}
                                     </td>
+                                    <td>
+                                        <v-icon
+                                            color="error"
+                                            @click="remove(item)"
+                                        >
+                                            $mdiDelete
+                                        </v-icon>
+                                    </td>
                                 </tr>
                                 <tr 
                                     :key="`2_${item.id}`"
@@ -126,18 +134,20 @@ const Torrents = namespace('Torrents');
 })
 export default class TorrentsPage extends Vue {
     private headers = [
-        { text: '', value: 'actions', sortable: false },
+        { text: '', value: 'play_pause', sortable: false },
         { text: 'Name', value: 'name' },
         { text: 'ETA', value: 'eta' },
         { text: 'Download', value: 'rate_download' },
         { text: 'Upload', value: 'rate_download' },
         { text: 'Size', value: 'size_when_done' },
         { text: 'Error', value: 'error_string' },
+        { text: '', value: 'delete', sortable: false },
     ];
     private torrent_fetcher!: number;
 
     @Torrents.State private torrents!: Array<Torrent>;
     @Torrents.Action private fetchTorrents!: () => Promise<Array<Torrent>>;
+    @Torrents.Action private removeTorrent!: (torrent: Torrent) => Promise<boolean>;
     @Torrents.Action private stopTorrent!: (torrent: Torrent) => Promise<boolean>;
     @Torrents.Action private startTorrent!: (torrent: Torrent) => Promise<boolean>;
 
@@ -146,15 +156,21 @@ export default class TorrentsPage extends Vue {
     stream(torrent: Torrent): boolean { return ! this.hasError(torrent) && ! this.paused(torrent) }
     color(torrent: Torrent): string { return this.hasError(torrent) ? 'error' : (this.paused(torrent) ? 'grey' : 'success'); }
 
-    created() {
+    created(): void {
         this.fetchTorrents();
         this.torrent_fetcher = setInterval(
             this.fetchTorrents,
             2500
         );
     }
-    beforeDestroy() {
+    beforeDestroy(): void {
         clearInterval(this.torrent_fetcher);
+    }
+
+    async remove(item: Torrent): Promise<void> {
+        if (await this.$root.$confirm(`Delete torrent?`)) {
+            this.removeTorrent(item);
+        }
     }
 }
 </script>

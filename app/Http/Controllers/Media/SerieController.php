@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Library\Http\Client;
-use App\Library\Media\ConfigGetter;
-use App\Library\Media\DataObjects\Serie;
 use App\Library\Media\Requests\Sonarr\AddSerieRequest;
 use App\Library\Media\Requests\Sonarr\DeleteSerieRequest;
+use App\Library\Media\Requests\Sonarr\RefreshRequest;
+use App\Library\Media\Requests\Sonarr\SearchCommandRequest;
+use App\Library\Media\Requests\Sonarr\SearchMissingRequest;
 use App\Library\Media\Requests\Sonarr\SearchRequest;
 use App\Library\Media\Requests\Sonarr\SerieImageRequest;
 use App\Library\Media\Requests\Sonarr\SerieRequest;
@@ -131,5 +132,26 @@ class SerieController extends Controller
         $response = $client->doRequest(new UpdateSerieRequest((array) $raw_data))->getData();
 
         return response()->json($response);
+    }
+
+    public function refresh(int $id, Client $client)
+    {
+        $client->doRequest(new RefreshRequest($id));
+
+        return response('ok');
+    }
+
+    public function searchIndexer(int $id, Client $client)
+    {
+        $client->doRequest(new SearchCommandRequest($id));
+
+        return response('ok');
+    }
+
+    public function searchMissing(Client $client)
+    {
+        $client->doRequest(new SearchMissingRequest());
+
+        return response('ok');
     }
 }

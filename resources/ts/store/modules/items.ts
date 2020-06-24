@@ -85,12 +85,6 @@ class Items extends VuexModule {
 
                 resolve(data);
             }).catch(error => {
-                // TODO
-                // this.context.dispatch('notifications/notify', {
-                //     type: 'error',
-                //     title: 'Error!',
-                //     content: error.response.data.message || 'Internal Server Error!',
-                // }, {root: true});
                 reject(error);
             }).finally(() => {
                 this.context.commit('setSingleLoading', false);
@@ -110,13 +104,6 @@ class Items extends VuexModule {
                 this.context.commit('deleteItem', args.item_id);
                 resolve(true);
             }).catch((error) => {
-                // TODO
-                // this.context.dispatch('notifications/notify', {
-                //     type: 'success',
-                //     title: 'Item deletion failed!',
-                //     content: error.response.data.message || 'Internal Server Error!',
-                // }, {root: true});
-
                 reject(error);
             });
         });
@@ -170,8 +157,50 @@ class Items extends VuexModule {
 
                 resolve(data);
             }).catch(error => {
-                // TODO
+                reject(error);
+            });
+        });
+    }
+    @Action({ rawError: true })
+    public searchIndexer(args: ItemTypeArgument): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const url = args.type === ItemType.Movie ?
+                `/async/movies/${args.item_id}/search-indexer`:
+                `/async/series/${args.item_id}/search-indexer`;
 
+            axios.post(
+                url
+            ).then(() => {
+                this.context.commit('Notifications/notify', {
+                    color: 'success',
+                    title: 'Search command done!',
+                    content: 'Indexers are being searched for this item',
+                }, {root: true});
+
+                resolve(true);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+    }
+    @Action({ rawError: true })
+    public refresh(args: ItemTypeArgument): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const url = args.type === ItemType.Movie ?
+                `/async/movies/${args.item_id}/refresh`:
+                `/async/series/${args.item_id}/refresh`;
+
+            axios.post(
+                url
+            ).then(() => {
+                this.context.commit('Notifications/notify', {
+                    color: 'success',
+                    title: 'Refresh command done!',
+                    content: 'Movie information is searched and disk will be rescanned.',
+                }, {root: true});
+
+                resolve(true);
+            }).catch((error) => {
                 reject(error);
             });
         });
