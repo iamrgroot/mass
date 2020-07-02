@@ -26,8 +26,8 @@ Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
             Route::put('{id}/toggle-season', 'Media\SerieController@toggleSeason');
             Route::get('{search}/search', 'Media\SerieController@search');
             Route::post('{id}/search-indexer', 'Media\SerieController@searchIndexer');
-            Route::post('search-missing', 'Media\MovieController@searchMissing');
-            Route::post('{id}/refresh', 'Media\MovieCoSerieControllerntroller@refresh');
+            Route::post('search-missing', 'Media\SerieController@searchMissing');
+            Route::post('{id}/refresh', 'Media\SerieController@refresh');
         });
 
         Route::prefix('profiles')->group(static function() {

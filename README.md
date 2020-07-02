@@ -8,11 +8,28 @@ Uses docker images
 * radarr
 * bazarr
 * jackett
+* traefik
+* plex
 
 ## Get started
 
 ```bash
 cp .env.example .env
+```
+
+Change variables in .env accordingly.
+
+### Traefik
+
+```bash
+cp ./docker-compose/traefik/traefik.toml.example ./docker-compose/traefik/traefik.toml
+```
+
+Edit values in `docker-compose/traefik/traefik.toml`.
+
+### Build & Start
+
+```bash
 docker-compose build
 docker-compose up -d
 ```

@@ -54,35 +54,13 @@ services:
       mass:
         ipv4_address: 172.19.0.4
 
-  # plex:
-  #   image: linuxserver/plex:latest
-  #   container_name: plex
-  #   network_mode: host
-  #   environment:
-  #     - PUID=${UID}
-  #     - PGID=${UID}
-  #     - TZ=${TZ}
-  #     - VERSION=docker
-  #   ports:
-  #     - 32400:32400
-  #   volumes:
-  #     - /mnt/data/movies:/data/movies
-  #     - /mnt/data/tvseries:/data/tvshows
-  #     - ./media/plex/config/:/config
-  #     - /tmp:/transcode
-  #   devices:
-  #     - /dev/dri:/dev/dri
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - transmission
-  #     - sonarr
-  #     - radarr
-
   transmission:
     image: haugene/transmission-openvpn
-    container_name: transmission-vpn
+    container_name: transmission
     cap_add:
       - NET_ADMIN
+    devices:
+      - /dev/net/tun
     networks:
       mass:
         ipv4_address: 172.19.0.5
@@ -94,7 +72,6 @@ services:
       - OPENVPN_USERNAME=${OPENVPN_USER}
       - OPENVPN_PASSWORD=${OPENVPN_PASSWORD} 
       - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
-      # - LOCAL_NETWORK=192.168.0.0/16
       - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=false
       - TRANSMISSION_UMASK=2
       - TRANSMISSION_RATIO_LIMIT=0.50
@@ -188,6 +165,47 @@ services:
       - PGID=${UID}
       - TZ=${TZ}
     restart: unless-stopped
+
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    networks:
+      mass:
+        ipv4_address: 172.19.0.10
+    ports:
+      - 80:80
+      - 443:443
+      # The Web UI (enabled by --api.insecure=true)
+      - 8081:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker-compose/traefik/traefik.toml:/traefik.toml
+      # - ./docker-compose/traefik/dynamic_conf.toml:/dynamic_conf.toml
+      - ./docker-compose/traefik/traefik-acme:/acme 
+    restart: unless-stopped
+
+    plex:
+      image: linuxserver/plex:latest
+      container_name: plex
+      network_mode: host
+      networks:
+        mass:
+          ipv4_address: 172.19.0.11
+      environment:
+        - PUID=${UID}
+        - PGID=${UID}
+        - TZ=${TZ}
+        - VERSION=docker
+      ports:
+        - 32400:32400
+      volumes:
+        - /mnt/data/movies:/data/movies
+        - /mnt/data/tvseries:/data/tvshows
+        - ./docker-compose/plex/config/:/config
+        - /tmp:/transcode
+      devices:
+        - /dev/dri:/dev/dri
+      restart: unless-stopped
 
 networks:
   mass:
