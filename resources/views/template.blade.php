@@ -19,6 +19,10 @@
     </noscript>
     <div id="app"></div>
 
+    <script>
+      window.blade_errors = {!! json_encode($errors->all() ?? []) !!}
+    </script>
+
     <script src="/vue/js/chunk-vuetify.js"></script>
     <script src="/vue/js/chunk-common.js"></script>
     <script src="/vue/js/chunk-{{ $name }}-vendors.js"></script>

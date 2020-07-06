@@ -231,5 +231,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
     ],
 
+    'admin_password' => env('ADMIN_USER', 'admin'),
     'admin_password' => env('ADMIN_PASSWORD', 'admin')
 ];

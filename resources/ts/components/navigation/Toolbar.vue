@@ -1,17 +1,15 @@
 <template>
     <div>
         <v-toolbar max-height="64">
-            <v-toolbar-title>
-                <v-icon>$mdiHome</v-icon>
-            </v-toolbar-title>
-
-            <v-spacer></v-spacer>
+            <v-spacer />
 
             <v-toolbar-items>
                 <v-btn text small to="/torrents">Torrents</v-btn>
                 <v-btn text small to="/movies">Movies</v-btn>
                 <v-btn text small to="/series">Series</v-btn>
-                <v-btn text small @click="logout">Log out</v-btn>
+                <v-btn icon @click="logout">
+                    <v-icon>$mdiLogout</v-icon>
+                </v-btn>
             </v-toolbar-items>
         </v-toolbar>
     </div>

@@ -54,12 +54,6 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
-        ],
         "initialize": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@composer install --optimize-autoloader --no-dev",
@@ -81,6 +75,12 @@
             "@php artisan view:cache",
             "npm install",
             "npm run dev-silent"
+        ],
+        "format-php": [
+            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.dist --path-mode=intersection . --ansi"
+        ],
+        "format-php-dry": [
+            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.dist --path-mode=intersection . --ansi --dry-run"
         ]
     }
 }

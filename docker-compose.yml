@@ -53,6 +53,16 @@ services:
     networks:
       mass:
         ipv4_address: 172.19.0.4
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.django_http.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
+      - traefik.http.routers.django_http.entrypoints=http
+      - traefik.http.routers.django_http.middlewares=redirect
+      - traefik.http.middlewares.redirect.redirectscheme.scheme=https
+      - traefik.http.routers.django.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
+      - traefik.http.routers.django.entrypoints=https
+      - traefik.http.routers.django.tls.certresolver=basic
+      - traefik.port=80
 
   transmission:
     image: haugene/transmission-openvpn
@@ -177,6 +187,11 @@ services:
       - 443:443
       # The Web UI (enabled by --api.insecure=true)
       - 8081:8080
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+      - TRAEFIK_CERTIFICATESRESOLVERS_BASIC_ACME_EMAIL=${TRAEFIK_CERTIFICATESRESOLVERS_BASIC_ACME_EMAIL}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./docker-compose/traefik/traefik.toml:/traefik.toml
@@ -184,28 +199,27 @@ services:
       - ./docker-compose/traefik/traefik-acme:/acme 
     restart: unless-stopped
 
-    plex:
-      image: linuxserver/plex:latest
-      container_name: plex
-      network_mode: host
-      networks:
-        mass:
-          ipv4_address: 172.19.0.11
-      environment:
-        - PUID=${UID}
-        - PGID=${UID}
-        - TZ=${TZ}
-        - VERSION=docker
-      ports:
-        - 32400:32400
-      volumes:
-        - /mnt/data/movies:/data/movies
-        - /mnt/data/tvseries:/data/tvshows
-        - ./docker-compose/plex/config/:/config
-        - /tmp:/transcode
-      devices:
-        - /dev/dri:/dev/dri
-      restart: unless-stopped
+  plex:
+    image: linuxserver/plex:latest
+    container_name: plex
+    networks:
+      mass:
+        ipv4_address: 172.19.0.11
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+      - VERSION=docker
+    ports:
+      - 32400:32400
+    volumes:
+      - /mnt/data/movies:/data/movies
+      - /mnt/data/tvseries:/data/tvshows
+      - ./docker-compose/plex/config/:/config
+      - /tmp:/transcode
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
 
 networks:
   mass:

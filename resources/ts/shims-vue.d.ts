@@ -15,3 +15,7 @@ declare module 'vue/types/vue' {
     $confirm: (title: string, message?: string, options?: ConfirmOptions) => Promise<boolean>;
   }
 }
+
+declare global {
+  interface Window { blade_errors: Array<string>; }
+}
