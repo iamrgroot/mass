@@ -76,22 +76,22 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Login extends Vue {
-  private username = '';
-  private password = '';
-  private login_error = '';
+    private username = '';
+    private password = '';
+    private login_error = '';
 
-  get csrf_token(): string {
-    return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
-  }
+    get csrf_token(): string {
+        return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
+    }
 
-  login(): void {
-    (this.$refs.form as HTMLFormElement).submit();
-  }
+    login(): void {
+        (this.$refs.form as HTMLFormElement).submit();
+    }
 
-  created(): void {
-    this.login_error = (window.blade_errors.length > 0) ? window.blade_errors[0] : '';
-    console.log(window.blade_errors);
+    created(): void {
+        this.login_error = (window.blade_errors.length > 0) ? window.blade_errors[0] : '';
+        console.log(window.blade_errors);
 
-  }
+    }
 }
 </script>

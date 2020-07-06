@@ -94,9 +94,9 @@ import ItemComponent from '@/components/item/Item.vue';
 const Items = namespace('Items');
 
 @Component({
-  components: {
-    ItemComponent,
-  }
+    components: {
+        ItemComponent,
+    }
 })
 export default class List extends Vue {
     @Prop({ required: true }) private type!: number;

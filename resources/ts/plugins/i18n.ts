@@ -8,10 +8,10 @@ import numberFormats from './i18n/number.format';
 Vue.use(VueI18n);
 
 const i18n = new VueI18n({
-   locale: 'en', //if you need get the browser language use following "window.navigator.language"
-   fallbackLocale: 'en',
-   dateTimeFormats,
-   numberFormats,
+    locale: 'en', //if you need get the browser language use following "window.navigator.language"
+    fallbackLocale: 'en',
+    dateTimeFormats,
+    numberFormats,
 });
 
 const translate = (key: string): string => {

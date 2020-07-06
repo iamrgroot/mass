@@ -40,33 +40,33 @@ const Profiles = namespace('Profiles');
 const Notifications = namespace('Notifications');
 
 @Component({
-  components: {
-    Toolbar,
-    Confirm,
-    NotificationComponent,
-  }
+    components: {
+        Toolbar,
+        Confirm,
+        NotificationComponent,
+    }
 })
 export default class Home extends Vue {
-  @Notifications.State private notifications!: Array<Notification>;
-  @Notifications.Mutation private remove!: (notification_id: number) => void;
+    @Notifications.State private notifications!: Array<Notification>;
+    @Notifications.Mutation private remove!: (notification_id: number) => void;
 
-  @Items.Mutation private resetItems!: () => void;
+    @Items.Mutation private resetItems!: () => void;
 
-  @Profiles.Mutation private resetProfiles!: () => void;
+    @Profiles.Mutation private resetProfiles!: () => void;
 
-  @Watch('$route')
-  onRouteChanged(route: Route, old_route: Route): void {
-    if (
-      (route.name === 'movies' && old_route.name === 'series') ||
+    @Watch('$route')
+    onRouteChanged(route: Route, old_route: Route): void {
+        if (
+            (route.name === 'movies' && old_route.name === 'series') ||
       (route.name === 'series' && old_route.name === 'movies')
-    ) {
-      this.resetItems();
-      this.resetProfiles();
+        ) {
+            this.resetItems();
+            this.resetProfiles();
+        }
     }
-  }
 
-  mounted(): void {
-    this.$root.$confirm = (this.$refs.confirm as Confirm).open;
-  }
+    mounted(): void {
+        this.$root.$confirm = (this.$refs.confirm as Confirm).open;
+    }
 }
 </script>
