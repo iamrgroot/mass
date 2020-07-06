@@ -1,5 +1,5 @@
 <template>
-    <v-dialog 
+    <v-dialog
         v-model="dialog"
         :max-width="options.width"
         :style="{ zIndex: options.zIndex }"
@@ -15,22 +15,22 @@
                     {{ title }}
                 </v-toolbar-title>
             </v-toolbar>
-            <v-card-text 
-                v-show="message !== ''" 
+            <v-card-text
+                v-show="message !== ''"
                 class="pa-4"
             >
                 {{ message }}
             </v-card-text>
             <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn 
+                <v-spacer />
+                <v-btn
                     color="success darken-1"
                     text
                     @click.native="agree"
                 >
                     Yes
                 </v-btn>
-                <v-btn 
+                <v-btn
                     color="error darken-1"
                     text
                     @click.native="cancel"
@@ -50,7 +50,7 @@ import { ConfirmOptions } from '@/types/ConfirmOptions';
 @Component
 export default class Confirm extends Vue {
     private dialog = false;
-    private resolve?: Function;
+    private resolve?: (argument: boolean) => void;
     private message = '';
     private title = '';
     private options = {
@@ -62,7 +62,7 @@ export default class Confirm extends Vue {
     open(title: string, message?: string, options?: ConfirmOptions): Promise<boolean> {
         this.dialog = true;
         this.title = title;
-        
+
         this.message = message || '';
         this.options = Object.assign(this.options, options);
 
@@ -70,11 +70,11 @@ export default class Confirm extends Vue {
             this.resolve = resolve;
         });
     }
-    agree() {
+    agree(): void {
         if (this.resolve !== undefined) this.resolve(true);
         this.dialog = false;
     }
-    cancel() {
+    cancel(): void {
         if (this.resolve !== undefined) this.resolve(false);
         this.dialog = false;
     }

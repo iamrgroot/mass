@@ -15,9 +15,9 @@ class Torrents extends VuexModule {
     public setLoading(loading: boolean): void {
         this.loading = loading;
     }
-    
+
     @Action
-    public fetchTorrents(): Promise<Array<Torrent>>  {
+    public fetchTorrents(): Promise<Array<Torrent>> {
         return new Promise((resolve, reject) => {
             axios.get('/async/torrents').then(({ data }) => {
                 this.context.commit('setTorrents', data);
@@ -26,11 +26,11 @@ class Torrents extends VuexModule {
                 reject(error);
             }).finally(() => {
                 this.context.commit('setLoading', false);
-            })
+            });
         });
     }
     @Action
-    public removeTorrent(torrent: Torrent): Promise<Array<Torrent>>  {
+    public removeTorrent(torrent: Torrent): Promise<Array<Torrent>> {
         return new Promise((resolve, reject) => {
             axios.delete(`/async/torrents/${torrent.id}/delete`).then(({ data }) => {
                 this.context.commit('setTorrents', data);
@@ -41,7 +41,7 @@ class Torrents extends VuexModule {
         });
     }
     @Action
-    public stopTorrent(torrent: Torrent): Promise<Array<Torrent>>  {
+    public stopTorrent(torrent: Torrent): Promise<Array<Torrent>> {
         return new Promise((resolve, reject) => {
             axios.post(`/async/torrents/${torrent.id}/stop`).then(({ data }) => {
                 this.context.commit('setTorrents', data);
@@ -52,7 +52,7 @@ class Torrents extends VuexModule {
         });
     }
     @Action
-    public startTorrent(torrent: Torrent):  Promise<Array<Torrent>>  {
+    public startTorrent(torrent: Torrent): Promise<Array<Torrent>> {
         return new Promise((resolve, reject) => {
             axios.post(`/async/torrents/${torrent.id}/start`).then(({ data }) => {
                 this.context.commit('setTorrents', data);

@@ -27,7 +27,7 @@
                 >
                     <v-icon>$mdiRefresh</v-icon>
                 </v-btn>
-                <v-btn 
+                <v-btn
                     icon
                     color="error"
                     class="ml-1"
@@ -37,7 +37,7 @@
                 </v-btn>
             </v-card-title>
             <v-divider class="mx-3" />
-            <v-card-text >
+            <v-card-text>
                 <v-row class="ml-1">
                     <v-chip
                         v-for="(chip, index) in item.features"
@@ -51,7 +51,7 @@
                     </v-chip>
                     <v-spacer />
                     <SeasonsButton v-if="! is_movie" />
-                    <v-btn 
+                    <v-btn
                         text
                         small
                         target="_blank"
@@ -110,9 +110,9 @@ const Items = namespace('Items');
 })
 export default class ItemPage extends ItemBase {
 
-    get is_movie(): boolean { return this.$route.name === 'movie' }
-    get item_type(): ItemType { return this.is_movie ? ItemType.Movie : ItemType.Serie }
-    get redirect(): Location { return { name: this.is_movie ? 'movies' : 'series'} }
+    get is_movie(): boolean { return this.$route.name === 'movie'; }
+    get item_type(): ItemType { return this.is_movie ? ItemType.Movie : ItemType.Serie; }
+    get redirect(): Location { return { name: this.is_movie ? 'movies' : 'series'}; }
 
     @Items.State private item?: Item;
     @Items.State private single_loading!: boolean;
@@ -122,7 +122,7 @@ export default class ItemPage extends ItemBase {
     @Items.Action private searchIndexer!: (args: ItemTypeArgument) => Promise<boolean>;
     @Items.Action private refresh!: (args: ItemTypeArgument) => Promise<boolean>;
 
-    created() {
+    created(): void {
         this.fetch();
     }
 
@@ -138,7 +138,7 @@ export default class ItemPage extends ItemBase {
         const text = this.is_movie ? 'movie' : 'serie';
 
         this.$root.$confirm(`Delete ${text}?`).then(confirmed => {
-            if(! confirmed || ! this.item) {
+            if (! confirmed || ! this.item) {
                 return;
             }
 

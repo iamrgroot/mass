@@ -1,7 +1,7 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import { Profile } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
-import axios from "@/plugins/axios";
+import axios from '@/plugins/axios';
 
 @Module({ namespaced: true })
 class Profiles extends VuexModule {
@@ -26,7 +26,7 @@ class Profiles extends VuexModule {
     public fetchProfiles(type: ItemType): Promise<Array<Profile>> {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?
-                '/async/profiles/from-movies' : 
+                '/async/profiles/from-movies' :
                 '/async/profiles/from-series';
 
             this.context.commit('setLoading', true);

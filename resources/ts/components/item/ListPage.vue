@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row class="ma-3">
-            <ItemAdd 
+            <ItemAdd
                 :type="type"
             />
         </v-row>
@@ -27,8 +27,8 @@ import ItemAdd from '@/components/item/Add.vue';
     }
 })
 export default class ListPage extends Vue {
-    public get type(): number {        
-        return this.$router.currentRoute.name === 'movies' ? 
+    public get type(): number {
+        return this.$router.currentRoute.name === 'movies' ?
             ItemType.Movie :
             ItemType.Serie;
     }

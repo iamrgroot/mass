@@ -11,15 +11,15 @@ export default class ItemBase extends Vue {
 
     isMovie(item: Item): boolean { return item.type === ItemType.Movie; }
     ratingColor(item: Item): string {
-        if(item.rating >= 7) {
+        if (item.rating >= 7) {
             return 'success';
         }
-        if(item.rating >= 5) {
+        if (item.rating >= 5) {
             return 'warning';
         }
         return 'error';
     }
-    imageLink(item: Item): string { 
+    imageLink(item: Item): string {
         return this.isMovie(item) ?
             `/async/movies/${item.id}/image?${Date.now()}` :
             `/async/series/${item.id}/image?${Date.now()}`;

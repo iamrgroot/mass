@@ -31,7 +31,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Toolbar from '@/components/navigation/Toolbar.vue';
 import Confirm from '@/components/defaults/Confirm.vue';
-import NotificationComponent from "@/components/defaults/Notification.vue";
+import NotificationComponent from '@/components/defaults/Notification.vue';
 import { Notification } from '@/types/Notification';
 import { Route } from 'vue-router';
 
@@ -55,17 +55,17 @@ export default class Home extends Vue {
   @Profiles.Mutation private resetProfiles!: () => void;
 
   @Watch('$route')
-  onRouteChanged(route: Route, old_route: Route) {
+  onRouteChanged(route: Route, old_route: Route): void {
     if (
       (route.name === 'movies' && old_route.name === 'series') ||
       (route.name === 'series' && old_route.name === 'movies')
     ) {
       this.resetItems();
       this.resetProfiles();
-    }    
+    }
   }
 
-  mounted() {
+  mounted(): void {
     this.$root.$confirm = (this.$refs.confirm as Confirm).open;
   }
 }

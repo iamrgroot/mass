@@ -29,14 +29,16 @@
 
                                 <v-card-actions>
                                     <v-btn
-                                        text icon
+                                        text
+                                        icon
                                         href="https://www.linkedin.com/in/robert-groot/"
                                     >
                                         <v-icon>$mdiAccount</v-icon>
                                     </v-btn>
 
                                     <v-btn
-                                        text icon
+                                        text
+                                        icon
                                         href="mailto:info@rgroot.nl"
                                     >
                                         <v-icon>$mdiEmail</v-icon>

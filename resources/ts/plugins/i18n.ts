@@ -12,14 +12,14 @@ const i18n = new VueI18n({
    fallbackLocale: 'en',
    dateTimeFormats,
    numberFormats,
-})
+});
 
-const translate = (key: string) => {
+const translate = (key: string): string => {
     if (!key) {
         return '';
     }
 
-    return i18n.t(key);
+    return i18n.t(key) as string;
 };
 
 export { i18n, translate };

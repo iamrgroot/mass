@@ -36,10 +36,10 @@
                         <tbody>
                             <template v-for="item in items">
                                 <tr
+                                    :key="`1_${item.id}`"
                                     :class="{
                                         'error--text': hasError(item)
                                     }"
-                                    :key="`1_${item.id}`"
                                     class="no-border"
                                 >
                                     <td>
@@ -85,12 +85,12 @@
                                         </v-icon>
                                     </td>
                                 </tr>
-                                <tr 
+                                <tr
                                     :key="`2_${item.id}`"
                                     class="progress-row pb-3"
                                 >
                                     <td :colspan="headers.length">
-                                        <v-progress-linear 
+                                        <v-progress-linear
                                             :value="item.percent_done * 100"
                                             :color="color(item)"
                                             :buffer-value="stream(item) ? 0 : 100"
@@ -121,7 +121,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { Torrent } from '@/types/Torrent';
-import { byte, bytesPerSecond } from "@/filters/filters";
+import { byte, bytesPerSecond } from '@/filters/filters';
 import { TorrentStatus } from '@/enums/TorrentStatus';
 
 const Torrents = namespace('Torrents');
@@ -153,7 +153,7 @@ export default class TorrentsPage extends Vue {
 
     paused(torrent: Torrent): boolean { return torrent.status === TorrentStatus.Paused; }
     hasError(torrent: Torrent): boolean { return torrent.error_string !== null; }
-    stream(torrent: Torrent): boolean { return ! this.hasError(torrent) && ! this.paused(torrent) }
+    stream(torrent: Torrent): boolean { return ! this.hasError(torrent) && ! this.paused(torrent); }
     color(torrent: Torrent): string { return this.hasError(torrent) ? 'error' : (this.paused(torrent) ? 'grey' : 'success'); }
 
     created(): void {
@@ -168,7 +168,7 @@ export default class TorrentsPage extends Vue {
     }
 
     async remove(item: Torrent): Promise<void> {
-        if (await this.$root.$confirm(`Delete torrent?`)) {
+        if (await this.$root.$confirm('Delete torrent?')) {
             this.removeTorrent(item);
         }
     }

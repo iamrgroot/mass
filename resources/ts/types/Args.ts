@@ -1,5 +1,5 @@
-import { ItemType } from '@/enums/ItemType'
-import { SearchResult } from './Item'
+import { ItemType } from '@/enums/ItemType';
+import { SearchResult } from './Item';
 
 export type ItemTypeArgument = {
     item_id: number;

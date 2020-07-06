@@ -22,7 +22,7 @@
                         cache-items
                         :error-messages="add_errors"
                         class="pr-2"
-                    ></v-autocomplete>
+                    />
                 </v-col>
                 <v-col cols="2">
                     <v-select
@@ -32,9 +32,9 @@
                         item-value="id"
                         label="Profile"
                         class="px-2"
-                    ></v-select>
-                </v-col> 
-                <v-col 
+                    />
+                </v-col>
+                <v-col
                     v-if="! is_movie && selected !== null"
                     cols="2"
                 >
@@ -46,12 +46,15 @@
                         item-value="seasonNumber"
                         label="Seasons"
                         class="px-2"
-                    ></v-select>
+                    />
                 </v-col>
-                <v-col cols="1" class="text-center">
-                    <v-btn 
-                        icon
+                <v-col
+                    cols="1"
+                    class="text-center"
+                >
+                    <v-btn
                         v-if="selected !== null"
+                        icon
                         @click="add"
                     >
                         <v-icon>$mdiDatabaseSearch</v-icon>
@@ -64,12 +67,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class'
+import { namespace } from 'vuex-class';
 import { Item, Profile, SearchResult } from '@/types/Item';
 import { ItemAddArgument } from '@/types/Args';
 import { ItemType } from '@/enums/ItemType';
 import { AxiosResponse, CancelTokenSource } from 'axios';
-import axios from "@/plugins/axios";
+import axios from '@/plugins/axios';
 
 const Profiles = namespace('Profiles');
 const Items = namespace('Items');
@@ -88,7 +91,7 @@ export default class Add extends Vue {
     get loading(): boolean { return this.search_axios !== null; }
     get is_movie(): boolean { return this.type === ItemType.Movie; }
     get search_url(): string { return this.is_movie ? 'movies' : 'series'; }
-    
+
     @Profiles.State private profiles!: Array<Profile>;
     @Profiles.Action private fetchProfiles!: (type: ItemType) => Promise<AxiosResponse>;
 
@@ -96,26 +99,26 @@ export default class Add extends Vue {
     @Items.State private adding!: boolean;
     @Items.Action private addItem!: (args: ItemAddArgument) => Promise<Item>
 
-    @Watch('selected.seasons') 
-    onSeasonsChanged() {
+    @Watch('selected.seasons')
+    onSeasonsChanged(): void {
         if (this.selected?.seasons) {
             this.selected_seasons = this.selected.seasons.map(item => item.season_number);
         }
     }
     @Watch('search')
-    onSearchChange() {
+    onSearchChange(): void {
         this.doSearch();
     }
 
 
-    async created() {
-        await this.fetchProfiles(this.type);        
+    async created(): Promise<void> {
+        await this.fetchProfiles(this.type);
 
         if (this.profiles.length > 0) this.selected_profile = this.profiles[0].id;
     }
 
 
-    doSearch() {        
+    doSearch(): void {
         if (! this.search) return;
 
         if (this.search_axios !== null) this.search_axios.cancel();
@@ -132,10 +135,10 @@ export default class Add extends Vue {
             this.search_axios = null;
         });
     }
-    add() {
+    add(): void {
         if (this.selected === null || this.selected_profile === null) return;
 
-        this.addItem({    
+        this.addItem({
             item: this.selected,
             profile: this.selected_profile,
             seasons: this.selected_seasons,

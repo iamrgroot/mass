@@ -19,7 +19,7 @@ const byte = function(number: number | null): string {
     const unit = units[exponent];
 
     return (negative ? '-' : '') + number + ' ' + unit;
-}
+};
 
 const bytesPerSecond = function(number: number | null): string {
     const byte_string = byte(number);
@@ -28,10 +28,10 @@ const bytesPerSecond = function(number: number | null): string {
         return '';
     }
 
-    return byte_string + '/s'
-}
+    return byte_string + '/s';
+};
 
 export {
     byte,
     bytesPerSecond
-}
+};

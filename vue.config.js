@@ -1,6 +1,6 @@
-const BundleTracker = require("webpack-bundle-tracker");
-const CompressionPlugin = require('compression-webpack-plugin');
-const path = require('path');
+const BundleTracker = require("webpack-bundle-tracker"); // eslint-disable-line
+const CompressionPlugin = require('compression-webpack-plugin'); // eslint-disable-line
+const path = require('path'); // eslint-disable-line
 
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -17,7 +17,7 @@ const pages = {
     entry: './resources/ts/home.ts',
     chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-home-vendors','vuetify', 'home']
   },
-}
+};
 
 module.exports = {
   pages: pages,
@@ -28,7 +28,7 @@ module.exports = {
     extract: { ignoreOrder: true }
   },
   transpileDependencies: [
-    "vuetify"
+    'vuetify'
   ],
   configureWebpack: {
     plugins: [
@@ -38,17 +38,17 @@ module.exports = {
     ],
   },
   chainWebpack: config => {
-      config.plugins.delete('pwa')
-      config.plugins.delete('copy')
+      config.plugins.delete('pwa');
+      config.plugins.delete('copy');
       config.plugins.delete('html');
       config.plugins.delete('preload');
-      config.plugins.delete('prefetch');      
+      config.plugins.delete('prefetch');
 
       const options = module.exports;
       const pages = options.pages;
       const pageKeys = Object.keys(pages);
 
-      pageKeys.forEach((key) => {        
+      pageKeys.forEach((key) => {
         config.plugins.delete('html-' + key);
         config.plugins.delete('preload-' + key);
         config.plugins.delete('prefetch-' + key);
@@ -58,14 +58,14 @@ module.exports = {
             .alias
             .set('@', path.resolve(__dirname, 'resources/ts'))
             .set('@module', path.resolve(__dirname, 'node_modules'));
-      
+
       config.performance
             .maxEntrypointSize(1000000)
-            .maxAssetSize(1000000)
+            .maxAssetSize(1000000);
 
       // Long-term caching
-      const IS_VENDOR = /[\\/]node_modules[\\/]/
-      const IS_VUETIFY = /[\\/]node_modules[\\/]vuetify/
+      const IS_VENDOR = /[\\/]node_modules[\\/]/;
+      const IS_VUETIFY = /[\\/]node_modules[\\/]vuetify/;
 
       config.optimization.splitChunks({
         cacheGroups: {
@@ -92,6 +92,6 @@ module.exports = {
                 enforce: true
             }
         }
-      })
+      });
   }
-}
+};

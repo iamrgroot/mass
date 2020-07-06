@@ -1,10 +1,10 @@
 declare module '*.vue' {
-  import Vue from 'vue'
-  export default Vue
+  import Vue from 'vue';
+  export default Vue;
 }
 
 // 1. Make sure to import 'vue' before declaring augmented types
-import Vue from 'vue'
+import Vue from 'vue';
 import { ConfirmOptions } from '@/types/ConfirmOptions';
 
 // 2. Specify a file with the types you want to augment

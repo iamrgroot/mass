@@ -13,7 +13,7 @@ import {
     mdiPause,
     mdiPlay,
     mdiAlert,
-    mdiAccount, 
+    mdiAccount,
     mdiEmail,
     mdiLogout,
 } from '@mdi/js';
@@ -35,7 +35,7 @@ export default new Vuetify({
             mdiPause,
             mdiPlay,
             mdiAlert,
-            mdiAccount, 
+            mdiAccount,
             mdiEmail,
             mdiLogout,
         }

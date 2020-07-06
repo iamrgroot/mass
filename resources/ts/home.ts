@@ -1,13 +1,13 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
-import Home from '@/views/Home.vue'
+import Home from '@/views/Home.vue';
 
-import router from '@/router'
-import store from '@/store'
+import router from '@/router';
+import store from '@/store';
 import { i18n } from '@/plugins/i18n';
-import vuetify from '@/plugins/vuetify'
+import vuetify from '@/plugins/vuetify';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   i18n,
@@ -15,4 +15,4 @@ new Vue({
   store,
   vuetify,
   render: h => h(Home)
-}).$mount('#app')
+}).$mount('#app');

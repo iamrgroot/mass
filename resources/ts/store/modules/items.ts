@@ -2,7 +2,7 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import { Item } from '@/types/Item';
 import { ItemTypeArgument, ItemAddArgument, SerieUpdateArgument } from '@/types/Args';
 import { ItemType } from '@/enums/ItemType';
-import axios from "@/plugins/axios";
+import axios from '@/plugins/axios';
 
 @Module({ namespaced: true })
 class Items extends VuexModule {
@@ -67,7 +67,7 @@ class Items extends VuexModule {
                 reject(error);
             }).finally(() => {
                 this.context.commit('setLoading', false);
-            })
+            });
         });
     }
     @Action({ rawError: true })
@@ -110,7 +110,7 @@ class Items extends VuexModule {
     }
     @Action({ rawError: true })
     public addItem(args: ItemAddArgument): Promise<Item> {
-        return new Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {
             const url = args.type === ItemType.Movie ?
                 '/async/movies' :
                 '/async/series';

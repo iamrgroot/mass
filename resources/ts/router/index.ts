@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
 
 import ListPage from '@/components/item/ListPage.vue';
 import ItemPage from '@/components/item/ItemPage.vue';
 import TorrentsPage from '@/components/torrent/TorrentsPage.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
@@ -43,11 +43,11 @@ const routes: Array<RouteConfig> = [
       component: TorrentsPage,
       // component: () => import(/* webpackChunkName: "torrents" */ '@/components/torrent/TorrentsPage.vue'),
   },
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   routes
-})
+});
 
-export default router
+export default router;

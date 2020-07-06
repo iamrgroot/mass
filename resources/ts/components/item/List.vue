@@ -5,7 +5,7 @@
     >
         <v-card-title>
             {{ is_movie ? 'Movies' : 'Series' }}
-            <v-spacer/>
+            <v-spacer />
             <v-select
                 v-model="no_columns"
                 label="# columns"
@@ -33,13 +33,13 @@
                 :style="{
                     'max-width': '100px'
                 }"
-            ></v-select>
+            />
             <v-btn
                 icon
                 @click="descending = ! descending"
             >
                 <v-icon>
-                    {{ descending ? '$mdiSortDescending' : '$mdiSortAscending'}}
+                    {{ descending ? '$mdiSortDescending' : '$mdiSortAscending' }}
                 </v-icon>
             </v-btn>
             <v-btn
@@ -49,7 +49,7 @@
                 <v-icon>$mdiRefresh</v-icon>
             </v-btn>
         </v-card-title>
-        <v-divider/>
+        <v-divider />
         <v-card-text>
             <v-fade-transition mode="out-in">
                 <v-alert
@@ -63,18 +63,18 @@
                 >
                     No {{ is_movie ? 'movies' : 'series' }}
                 </v-alert>
-            <v-row 
-                v-else
-                align="center"
-                justify="center"
-            >
+                <v-row
+                    v-else
+                    align="center"
+                    justify="center"
+                >
                     <template>
                         <v-col
                             v-for="item in sorted_items"
                             :key="item.id"
                             :cols="12 / no_columns"
                         >
-                            <ItemComponent :item="item"/>
+                            <ItemComponent :item="item" />
                         </v-col>
                     </template>
                 </v-row>
@@ -103,11 +103,11 @@ export default class List extends Vue {
 
     private no_columns = 1;
     private sorted_on = '';
-    private descending = false;    
+    private descending = false;
 
     get is_movie(): boolean { return this.type === ItemType.Movie; }
     get sorted_items(): Array<Item> {
-        if(this.sorted_on === '') return this.items;
+        if (this.sorted_on === '') return this.items;
 
         return this.descending ?
             sortBy(this.items, this.sorted_on).reverse() :
@@ -118,7 +118,7 @@ export default class List extends Vue {
     @Items.State public loading!: boolean;
     @Items.Action public fetchItems!: (type: ItemType) => Promise<Array<Item>>
 
-    created() {
+    created(): void {
         this.fetchItems(this.type);
     }
 }

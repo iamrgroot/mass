@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn 
+        <v-btn
             text
             small
             class="mx-1"
@@ -55,8 +55,8 @@ export default class SeasonsButtom extends Vue {
 
     @Items.Action private toggleSeason!: (args: SerieUpdateArgument) => Promise<Item>;
 
-    toggleMonitor(season: number, motitor: boolean) {
-        this.toggleSeason({
+    toggleMonitor(season: number, motitor: boolean): Promise<Item> {
+        return this.toggleSeason({
             item_id: this.item.id,
             season: season,
             monitor: motitor

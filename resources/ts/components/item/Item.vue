@@ -9,7 +9,7 @@
                     >
                         <span>{{ item.year }}</span>
                         <v-spacer />
-                        <v-btn 
+                        <v-btn
                             text
                             small
                             target="_blank"
@@ -32,13 +32,13 @@
                 height="120"
                 width="80"
             >
-                <v-img 
+                <v-img
                     :src="imageLink(item)"
                     :lazy-src="static_image_location"
                     eager
                     contain
                     @error="() => { /** Ignore image load error */}"
-                ></v-img>
+                />
             </v-list-item-avatar>
         </v-list-item>
 
@@ -73,7 +73,7 @@ import { Item } from '@/types/Item';
 export default class ItemComponent extends ItemBase {
     @Prop({ required: true }) protected item!: Item;
 
-    goTo() {
+    goTo(): void {
         const route = this.isMovie(this.item) ? 'movie' : 'serie';
 
         this.$router.push({ name: route, params: { id: String(this.item.id) }});

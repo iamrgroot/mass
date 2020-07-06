@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-main>
-             <v-container fluid>
+            <v-container fluid>
                 <v-row
                     align="center"
                     justify="center"
@@ -9,7 +9,7 @@
                         height: '100vh'
                     }"
                 >
-                    <form 
+                    <form
                         ref="form"
                         action="/login"
                         method="POST"
@@ -17,29 +17,29 @@
                         <v-card min-width="420">
                             <v-card-text>
                                 <v-row>
-                                        <input
-                                            id="csrf-token"
-                                            type="hidden"
-                                            name="_token"
-                                            :value="csrf_token"
-                                        >
+                                    <input
+                                        id="csrf-token"
+                                        type="hidden"
+                                        name="_token"
+                                        :value="csrf_token"
+                                    >
 
-                                        <v-col cols="12">
-                                            <v-text-field
-                                                name="username"
-                                                label="Username"
-                                                v-model="username"
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field
-                                                name="password"
-                                                label="Password"
-                                                type="password"
-                                                v-model="password"
-                                                @keydown.enter="login"
-                                            ></v-text-field>
-                                        </v-col>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="username"
+                                            name="username"
+                                            label="Username"
+                                        />
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="password"
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            @keydown.enter="login"
+                                        />
+                                    </v-col>
                                 </v-row>
                                 <v-alert
                                     :value="login_error !== ''"
@@ -49,7 +49,6 @@
                                 >
                                     {{ login_error }}
                                 </v-alert>
-
                             </v-card-text>
 
                             <v-card-actions>
@@ -85,14 +84,14 @@ export default class Login extends Vue {
     return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
   }
 
-  login() {
+  login(): void {
     (this.$refs.form as HTMLFormElement).submit();
   }
 
-  created() {
+  created(): void {
     this.login_error = (window.blade_errors.length > 0) ? window.blade_errors[0] : '';
     console.log(window.blade_errors);
-    
+
   }
 }
 </script>

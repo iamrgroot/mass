@@ -4,10 +4,31 @@
             <v-spacer />
 
             <v-toolbar-items>
-                <v-btn text small to="/torrents">Torrents</v-btn>
-                <v-btn text small to="/movies">Movies</v-btn>
-                <v-btn text small to="/series">Series</v-btn>
-                <v-btn icon @click="logout">
+                <v-btn
+                    text
+                    small
+                    to="/torrents"
+                >
+                    Torrents
+                </v-btn>
+                <v-btn
+                    text
+                    small
+                    to="/movies"
+                >
+                    Movies
+                </v-btn>
+                <v-btn
+                    text
+                    small
+                    to="/series"
+                >
+                    Series
+                </v-btn>
+                <v-btn
+                    icon
+                    @click="logout"
+                >
                     <v-icon>$mdiLogout</v-icon>
                 </v-btn>
             </v-toolbar-items>
@@ -18,7 +39,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import NotificationComponent from "@/components/defaults/Notification.vue";
+import NotificationComponent from '@/components/defaults/Notification.vue';
 import { Notification } from '../../types/Notification';
 
 const Notifications = namespace('Notifications');

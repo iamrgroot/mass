@@ -28,7 +28,6 @@ module.exports = {
     'no-trailing-spaces': ['error'],
     'no-multi-spaces': ['error'],
     'keyword-spacing': ['error'],
-    'vue/html-indent': ['error', 4],
     'vue/script-indent': ['error', 4],
     'vue/eqeqeq': ['error'],
     'vue/arrow-spacing': ['error'],
@@ -37,7 +36,7 @@ module.exports = {
     'vue/require-default-prop': ['error'],
     'vue/prop-name-casing': ['error', 'snake_case'],
     'vue/order-in-components': ['error'],
-    'no-console': ['error'],
+    '@typescript-eslint/explicit-module-boundary-types': ['error'],
     'no-empty-function': ['error'],
     'no-else-return': ['error'],
     'no-eval': ['error'],
@@ -49,4 +48,4 @@ module.exports = {
     'vue/no-v-html': ['off']
 
   }
-}
+};

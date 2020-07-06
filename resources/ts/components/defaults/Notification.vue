@@ -28,7 +28,7 @@
             >
                 {{ total > 1 ? `(1/${total})` : 'close' }}
             </v-btn>
-      </template>
+        </template>
     </v-snackbar>
 </template>
 
@@ -44,7 +44,7 @@ export default class NotificationComponent extends Vue {
     private snackbar = true;
 
     @Watch('snackbar')
-    onSnackbarChanged() {
+    onSnackbarChanged(): void {
         if (! this.snackbar) this.$emit('closed');
     }
 }
