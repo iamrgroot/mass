@@ -3,7 +3,7 @@ import { Notification } from '@/types/Notification';
 
 @Module({ namespaced: true })
 class Notifications extends VuexModule {
-    public notifications: Array<Notification> = [];
+    public notifications: Notification[] = [];
 
     @Mutation
     public notify(notification: Notification): void {

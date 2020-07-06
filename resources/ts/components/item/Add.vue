@@ -81,21 +81,21 @@ const Items = namespace('Items');
 export default class Add extends Vue {
     @Prop({ required: true }) private type!: number;
 
-    private results: Array<SearchResult> = [];
+    private results: SearchResult[] = [];
     private search = '';
     private search_axios: CancelTokenSource | null = null;
     private selected: SearchResult | null = null;
     private selected_profile: number | null = null;
-    private selected_seasons: Array<number> = [];
+    private selected_seasons: number[] = [];
 
     get loading(): boolean { return this.search_axios !== null; }
     get is_movie(): boolean { return this.type === ItemType.Movie; }
     get search_url(): string { return this.is_movie ? 'movies' : 'series'; }
 
-    @Profiles.State private profiles!: Array<Profile>;
+    @Profiles.State private profiles!: Profile[];
     @Profiles.Action private fetchProfiles!: (type: ItemType) => Promise<AxiosResponse>;
 
-    @Items.State private add_errors!: Array<string>;
+    @Items.State private add_errors!: string[];
     @Items.State private adding!: boolean;
     @Items.Action private addItem!: (args: ItemAddArgument) => Promise<Item>
 

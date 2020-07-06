@@ -7,7 +7,7 @@ import TorrentsPage from '@/components/torrent/TorrentsPage.vue';
 
 Vue.use(VueRouter);
 
-const routes: Array<RouteConfig> = [
+const routes: RouteConfig[] = [
     {
         path: '/',
         name: 'home',

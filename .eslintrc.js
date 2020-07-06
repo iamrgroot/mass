@@ -40,6 +40,7 @@ module.exports = {
 
         '@typescript-eslint/explicit-module-boundary-types': ['error'],
         '@typescript-eslint/indent': ['error', 4],
+        '@typescript-eslint/array-type': ['error', {default: 'array'}],
 
         'indent': ['off'],
     }

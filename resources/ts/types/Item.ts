@@ -21,11 +21,11 @@ export type Item = {
     rating: number;
     image_url: string;
     imdb_id: string;
-    features: Array<Feature>;
-    seasons?: Array<Season>;
+    features: Feature[];
+    seasons?: Season[];
 }
 
 export type SearchResult = {
     id: number;
-    seasons?: Array<Season>;
+    seasons?: Season[];
 }

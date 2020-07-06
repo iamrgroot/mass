@@ -9,7 +9,7 @@ export type ItemTypeArgument = {
 export type ItemAddArgument = {
     item: SearchResult;
     profile: number;
-    seasons: Array<number>|null;
+    seasons: number[]|null;
     type: ItemType;
 }
 

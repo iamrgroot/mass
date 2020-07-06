@@ -106,7 +106,7 @@ export default class List extends Vue {
     private descending = false;
 
     get is_movie(): boolean { return this.type === ItemType.Movie; }
-    get sorted_items(): Array<Item> {
+    get sorted_items(): Item[] {
         if (this.sorted_on === '') return this.items;
 
         return this.descending ?
@@ -114,9 +114,9 @@ export default class List extends Vue {
             sortBy(this.items, this.sorted_on);
     }
 
-    @Items.State public items!: Array<Item>;
+    @Items.State public items!: Item[];
     @Items.State public loading!: boolean;
-    @Items.Action public fetchItems!: (type: ItemType) => Promise<Array<Item>>
+    @Items.Action public fetchItems!: (type: ItemType) => Promise<Item[]>
 
     created(): void {
         this.fetchItems(this.type);

@@ -51,7 +51,7 @@ const Notifications = namespace('Notifications');
 })
 export default class Toolbar extends Vue {
 
-    @Notifications.State private notifications!: Array<Notification>;
+    @Notifications.State private notifications!: Notification[];
 
     @Notifications.Mutation private remove!: (notification_id: number) => void;
 

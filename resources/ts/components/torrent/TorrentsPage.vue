@@ -145,8 +145,8 @@ export default class TorrentsPage extends Vue {
     ];
     private torrent_fetcher!: number;
 
-    @Torrents.State private torrents!: Array<Torrent>;
-    @Torrents.Action private fetchTorrents!: () => Promise<Array<Torrent>>;
+    @Torrents.State private torrents!: Torrent[];
+    @Torrents.Action private fetchTorrents!: () => Promise<Torrent[]>;
     @Torrents.Action private removeTorrent!: (torrent: Torrent) => Promise<boolean>;
     @Torrents.Action private stopTorrent!: (torrent: Torrent) => Promise<boolean>;
     @Torrents.Action private startTorrent!: (torrent: Torrent) => Promise<boolean>;

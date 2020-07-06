@@ -17,5 +17,5 @@ declare module 'vue/types/vue' {
 }
 
 declare global {
-    interface Window { blade_errors: Array<string>; }
+    interface Window { blade_errors: string[]; }
 }

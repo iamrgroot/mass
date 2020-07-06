@@ -7,18 +7,18 @@ import axios from '@/plugins/axios';
 @Module({ namespaced: true })
 class Items extends VuexModule {
     public item: Item | null = null;
-    public items: Array<Item> = [];
+    public items: Item[] = [];
     public loading = false;
     public single_loading = true;
     public adding = false;
-    public add_errors: Array<string> = [];
+    public add_errors: string[] = [];
 
     @Mutation
     public resetItems(): void {
         this.items = [];
     }
     @Mutation
-    public setItems(items: Array<Item>): void {
+    public setItems(items: Item[]): void {
         this.items = items;
     }
     @Mutation
@@ -46,13 +46,13 @@ class Items extends VuexModule {
         this.adding = adding;
     }
     @Mutation
-    public setAddErrors(add_errors: Array<string>): void {
+    public setAddErrors(add_errors: string[]): void {
         this.add_errors = add_errors;
     }
 
 
     @Action({ rawError: true })
-    public fetchItems(type: ItemType): Promise<Array<Item>> {
+    public fetchItems(type: ItemType): Promise<Item[]> {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?
                 '/async/movies' :

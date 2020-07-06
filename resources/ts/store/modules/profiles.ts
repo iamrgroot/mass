@@ -5,7 +5,7 @@ import axios from '@/plugins/axios';
 
 @Module({ namespaced: true })
 class Profiles extends VuexModule {
-    public profiles: Array<Profile> = [];
+    public profiles: Profile[] = [];
     public loading = false;
 
     @Mutation
@@ -13,7 +13,7 @@ class Profiles extends VuexModule {
         this.profiles = [];
     }
     @Mutation
-    public setProfiles(profiles: Array<Profile>): void {
+    public setProfiles(profiles: Profile[]): void {
         this.profiles = profiles;
     }
     @Mutation
@@ -23,7 +23,7 @@ class Profiles extends VuexModule {
 
 
     @Action({ rawError: true })
-    public fetchProfiles(type: ItemType): Promise<Array<Profile>> {
+    public fetchProfiles(type: ItemType): Promise<Profile[]> {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?
                 '/async/profiles/from-movies' :
