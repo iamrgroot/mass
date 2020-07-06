@@ -7,7 +7,7 @@ use App\Library\Media\Requests\SonarrRequest;
 use App\Library\Media\Responses\Shared\SearchResponse;
 use GuzzleHttp\Psr7\Response;
 
-class SearchRequest extends SonarrRequest 
+class SearchRequest extends SonarrRequest
 {
     private string $search_term;
 

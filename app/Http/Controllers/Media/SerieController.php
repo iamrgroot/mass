@@ -40,44 +40,44 @@ class SerieController extends Controller
 
     public function search(string $search, Client $client): Collection
     {
-        return $client->doRequest(new SearchRequest($search))->getData();        
+        return $client->doRequest(new SearchRequest($search))->getData();
     }
 
     public function put(Request $request, Client $client): JsonResponse
     {
         $validated = $request->validate([
-            'item.tvdb_id' => 'required|integer',
-            'item.title' => 'required|string',
+            'item.tvdb_id'    => 'required|integer',
+            'item.title'      => 'required|string',
             'item.title_slug' => 'required|string',
-            'item.year' => 'required|integer',
+            'item.year'       => 'required|integer',
             'item.title_slug' => 'required|string',
-            'item.images' => 'required|array',
-            'item.seasons' => 'required|array',
-            'profile' => 'required|integer',
-            'seasons' => 'required|array',
+            'item.images'     => 'required|array',
+            'item.seasons'    => 'required|array',
+            'profile'         => 'required|integer',
+            'seasons'         => 'required|array',
         ]);
 
         $validated['item']['seasons'] = array_map(
-            fn($season) => [ 
-                'seasonNumber' => $season['seasonNumber'], 
-                'monitored' => in_array($season['seasonNumber'], $validated['seasons'])
+            fn ($season) => [
+                'seasonNumber' => $season['seasonNumber'],
+                'monitored'    => in_array($season['seasonNumber'], $validated['seasons']),
             ],
             $validated['item']['seasons']
         );
 
         $request = new AddSerieRequest([
-            'title' => $validated['item']['title'],
+            'title'            => $validated['item']['title'],
             'qualityProfileId' => $validated['profile'],
-            'titleSlug' => $validated['item']['title_slug'],
-            'images' => $validated['item']['images'],
-            'tvdbId' => $validated['item']['tvdb_id'],
-            'year' => $validated['item']['year'],
-            'seasons' => $validated['item']['seasons'],
-            'path' => config('apis.sonarr.folder') . $validated['item']['title'],
-            'monitored' => true,
-            'seasonFolder' => true,
-            'addOptions' => [
-                'searchForMissingEpisodes' => true
+            'titleSlug'        => $validated['item']['title_slug'],
+            'images'           => $validated['item']['images'],
+            'tvdbId'           => $validated['item']['tvdb_id'],
+            'year'             => $validated['item']['year'],
+            'seasons'          => $validated['item']['seasons'],
+            'path'             => config('apis.sonarr.folder') . $validated['item']['title'],
+            'monitored'        => true,
+            'seasonFolder'     => true,
+            'addOptions'       => [
+                'searchForMissingEpisodes' => true,
             ],
         ]);
 
@@ -86,7 +86,7 @@ class SerieController extends Controller
             $response = $client->doRequest($request)->getData();
         } catch (BadResponseException $exception) {
             $errors = json_decode($exception->getResponse()->getBody()->getContents());
-            
+
             return response()->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -103,26 +103,26 @@ class SerieController extends Controller
     public function image(int $id, Client $client): Response
     {
         $response = $client->doRequest(new SerieImageRequest($id))->getData();
-        
+
         return $this->resizeResponse($response, 400);
     }
-    
+
     public function toggleSeason(int $id, Request $request, Client $client): JsonResponse
     {
         $validated = $request->validate([
             'monitor' => 'required|boolean',
-            'season' => 'required|integer',
+            'season'  => 'required|integer',
         ]);
 
         $response = $client->doRequest(new SerieRequest($id))->getResponse();
         $raw_data = json_decode($response->getBody()->getContents());
 
         $raw_data->seasons = array_map(
-            fn(object $season) => $season->seasonNumber === $validated['season'] ?
+            fn (object $season) => $season->seasonNumber === $validated['season'] ?
                 (object) [
                     'seasonNumber' => $season->seasonNumber,
-                    'monitored' => $validated['monitor'],
-                    'statistics' => $season->statistics,
+                    'monitored'    => $validated['monitor'],
+                    'statistics'   => $season->statistics,
                 ] :
                 $season,
             $raw_data->seasons

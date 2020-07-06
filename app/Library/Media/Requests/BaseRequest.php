@@ -23,7 +23,7 @@ abstract class BaseRequest implements RequestInterface
     }
 
     public function getApiString(): string
-    {        
+    {
         return '';
     }
 

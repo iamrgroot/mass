@@ -2,7 +2,7 @@
 
 namespace App\Library\Media\Requests;
 
-abstract class SonarrRequest extends BaseRequest 
+abstract class SonarrRequest extends BaseRequest
 {
     public function getHost(): string
     {
@@ -13,11 +13,11 @@ abstract class SonarrRequest extends BaseRequest
     {
         return config('apis.sonarr.port');
     }
- 
+
     public function getApiString(): string
     {
         $api_key = config('apis.sonarr.api_key');
-        
+
         return "?apikey={$api_key}";
     }
 }

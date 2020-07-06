@@ -16,7 +16,7 @@ abstract class RootFolder extends BaseModel
     public static function getDefaults(): array
     {
         return [
-            'Id' => '1',
+            'Id'   => '1',
             'path' => self::getPath(),
         ];
     }

@@ -7,7 +7,7 @@ use App\Library\Media\Requests\RadarrRequest;
 use App\Library\Media\Responses\Shared\StringResponse;
 use GuzzleHttp\Psr7\Response;
 
-class MovieImageRequest extends RadarrRequest 
+class MovieImageRequest extends RadarrRequest
 {
     private int $movie_id;
 

@@ -8,7 +8,7 @@ use App\Library\Media\Responses\Shared\StringResponse;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
-class DeleteMovieRequest extends RadarrRequest 
+class DeleteMovieRequest extends RadarrRequest
 {
     private int $movie_id;
 
@@ -30,8 +30,8 @@ class DeleteMovieRequest extends RadarrRequest
     public function getJson(): array
     {
         return [
-            'deleteFiles' => true,
-            'addExclusion' => false
+            'deleteFiles'  => true,
+            'addExclusion' => false,
         ];
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Library\Media\Requests\Sonarr;
 
-class SearchMissingRequest extends CommandRequest 
+class SearchMissingRequest extends CommandRequest
 {
     public function __construct()
     {

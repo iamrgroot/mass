@@ -30,7 +30,7 @@ class DeleteSerieRequest extends SonarrRequest
     public function getJson(): array
     {
         return [
-            'deleteFiles' => true
+            'deleteFiles' => true,
         ];
     }
 

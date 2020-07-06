@@ -7,7 +7,7 @@ use App\Library\Media\Requests\SonarrRequest;
 use App\Library\Media\Responses\Shared\StringResponse;
 use GuzzleHttp\Psr7\Response;
 
-class SerieImageRequest extends SonarrRequest 
+class SerieImageRequest extends SonarrRequest
 {
     private int $serie_id;
 

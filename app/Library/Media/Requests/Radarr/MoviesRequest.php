@@ -7,7 +7,7 @@ use App\Library\Media\Requests\RadarrRequest;
 use App\Library\Media\Responses\Radarr\MoviesResponse;
 use GuzzleHttp\Psr7\Response;
 
-class MoviesRequest extends RadarrRequest 
+class MoviesRequest extends RadarrRequest
 {
     public function getRoute(): string
     {

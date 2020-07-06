@@ -77,10 +77,10 @@
             "npm run dev-silent"
         ],
         "format-php": [
-            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.dist --path-mode=intersection . --ansi"
+            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.php --path-mode=intersection . --ansi"
         ],
         "format-php-dry": [
-            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.dist --path-mode=intersection . --ansi --dry-run"
+            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.php --path-mode=intersection . --ansi --dry-run"
         ]
     }
 }

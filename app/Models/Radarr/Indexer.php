@@ -10,15 +10,15 @@ class Indexer extends SharedIndexer
 
     public static function getDefaults(): array
     {
-        $host = config('apis.jackett.host');
-        $port = config('apis.jackett.port');
+        $host    = config('apis.jackett.host');
+        $port    = config('apis.jackett.port');
         $api_key = config('apis.jackett.api_key');
 
         return [
-            'Id' => '1',
-            'Name' => 'Jackett',
+            'Id'             => '1',
+            'Name'           => 'Jackett',
             'Implementation' => 'Torznab',
-            'Settings' => "{
+            'Settings'       => "{
     'minimumSeeders': 1,
     'requiredFlags': [],
     'baseUrl': 'http://{$host}:{$port}/torznab/all',
@@ -40,8 +40,8 @@ class Indexer extends SharedIndexer
     'searchByTitle': false
 }",
             'ConfigContract' => 'TorznabSettings',
-            'EnableRss' => '1',
-            'EnableSearch' => '1',
+            'EnableRss'      => '1',
+            'EnableSearch'   => '1',
         ];
     }
 }

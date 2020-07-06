@@ -2,7 +2,6 @@
 
 namespace App\Library\Http;
 
-use App\Library\Http\RequestInterface;
 use GuzzleHttp\Client as GuzzleClient;
 
 class Client extends GuzzleClient
@@ -13,7 +12,7 @@ class Client extends GuzzleClient
             $request->getMethod(),
             $request->getUrl(),
             [
-                'json' => $request->getJson(),
+                'json'    => $request->getJson(),
                 'headers' => $request->getHeaders(),
             ]
         );

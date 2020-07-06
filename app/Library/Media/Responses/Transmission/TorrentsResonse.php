@@ -12,7 +12,7 @@ class TorrentsResonse extends BaseResponse
     {
         return collect(
             array_map(
-                fn(object $torrent) => new Torrent($torrent), 
+                fn (object $torrent) => new Torrent($torrent),
                 json_decode($this->getResponse()->getBody()->getContents())->arguments->torrents
             )
         );

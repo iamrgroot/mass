@@ -15,15 +15,15 @@ abstract class DownloadClient extends BaseModel
 
     public static function getDefaults(): array
     {
-        $ip = config('apis.transmission.ip');
+        $ip   = config('apis.transmission.ip');
         $port = config('apis.transmission.port');
 
         return [
-            'Id' => '1',
-            'Enable' => '1',
-            'Name' => 'Transmission',
+            'Id'             => '1',
+            'Enable'         => '1',
+            'Name'           => 'Transmission',
             'Implementation' => 'Transmission',
-            'Settings' => "{
+            'Settings'       => "{
                 'host': '{$ip}',
                 'port': {$port},
                 'urlBase': '/transmission/',
@@ -34,7 +34,7 @@ abstract class DownloadClient extends BaseModel
                 'addPaused': false,
                 'useSsl': false
             }",
-            'ConfigContract' => 'TransmissionSettings'
+            'ConfigContract' => 'TransmissionSettings',
         ];
     }
 }

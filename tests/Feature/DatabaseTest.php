@@ -6,6 +6,10 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class DatabaseTest extends TestCase
 {
     use DatabaseTransactions;
@@ -28,12 +32,12 @@ class DatabaseTest extends TestCase
     public function testDatabaseTables(): void
     {
         /** @var Illuminate\Database\Connection $connection */
-        $connection = DB::connection();
+        $connection    = DB::connection();
         $database_name = $connection->getDatabaseName();
 
         $tables = $connection->select('SHOW TABLES');
 
-        $tables = array_map(fn($table) => $table->{"Tables_in_{$database_name}"}, $tables);
+        $tables = array_map(fn ($table) => $table->{"Tables_in_{$database_name}"}, $tables);
         $tables = array_unique($tables);
 
         $this->assertEquals(
@@ -41,7 +45,7 @@ class DatabaseTest extends TestCase
                 'failed_jobs',
                 'migrations',
                 'users',
-            ], 
+            ],
             $tables
         );
     }

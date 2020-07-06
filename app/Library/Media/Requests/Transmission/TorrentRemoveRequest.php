@@ -2,16 +2,16 @@
 
 namespace App\Library\Media\Requests\Transmission;
 
-class TorrentRemoveRequest extends TorrentRequest 
+class TorrentRemoveRequest extends TorrentRequest
 {
     public function getJson(): array
     {
         return [
-            'method' => 'torrent-remove',
+            'method'    => 'torrent-remove',
             'arguments' => [
-                'ids' => [ $this->torrent_id ],
-                'delete-local-data' => true
-            ]
+                'ids'               => [$this->torrent_id],
+                'delete-local-data' => true,
+            ],
         ];
     }
 }

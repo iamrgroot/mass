@@ -12,7 +12,7 @@ class SearchResponse extends BaseResponse
     {
         return collect(
             array_map(
-                fn(object $search_result) => new SearchResult($search_result), 
+                fn (object $search_result) => new SearchResult($search_result),
                 json_decode($this->getResponse()->getBody()->getContents())
             )
         );

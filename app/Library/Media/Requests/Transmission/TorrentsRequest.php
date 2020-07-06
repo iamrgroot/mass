@@ -8,7 +8,7 @@ use App\Library\Media\Responses\Transmission\TorrentsResonse;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
-class TorrentsRequest extends TransmissionRequest 
+class TorrentsRequest extends TransmissionRequest
 {
     public function getMethod(): string
     {
@@ -18,21 +18,21 @@ class TorrentsRequest extends TransmissionRequest
     public function getJson(): array
     {
         return [
-            'method' => 'torrent-get',
+            'method'    => 'torrent-get',
             'arguments' => [
                 'fields' => [
-                    'id', 
+                    'id',
                     'status',
-                    'name', 
+                    'name',
                     'errorString',
-                    'eta', 
-                    'isFinished', 
+                    'eta',
+                    'isFinished',
                     'rateDownload',
                     'rateUpload',
                     'sizeWhenDone',
-                    'percentDone'
-                ]
-            ]
+                    'percentDone',
+                ],
+            ],
         ];
     }
 

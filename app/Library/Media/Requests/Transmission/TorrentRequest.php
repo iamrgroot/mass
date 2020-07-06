@@ -8,7 +8,7 @@ use App\Library\Media\Responses\Shared\StringResponse;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
-class TorrentRequest extends TransmissionRequest 
+class TorrentRequest extends TransmissionRequest
 {
     protected int $torrent_id;
 

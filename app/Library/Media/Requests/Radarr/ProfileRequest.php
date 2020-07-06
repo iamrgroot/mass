@@ -7,7 +7,7 @@ use App\Library\Media\Requests\RadarrRequest;
 use App\Library\Media\Responses\Shared\ProfileResponse;
 use GuzzleHttp\Psr7\Response;
 
-class ProfileRequest extends RadarrRequest 
+class ProfileRequest extends RadarrRequest
 {
     public function getRoute(): string
     {

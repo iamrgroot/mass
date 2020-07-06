@@ -10,7 +10,7 @@ class Profile
 
     public int $id;
     public string $name;
-    
+
     public function __construct(object $object)
     {
         $this->fromObject($object);

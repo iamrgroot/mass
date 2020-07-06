@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Filesystem Disk
@@ -44,27 +43,27 @@ return [
     'disks' => [
         'sonarr' => [
             'driver' => 'local',
-            'root' => base_path('docker-compose/sonarr'),
+            'root'   => base_path('docker-compose/sonarr'),
         ],
         'radarr' => [
             'driver' => 'local',
-            'root' => base_path('docker-compose/radarr'),
+            'root'   => base_path('docker-compose/radarr'),
         ],
         'jackett' => [
             'driver' => 'local',
-            'root' => base_path('docker-compose/jackett/config/Jackett'),
+            'root'   => base_path('docker-compose/jackett/config/Jackett'),
         ],
         'init-jacket-files' => [
             'driver' => 'local',
-            'root' => storage_path('app/init-jacket-files'),
+            'root'   => storage_path('app/init-jacket-files'),
         ],
         'nginx' => [
             'driver' => 'local',
-            'root' => base_path('docker-compose/nginx'),
+            'root'   => base_path('docker-compose/nginx'),
         ],
         'nginx-stub' => [
             'driver' => 'local',
-            'root' => storage_path('app/nginx-stub'),
+            'root'   => storage_path('app/nginx-stub'),
         ],
     ],
 
@@ -82,5 +81,4 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],
-
 ];

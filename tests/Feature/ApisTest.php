@@ -16,6 +16,10 @@ use App\Library\Media\Requests\Sonarr\ProfileRequest as SonarrProfileRequest;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ApisTest extends TestCase
 {
     public function testSonarr(): void
@@ -46,7 +50,7 @@ class ApisTest extends TestCase
 
     private function handleRequest(RequestInterface $request): ResponseInterface
     {
-        $client = new Client();
+        $client   = new Client();
         $response = $client->doRequest($request);
 
         $this->assertContains($response->getResponse()->getStatusCode(), [
@@ -60,27 +64,27 @@ class ApisTest extends TestCase
     private function movieJson(): array
     {
         return [
-            "title" => "Bat*21",
-            "qualityProfileId" => 1,
-            "titleSlug" => "bat21-14911",
-            "images" => [
-              [
-                "coverType" => "poster",
-                "url" => "http://image.tmdb.org/t/p/original/yIeFT2RqJdXMRIhGLs05xtzBkt9.jpg",
-              ],
-              [
-                "coverType" => "fanart",
-                "url" => "http://image.tmdb.org/t/p/original/lh5lbisD4oDbEKgUxoRaZU8HVrk.jpg",
-              ],
+            'title'            => 'Bat*21',
+            'qualityProfileId' => 1,
+            'titleSlug'        => 'bat21-14911',
+            'images'           => [
+                [
+                    'coverType' => 'poster',
+                    'url'       => 'http://image.tmdb.org/t/p/original/yIeFT2RqJdXMRIhGLs05xtzBkt9.jpg',
+                ],
+                [
+                    'coverType' => 'fanart',
+                    'url'       => 'http://image.tmdb.org/t/p/original/lh5lbisD4oDbEKgUxoRaZU8HVrk.jpg',
+                ],
             ],
-            "tmdbId" => 14911,
-            "year" => 1988,
-            "path" => "/movies/APITEST",
-            "monitored" => false,
-            "addOptions" => [
-              "searchForMovie" => false,
+            'tmdbId'     => 14911,
+            'year'       => 1988,
+            'path'       => '/movies/APITEST',
+            'monitored'  => false,
+            'addOptions' => [
+                'searchForMovie' => false,
             ],
-            "title" => "Bat*21",
+            'title' => 'Bat*21',
         ];
     }
 }

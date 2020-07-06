@@ -6,7 +6,7 @@ use App\Library\Http\ResponseInterface;
 use App\Library\Media\Responses\Shared\StringResponse;
 use GuzzleHttp\Psr7\Response;
 
-class TransmissionRequest extends BaseRequest 
+class TransmissionRequest extends BaseRequest
 {
     public function getRoute(): string
     {
@@ -26,7 +26,7 @@ class TransmissionRequest extends BaseRequest
     public function getHeaders(): array
     {
         return [
-            'X-Transmission-Session-Id' => config('apis.transmission.session_id')
+            'X-Transmission-Session-Id' => config('apis.transmission.session_id'),
         ];
     }
 

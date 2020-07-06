@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Traits;
 
@@ -8,7 +8,7 @@ trait ConvertFromObject
 
     protected function fromObject(object $object): void
     {
-        foreach($object as $key => $value) {
+        foreach ($object as $key => $value) {
             $key = self::snakeCase($key);
 
             $skip = self::propertyExists('skipped') && in_array($key, $this->skipped);
@@ -21,9 +21,9 @@ trait ConvertFromObject
 
     protected static function propertyExists(string $key): string
     {
-        return property_exists(self::class, $key) || 
+        return property_exists(self::class, $key) ||
             (
-                (bool) class_parents(self::class) && 
+                (bool) class_parents(self::class) &&
                 method_exists(parent::class, 'propertyExists') &&
                 parent::propertyExists($key)
             );

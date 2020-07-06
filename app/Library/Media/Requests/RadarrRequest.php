@@ -13,11 +13,11 @@ abstract class RadarrRequest extends BaseRequest
     {
         return config('apis.radarr.port');
     }
- 
+
     public function getApiString(): string
     {
-        $api_key = config('apis.radarr.api_key');;
-        
+        $api_key = config('apis.radarr.api_key');
+
         return "?apikey={$api_key}";
     }
 }

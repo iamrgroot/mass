@@ -19,7 +19,7 @@ class UpdateSerieRequest extends SonarrRequest
 
     public function getRoute(): string
     {
-        return "api/series";
+        return 'api/series';
     }
 
     public function getMethod(): string

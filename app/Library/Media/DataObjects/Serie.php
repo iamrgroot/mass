@@ -16,11 +16,11 @@ class Serie extends MediaItem
     {
         parent::__construct();
         $this->fromObject($object);
-        
+
         $this->addRating($object);
 
         $this->seasons = array_map(
-            fn(object $season) => new Season($season), 
+            fn (object $season) => new Season($season),
             $this->seasons
         );
 

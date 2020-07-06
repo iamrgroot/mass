@@ -2,7 +2,7 @@
 
 namespace App\Library\Media\Requests\Radarr;
 
-class SearchMissingRequest extends CommandRequest 
+class SearchMissingRequest extends CommandRequest
 {
     public function __construct()
     {

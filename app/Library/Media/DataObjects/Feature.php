@@ -10,6 +10,6 @@ class Feature
     public function __construct(string $text, string $color = 'grey')
     {
         $this->color = $color;
-        $this->text = $text;
+        $this->text  = $text;
     }
 }

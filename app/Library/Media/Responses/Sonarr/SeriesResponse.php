@@ -12,7 +12,7 @@ class SeriesResponse extends BaseResponse
     {
         return collect(
             array_map(
-                fn(object $serie) => new Serie($serie), 
+                fn (object $serie) => new Serie($serie),
                 json_decode($this->getResponse()->getBody()->getContents())
             )
         );

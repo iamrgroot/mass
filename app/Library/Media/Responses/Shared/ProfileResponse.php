@@ -12,7 +12,7 @@ class ProfileResponse extends BaseResponse
     {
         return collect(
             array_map(
-                fn(object $profile) => new Profile($profile), 
+                fn (object $profile) => new Profile($profile),
                 json_decode($this->getResponse()->getBody()->getContents())
             )
         );

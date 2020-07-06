@@ -22,7 +22,7 @@ Route::domain('home.' . env('SITE_URL', 'localhost'))->group(function () {
                 'torrents',
             ];
 
-            $routes = array_map(fn($route) => "({$route})", $routes);
+            $routes = array_map(fn ($route) => "({$route})", $routes);
             $routes = implode('|', $routes);
 
             Route::get('/{route}', function () {

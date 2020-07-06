@@ -8,7 +8,7 @@ use App\Library\Media\Responses\Radarr\MovieResponse;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
-class AddMovieRequest extends RadarrRequest 
+class AddMovieRequest extends RadarrRequest
 {
     private array $json;
 

@@ -2,15 +2,15 @@
 
 namespace App\Library\Media\Requests\Transmission;
 
-class TorrentStopRequest extends TorrentRequest 
+class TorrentStopRequest extends TorrentRequest
 {
     public function getJson(): array
     {
         return [
-            'method' => 'torrent-stop',
+            'method'    => 'torrent-stop',
             'arguments' => [
-                'ids' => [ $this->torrent_id ]
-            ]
+                'ids' => [$this->torrent_id],
+            ],
         ];
     }
 }

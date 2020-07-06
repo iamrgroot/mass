@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Library\Http\Client;
-use App\Library\Media\ConfigGetter;
 use App\Library\Media\Requests\Radarr\ProfileRequest as RadarrProfileRequest;
 use App\Library\Media\Requests\Sonarr\ProfileRequest as SonarrProfileRequest;
 use Illuminate\Support\Collection;

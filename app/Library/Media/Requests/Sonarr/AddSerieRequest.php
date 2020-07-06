@@ -8,7 +8,7 @@ use App\Library\Media\Responses\Sonarr\SerieResponse;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
-class AddSerieRequest extends SonarrRequest 
+class AddSerieRequest extends SonarrRequest
 {
     private array $json;
 

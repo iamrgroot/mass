@@ -27,10 +27,10 @@ class Movie extends MediaItem
 
         $this->features->add(new Feature($object->sizeOnDisk));
 
-        if ($object->movieFile->mediaInfo->videoBitDepth >= 10){
+        if ($object->movieFile->mediaInfo->videoBitDepth >= 10) {
             $this->features->add(new Feature('HDR', 'success'));
         }
-        if ($quality = $object->movieFile->quality->quality->name ?? null){
+        if ($quality = $object->movieFile->quality->quality->name ?? null) {
             $this->features->add(new Feature($quality));
         }
     }

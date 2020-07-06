@@ -7,7 +7,7 @@ use App\Library\Media\Requests\RadarrRequest;
 use App\Library\Media\Responses\Shared\SearchResponse;
 use GuzzleHttp\Psr7\Response;
 
-class SearchRequest extends RadarrRequest 
+class SearchRequest extends RadarrRequest
 {
     private string $search_term;
 

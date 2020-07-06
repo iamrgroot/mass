@@ -16,7 +16,7 @@ class SearchResult
     public string $text;
     public array $images;
     public array $seasons;
-    
+
     public function __construct(object $object)
     {
         $this->fromObject($object);

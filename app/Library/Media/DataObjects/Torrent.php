@@ -18,12 +18,12 @@ class Torrent
     public int $rate_upload;
     public int $size_when_done;
     public float $percent_done;
-    
+
     public function __construct(object $object)
     {
         $this->fromObject($object);
 
-        if ($this->error_string === '') {
+        if ('' === $this->error_string) {
             $this->error_string = null;
         }
     }

@@ -7,7 +7,7 @@ use App\Library\Media\Requests\SonarrRequest;
 use App\Library\Media\Responses\Sonarr\SeriesResponse;
 use GuzzleHttp\Psr7\Response;
 
-class SeriesRequest extends SonarrRequest 
+class SeriesRequest extends SonarrRequest
 {
     public function getRoute(): string
     {

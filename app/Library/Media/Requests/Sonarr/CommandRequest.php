@@ -8,7 +8,7 @@ use App\Library\Media\Responses\Shared\StringResponse;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
-class CommandRequest extends SonarrRequest 
+class CommandRequest extends SonarrRequest
 {
     private array $json;
 

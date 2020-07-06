@@ -8,7 +8,7 @@ class BaseModel extends Model
 {
     /**
      * Disable timestamps on model.
-     * 
+     *
      * @var bool
      */
     public $timestamps = false;

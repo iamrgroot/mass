@@ -12,7 +12,7 @@ class MoviesResponse extends BaseResponse
     {
         return collect(
             array_map(
-                fn(object $movie) => new Movie($movie), 
+                fn (object $movie) => new Movie($movie),
                 json_decode($this->getResponse()->getBody()->getContents())
             )
         );

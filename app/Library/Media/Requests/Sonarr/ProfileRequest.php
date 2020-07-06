@@ -6,9 +6,8 @@ use App\Library\Http\ResponseInterface;
 use App\Library\Media\Requests\SonarrRequest;
 use App\Library\Media\Responses\Shared\ProfileResponse;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Http\Request;
 
-class ProfileRequest extends SonarrRequest 
+class ProfileRequest extends SonarrRequest
 {
     public function getRoute(): string
     {
