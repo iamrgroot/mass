@@ -10,7 +10,7 @@ module.exports = {
         '@vue/typescript/recommended'
     ],
     parserOptions: {
-        ecmaVersion: 2020
+        ecmaVersion: 2020,
     },
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -41,7 +41,23 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': ['error'],
         '@typescript-eslint/indent': ['error', 4],
         '@typescript-eslint/array-type': ['error', {default: 'array'}],
+        '@typescript-eslint/explicit-function-return-type': ['off'],
+        '@typescript-eslint/member-delimiter-style': ['error'],
+        '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
+        '@typescript-eslint/prefer-for-of': ['error'],
+        // TODO Fix error
+        // '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['error'],
+        // '@typescript-eslint/prefer-nullish-coalescing': ['error'],
+        // '@typescript-eslint/prefer-string-starts-ends-with': ['error'],
 
         'indent': ['off'],
-    }
+    },
+    'overrides': [
+        {
+            'files': ['*.ts', '*.tsx'],
+            'rules': {
+                '@typescript-eslint/explicit-function-return-type': ['error']
+            }
+        }
+    ]
 };
