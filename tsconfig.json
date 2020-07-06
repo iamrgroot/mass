@@ -36,8 +36,6 @@
     "resources/ts/**/*.ts",
     "resources/ts/**/*.tsx",
     "resources/ts/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
   ],
   "exclude": [
     "node_modules"
