@@ -55,13 +55,14 @@ services:
         ipv4_address: 172.19.0.4
     labels:
       - traefik.enable=true
-      - traefik.http.routers.django_http.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
-      - traefik.http.routers.django_http.entrypoints=http
-      - traefik.http.routers.django_http.middlewares=redirect
+      - traefik.http.routers.http.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
+      - traefik.http.routers.http.entrypoints=http
+      - traefik.http.routers.http.middlewares=redirect
       - traefik.http.middlewares.redirect.redirectscheme.scheme=https
-      - traefik.http.routers.django.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
-      - traefik.http.routers.django.entrypoints=https
-      - traefik.http.routers.django.tls.certresolver=basic
+      - traefik.http.routers.https.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
+      - traefik.http.routers.https.tls=true
+      - traefik.http.routers.https.entrypoints=https
+      - traefik.http.routers.https.tls.certresolver=basic
       - traefik.port=80
 
   transmission:
@@ -196,7 +197,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./docker-compose/traefik/traefik.toml:/traefik.toml
       # - ./docker-compose/traefik/dynamic_conf.toml:/dynamic_conf.toml
-      - ./docker-compose/traefik/traefik-acme:/acme 
+      - ./docker-compose/traefik/traefik:/acme 
     restart: unless-stopped
 
   plex:
