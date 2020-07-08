@@ -1,0 +1,231 @@
+version: "3.7"
+services:
+  mass:
+    build:
+      args:
+        user: ${USER}
+        uid: ${UID}
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      TZ: ${TZ}
+    image: php:7.4-fpm
+    container_name: mass
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      mass:
+        ipv4_address: 172.19.0.2
+  
+  mass-db:
+    image: mysql:latest
+    container_name: mass-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+      TZ: ${TZ}
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      mass:
+        ipv4_address: 172.19.0.3
+
+  mass-nginx:
+    image: nginx:alpine
+    container_name: mass-nginx
+    restart: unless-stopped
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      mass:
+        ipv4_address: 172.19.0.4
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.http.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
+      - traefik.http.routers.http.entrypoints=http
+      - traefik.http.routers.http.middlewares=redirect
+      - traefik.http.middlewares.redirect.redirectscheme.scheme=https
+      - traefik.http.routers.https.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
+      - traefik.http.routers.https.tls=true
+      - traefik.http.routers.https.entrypoints=https
+      - traefik.http.routers.https.tls.certresolver=basic
+      - traefik.port=80
+
+  transmission:
+    image: haugene/transmission-openvpn
+    container_name: transmission
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    networks:
+      mass:
+        ipv4_address: 172.19.0.5
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+      - OPENVPN_PROVIDER=${OPENVPN_PROVIDER}
+      - OPENVPN_USERNAME=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD} 
+      - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
+      - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=false
+      - TRANSMISSION_UMASK=2
+      - TRANSMISSION_RATIO_LIMIT=0.50
+      - TRANSMISSION_RATIO_LIMIT_ENABLED=true
+      - TRANSMISSION_BLOCKLIST_URL=""
+      - TRANSMISSION_BLOCKLIST_ENABLED=false
+      - TRANSMISSION_DOWNLOAD_DIR="/downloads"
+      - TRANSMISSION_INCOMPLETE_DIR="/downloads/incomplete"
+      - TRANSMISSION_WATCH_DIR="/downloads/watch"
+      - TRANSMISSION_HOME="/config"
+    volumes:
+      - ./docker-compose/transmission/config/:/config
+      - /mnt/data/downloads/:/downloads
+    restart: unless-stopped
+    ports:
+      - 9091:9091
+    
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    networks:
+      mass:
+        ipv4_address: 172.19.0.6
+    volumes:
+      - /dev/rtc:/dev/rtc:ro
+      - ./docker-compose/sonarr/config:/config
+      - /mnt/data/downloads/:/downloads
+      - /mnt/data/tvseries/:/tv
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    depends_on:
+      - transmission
+
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    networks:
+      mass:
+        ipv4_address: 172.19.0.7
+    volumes:
+      - /dev/rtc:/dev/rtc:ro
+      - ./docker-compose/radarr/config:/config
+      - /mnt/data/downloads/:/downloads
+      - /mnt/data/movies/:/movies
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    depends_on:
+      - transmission
+
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    networks:
+      mass:
+        ipv4_address: 172.19.0.8
+    volumes:
+      - ./docker-compose/sonarr/config:/config
+      - /mnt/data/movies/:/movies
+      - /mnt/data/tvseries/:/tv
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  jackett:
+    image: linuxserver/jackett:latest
+    container_name: jackett
+    networks:
+      mass:
+        ipv4_address: 172.19.0.9
+    ports:
+      - 9117:9117
+    volumes:
+      - ./docker-compose/jackett/config/:/config
+      - /mnt/data/downloads/:/downloads
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+    restart: unless-stopped
+
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    networks:
+      mass:
+        ipv4_address: 172.19.0.10
+    ports:
+      - 80:80
+      - 443:443
+      # The Web UI (enabled by --api.insecure=true)
+      - 8081:8080
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+      - TRAEFIK_CERTIFICATESRESOLVERS_BASIC_ACME_EMAIL=${TRAEFIK_CERTIFICATESRESOLVERS_BASIC_ACME_EMAIL}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker-compose/traefik/traefik.toml:/traefik.toml
+      # - ./docker-compose/traefik/dynamic_conf.toml:/dynamic_conf.toml
+      - ./docker-compose/traefik/traefik:/acme 
+    restart: unless-stopped
+
+  plex:
+    image: linuxserver/plex:latest
+    container_name: plex
+    networks:
+      mass:
+        ipv4_address: 172.19.0.11
+    environment:
+      - PUID=${UID}
+      - PGID=${UID}
+      - TZ=${TZ}
+      - VERSION=docker
+    ports:
+      - 32400:32400
+    volumes:
+      - /mnt/data/movies:/data/movies
+      - /mnt/data/tvseries:/data/tvshows
+      - ./docker-compose/plex/config/:/config
+      - /tmp:/transcode
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
+
+networks:
+  mass:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/24

@@ -1,0 +1,29 @@
+debug = true
+
+defaultEntryPoints = ["https","http"]
+
+[log]
+  level = "DEBUG"
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  [entryPoints.https]
+  address = ":443"
+
+[providers.docker]
+
+[retry]
+
+[api]
+  dashboard = true
+  insecure = true
+
+[docker]
+  exposedByDefault = false
+  watch = true
+
+[certificatesResolvers.basic.acme]
+  storage = "acme/certs.json"
+  [certificatesResolvers.basic.acme.httpChallenge]
+    entryPoint = "http"

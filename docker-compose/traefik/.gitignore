@@ -1,0 +1,4 @@
+*
+!acme/
+!traefik.toml.example
+!.gitignore
