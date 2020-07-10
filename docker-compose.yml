@@ -214,6 +214,7 @@ services:
       - PUID=${UID}
       - PGID=${UID}
       - TZ=${TZ}
+      - PLEX_CLAIM=${PLEX_CLAIM}
       - VERSION=docker
     ports:
       - 32400:32400
