@@ -90,8 +90,6 @@ export default class Login extends Vue {
 
     created(): void {
         this.login_error = (window.blade_errors.length > 0) ? window.blade_errors[0] : '';
-        console.log(window.blade_errors);
-
     }
 }
 </script>

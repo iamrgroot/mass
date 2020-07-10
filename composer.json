@@ -60,7 +60,7 @@
             "@php artisan key:generate",
             "@php artisan config:cache",
             "@php artisan make:nginx-config",
-            "@php artisan migrate --seed",
+            "@php artisan migrate --seed --force",
             "@php artisan view:cache",
             "npm install",
             "npm run build-silent"

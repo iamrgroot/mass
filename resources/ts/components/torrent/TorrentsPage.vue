@@ -68,7 +68,7 @@
                                         {{ item.rate_download | bytesPerSecond }}
                                     </td>
                                     <td>
-                                        {{ item.rate_download | bytesPerSecond }}
+                                        {{ item.rate_upload | bytesPerSecond }}
                                     </td>
                                     <td>
                                         {{ item.size_when_done | byte }}
