@@ -7,7 +7,8 @@ ARG uid
 USER root
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update > /dev/null && \
+    apt-get install -y --no-install-recommends \
     git \
     curl \
     libpng-dev \
@@ -19,8 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     > /dev/null
 
 # Install Imagick
-RUN pecl install imagick || echo "^" \
-    > /dev/null
+RUN pecl install imagick > /dev/null || echo "^"
 
 # Clear cache
 RUN apt-get clean > /dev/null && \
