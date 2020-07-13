@@ -23,7 +23,7 @@ jobs:
 
     # Runs a set of commands using the runners shell
     - name: Setup .env
-      run: copy .env.example .env
+      run: cp .env.example .env
 
     - name: Docker initialize
       run: docker-compose up -d mass mass-db
