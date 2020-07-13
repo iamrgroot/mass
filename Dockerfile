@@ -1,10 +1,11 @@
 FROM php:7.4-fpm
 
-RUN id $user 
-
 # Arguments defined in docker-compose.yml
 ARG user
 ARG uid
+
+RUN echo $uid 
+RUN echo $user 
 
 USER root
 
