@@ -138,7 +138,7 @@ export default class TorrentsPage extends Vue {
         { text: 'Name', value: 'name' },
         { text: 'ETA', value: 'eta' },
         { text: 'Download', value: 'rate_download' },
-        { text: 'Upload', value: 'rate_download' },
+        { text: 'Upload', value: 'rate_upload' },
         { text: 'Size', value: 'size_when_done' },
         { text: 'Error', value: 'error_string' },
         { text: '', value: 'delete', sortable: false },
