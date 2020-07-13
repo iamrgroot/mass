@@ -1,11 +1,7 @@
 FROM php:7.4-fpm
 
 # Arguments defined in docker-compose.yml
-ARG user
 ARG uid
-
-RUN echo $uid 
-RUN echo $user 
 
 USER root
 
@@ -50,11 +46,11 @@ RUN curl --silent --location https://deb.nodesource.com/setup_14.x | bash - > /d
 RUN apt-get install --yes nodejs build-essential > /dev/null
 
 # Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user || echo ""
-RUN mkdir -p /home/$user/.composer || echo ""
-RUN chown -R $user:$user /home/$user || echo ""
+RUN useradd -G www-data,root -u $uid -d /home/mass mass || echo ""
+RUN mkdir -p /home/mass/.composer || echo ""
+RUN chown -R mass:mass /home/mass || echo ""
 
 # Set working directory
 WORKDIR /var/www
 
-USER $user
+USER mass

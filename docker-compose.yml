@@ -3,7 +3,6 @@ services:
   mass:
     build:
       args:
-        user: ${USER}
         uid: ${UID}
       context: ./
       dockerfile: Dockerfile

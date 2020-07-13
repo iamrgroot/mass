@@ -25,5 +25,8 @@ jobs:
     - name: Setup .env
       run: cp .env.example .env
 
-    - name: Docker initialize
+    - name: Docker build
+      run: docker-compose build
+
+    - name: Docker start
       run: docker-compose up -d mass mass-db
