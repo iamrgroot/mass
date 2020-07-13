@@ -1,0 +1,17 @@
+mode: auto
+silent: true
+branchName: full
+autoCloseIssue: true
+branches:
+  - label: enhancement
+    prefix: feature/
+    skip: false
+  - label: bug
+    prefix: bugfix/
+    skip: false
+  - label: documentation
+    prefix: docu/
+    skip: false
+  - label: '*'
+    prefix: issues/
+    skip: true
