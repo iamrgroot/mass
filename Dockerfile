@@ -3,8 +3,6 @@ FROM php:7.4-fpm
 # Arguments defined in docker-compose.yml
 ARG uid
 
-RUN echo $uid
-
 USER root
 
 # Install system dependencies
