@@ -31,7 +31,33 @@ const bytesPerSecond = function(number: number | null): string {
     return byte_string + '/s';
 };
 
+const duration = function(number: number | null): string {
+    if (number === null) {
+        return '';
+    }
+
+    const hour = 60 * 60;
+    const minute = 60;
+
+    if (number < minute) {
+        return `${number}s`;
+    }
+
+    if (number < hour) {
+        const minutes = Math.floor(number / minute);
+        const seconds = number % minutes;
+
+        return `${minutes}m ${seconds}s`;
+    }
+
+    const hours = Math.floor(number / hour);
+    const minutes = Math.floor((number % hour) / minute);
+
+    return `${hours}h ${minutes}m`;
+};
+
 export {
     byte,
-    bytesPerSecond
+    bytesPerSecond,
+    duration,
 };

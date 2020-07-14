@@ -62,7 +62,10 @@
                                         {{ item.name }}
                                     </td>
                                     <td>
-                                        {{ item.eta > 0 ? $d(item.eta, 'time') : '∞' }}
+                                        <span v-if="item.eta > 0">
+                                            {{ item.eta | duration }}
+                                        </span>
+                                        <span v-else>∞</span>
                                     </td>
                                     <td>
                                         {{ item.rate_download | bytesPerSecond }}
@@ -121,7 +124,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { Torrent } from '@/types/Torrent';
-import { byte, bytesPerSecond } from '@/filters/filters';
+import { byte, bytesPerSecond, duration } from '@/filters/filters';
 import { TorrentStatus } from '@/enums/TorrentStatus';
 
 const Torrents = namespace('Torrents');
@@ -129,7 +132,8 @@ const Torrents = namespace('Torrents');
 @Component({
     filters: {
         byte: byte,
-        bytesPerSecond: bytesPerSecond
+        bytesPerSecond: bytesPerSecond,
+        duration: duration,
     }
 })
 export default class TorrentsPage extends Vue {
