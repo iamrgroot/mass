@@ -49,6 +49,7 @@ RUN id -u mass &>/dev/null || useradd -G www-data,root -u $uid -d /home/mass mas
 RUN mkdir -p /home/mass/.composer
 RUN chown -R mass:mass /home/mass
 RUN chown -R mass:www-data /var/www
+RUN chmod -R 775 /var/www
 
 # Set working directory
 WORKDIR /var/www

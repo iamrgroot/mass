@@ -33,7 +33,7 @@ jobs:
     - name: Debug 1
       run: docker exec mass id
     - name: Debug 2
-      run: docker exec mass ls -a 
+      run: docker exec mass stat -c %a /var/www
 
     - name: Initialize app
       run: docker exec mass composer initialize
