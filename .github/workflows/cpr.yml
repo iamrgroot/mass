@@ -1,8 +1,7 @@
 name: Create Pull Request
 
 on:
-    create:
-        branches
+    create
 
 jobs:
     create_issue_branch_job:
