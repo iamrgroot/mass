@@ -1,9 +1,7 @@
-/node_modules
 /public/hot
 /public/storage
 /public/vue
 /storage/*.key
-/vendor
 .env
 .env.backup
 .phpunit.result.cache

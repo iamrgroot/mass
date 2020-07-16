@@ -1,6 +1,6 @@
 FROM php:7.4-fpm
 
-ARG uid=1000
+ARG uid=1001
 
 USER root
 
