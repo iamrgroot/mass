@@ -5,11 +5,13 @@ namespace App\Library\Media\DataObjects;
 use App\Enums\ItemType;
 use App\Traits\AddRatingFeature;
 use App\Traits\ConvertFromObject;
+use App\Traits\FormatBytes;
 
 class Movie extends MediaItem
 {
     use ConvertFromObject;
     use AddRatingFeature;
+    use FormatBytes;
 
     public string $sort_title;
 
@@ -25,7 +27,7 @@ class Movie extends MediaItem
             return;
         }
 
-        $this->features->add(new Feature($object->sizeOnDisk));
+        $this->features->add(new Feature($this->formatBytes($object->sizeOnDisk)));
 
         if ($object->movieFile->mediaInfo->videoBitDepth >= 10) {
             $this->features->add(new Feature('HDR', 'success'));
