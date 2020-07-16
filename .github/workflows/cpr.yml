@@ -1,0 +1,30 @@
+name: Create Pull Request
+
+on:
+    create:
+        branches
+
+jobs:
+    create_issue_branch_job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Extract branch name
+              shell: bash
+              run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+              id: extract_branch
+
+            - name: Create Pull Request
+                id: cpr
+                uses: peter-evans/create-pull-request@v2
+                with:
+                    token: ${{ secrets.GITHUB_TOKEN }}
+                    author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+                    title: '[Branch] ${{ steps.extract_branch.outputs.branch }}'
+                    body: |
+                        Auto-generated
+                    draft: true
+                    branch: ${{ steps.extract_branch.outputs.branch }}
+            - name: Check outputs
+                run: |
+                    echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
+                    echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
