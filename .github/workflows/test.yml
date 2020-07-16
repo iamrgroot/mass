@@ -30,6 +30,8 @@ jobs:
     - name: Docker start
       run: docker-compose up -d mass mass-db
 
+    - name: ID
+      run: docker exec mass composer id
     - name: Debug 1
       run: docker exec mass pwd
     - name: Debug 1.1
