@@ -86,7 +86,7 @@
         "update-app" : [
             "composer install --optimize-autoloader --no-dev",
             "@php artisan config:cache",
-            "@php artisan migrate --no-interaction",
+            "@php artisan migrate --no-interaction --force",
             "@php artisan view:clear",
             "npm install",
             "npm run build-silent"
@@ -94,7 +94,7 @@
         "update-app-dev" : [
             "composer install",
             "@php artisan config:cache",
-            "@php artisan migrate --no-interaction",
+            "@php artisan migrate --no-interaction --force",
             "@php artisan view:clear",
             "npm install",
             "npm run dev-silent"
