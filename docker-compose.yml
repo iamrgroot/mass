@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   mass:
-    image: iamrgroot/mass:V0.1
+    image: iamrgroot/mass:php7.4-node14
     container_name: mass
     user: ${UID}
     environment:
