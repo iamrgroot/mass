@@ -30,9 +30,9 @@ jobs:
     - name: Docker start
       run: docker-compose up -d mass mass-db
 
-    - name: Debug
+    - name: Debug 1
       run: docker exec mass id
-    - name: Debug
+    - name: Debug 2
       run: docker exec mass ls -a 
 
     - name: Initialize app
