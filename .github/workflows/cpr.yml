@@ -11,6 +11,11 @@ jobs:
               shell: bash
               run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
               id: extract_branch
+            
+            - name: Extract branch name
+              shell: bash
+              run: |
+                echo "${{ steps.extract_branch.outputs.branch }}"
 
             - name: Create Pull Request
               id: cpr
@@ -22,7 +27,7 @@ jobs:
                 body: |
                     Auto-generated
                 draft: true
-                branch: ${{ steps.extract_branch.outputs.branch }}
+                branch: test-branch
             - name: Check outputs
               run: |
                 echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
