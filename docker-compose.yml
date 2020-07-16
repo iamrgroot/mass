@@ -3,6 +3,7 @@ services:
   mass:
     image: iamrgroot/mass:V0.1
     container_name: mass
+    user: ${UID}
     environment:
       TZ: ${TZ}
     restart: unless-stopped

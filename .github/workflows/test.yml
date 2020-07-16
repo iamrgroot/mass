@@ -27,19 +27,17 @@ jobs:
     - name: Setup .env
       run: cp .env.example .env
 
+    - name: ID
+      run: docker exec mass composer id
+
     - name: Docker start
       run: docker-compose up -d mass mass-db
 
-    - name: ID
-      run: docker exec mass composer id
-    - name: Debug 1
-      run: docker exec mass pwd
-    - name: Debug 1.1
-      run: docker exec mass ls -al
-    - name: Debug 2
-      run: docker exec mass stat -c %a /var/www
-    - name: Debug 3
-      run: docker exec mass stat /var/www
-
     - name: Initialize app
-      run: docker exec mass composer initialize
+      run: docker exec mass composer initialize-ci
+
+    - name: Format PHP
+      run: docker exec mass composer format-php-dry
+
+    - name: Format JS
+      run: docker exec mass npm run lint-dry

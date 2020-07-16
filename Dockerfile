@@ -1,7 +1,5 @@
 FROM php:7.4-fpm
 
-ARG uid=1001
-
 USER root
 
 # Install system dependencies
@@ -45,11 +43,9 @@ RUN curl --silent --location https://deb.nodesource.com/setup_14.x | bash - > /d
 RUN apt-get install --yes nodejs build-essential > /dev/null
 
 # Create system user to run Composer and Artisan Commands
-RUN id -u mass &>/dev/null || useradd -G www-data,root -u $uid -d /home/mass mass
+RUN id -u mass &>/dev/null || useradd -G www-data,root -u 1234 -d /home/mass mass
 RUN mkdir -p /home/mass/.composer
 RUN chown -R mass:mass /home/mass
-RUN chown -R mass:www-data /var/www
-RUN chmod -R 775 /var/www
 
 # Set working directory
 WORKDIR /var/www
