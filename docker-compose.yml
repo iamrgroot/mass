@@ -1,15 +1,10 @@
 version: "3.7"
 services:
   mass:
-    build:
-      args:
-        uid: ${UID}
-      context: ./
-      dockerfile: Dockerfile
+    image: iamrgroot/mass:V0.1
+    container_name: mass
     environment:
       TZ: ${TZ}
-    image: php:7.4-fpm
-    container_name: mass
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
