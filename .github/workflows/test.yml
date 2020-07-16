@@ -27,11 +27,11 @@ jobs:
     - name: Setup .env
       run: cp .env.example .env
 
-    - name: ID
-      run: docker exec mass composer id
-
     - name: Docker start
       run: docker-compose up -d mass mass-db
+
+    - name: ID
+      run: docker exec mass composer id
 
     - name: Initialize app
       run: docker exec mass composer initialize-ci
