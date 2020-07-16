@@ -82,6 +82,26 @@
         ],
         "format-php-dry": [
             "@php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.php --path-mode=intersection . --ansi --dry-run"
+        ],
+        "update-app" : [
+            "composer install --optimize-autoloader --no-dev",
+            "@php artisan config:cache",
+            "@php artisan migrate --no-interaction",
+            "@php artisan view:clear",
+            "npm install",
+            "npm run build-silent"
+        ],
+        "update-app-dev" : [
+            "composer install",
+            "@php artisan config:cache",
+            "@php artisan migrate --no-interaction",
+            "@php artisan view:clear",
+            "npm install",
+            "npm run dev-silent"
+        ],
+        "cleanup-local-branches" : [
+            "git fetch --prune",
+            "bash -c \"(git branch | grep -v '^*' | xargs git branch -D) || echo 'No other local branches to delete.'\""
         ]
     }
 }
