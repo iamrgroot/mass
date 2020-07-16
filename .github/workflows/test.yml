@@ -30,5 +30,8 @@ jobs:
     - name: Docker start
       run: docker-compose up -d mass mass-db
 
+    - name: Check user
+      run: id
+
     - name: Initialize app
       run: docker exec mass composer initialize
