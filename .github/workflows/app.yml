@@ -1,0 +1,57 @@
+name: App
+
+on:  
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.ref }}
+
+    # Caching
+    - name: Composer Cache
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+    
+    - name: Node Cache
+      id: npm-cache
+      run: |
+        echo "::set-output name=dir::$(npm config get cache)"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.npm-cache.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    # Commands
+    - name: Setup .env
+      run: cp .env.github .env
+
+    - name: Docker start
+      run: docker-compose up -d mass mass-db
+
+    - name: Composer install
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: docker exec mass composer install
+
+    - name: Format PHP
+      run: docker exec mass composer format-php-dry
+
+    - name: Npm install
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: docker exec mass npm install
+
+    - name: Format JS
+      run: docker exec mass npm run lint-dry

@@ -76,19 +76,11 @@
             "npm install",
             "npm run dev-silent"
         ],
-        "initialize-ci": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@composer install",
-            "npm install"
-        ],
         "format-php": [
             "@php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.php --path-mode=intersection . --ansi"
         ],
         "format-php-dry": [
             "@php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.php --path-mode=intersection . --ansi --dry-run"
         ],
-        "id": [
-            "id"
-        ]
     }
 }
