@@ -1,4 +1,4 @@
-name: CIB
+name: Create Issue Branch
 
 on:
     issues:
