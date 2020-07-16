@@ -58,7 +58,6 @@ services:
       - traefik.http.routers.https.tls=true
       - traefik.http.routers.https.entrypoints=https
       - traefik.http.routers.https.tls.certresolver=basic
-      - traefik.port=80
 
   transmission:
     image: haugene/transmission-openvpn
