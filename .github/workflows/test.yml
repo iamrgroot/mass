@@ -31,9 +31,13 @@ jobs:
       run: docker-compose up -d mass mass-db
 
     - name: Debug 1
-      run: docker exec mass id
+      run: docker exec mass pwd
+    - name: Debug 1.1
+      run: docker exec mass ls -al
     - name: Debug 2
       run: docker exec mass stat -c %a /var/www
+    - name: Debug 3
+      run: docker exec mass stat /var/www
 
     - name: Initialize app
       run: docker exec mass composer initialize
