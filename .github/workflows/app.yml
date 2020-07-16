@@ -1,0 +1,50 @@
+name: App
+
+on:  
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.ref }}
+
+    # Caching
+    - name: Composer Cache
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: '**/vendor'
+        key: ${{ runner.os }}-vendor-${{ hashFiles('**/composer.lock') }}
+  
+    - name: Npm Cache
+      id: npm-cache
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+
+    # Commands
+    - name: Setup .env
+      run: cp .env.github .env
+
+    - name: Docker start
+      run: docker-compose up -d mass
+
+    - name: Composer install
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: docker exec mass composer install
+
+    - name: Format PHP
+      run: docker exec mass composer format-php-dry
+
+    - name: Npm install
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: docker exec mass npm install
+
+    - name: Format JS
+      run: docker exec mass npm run lint-dry
