@@ -103,5 +103,5 @@
             "git fetch --prune",
             "bash -c \"(git branch | grep -v '^*' | xargs git branch -D) || echo 'No other local branches to delete.'\""
         ]
-    }    
+    }
 }
