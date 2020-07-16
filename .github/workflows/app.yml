@@ -15,27 +15,16 @@ jobs:
 
     # Caching
     - name: Composer Cache
-      id: composer-cache-path
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-    - uses: actions/cache@v2
-      id: composer-cache
+      uses: actions/cache@v2
       with:
-        path: ${{ steps.composer-cache-path.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-composer-
-    
-    - name: Node Cache
-      id: npm-cache-path
-      run: |
-        echo "::set-output name=dir::$(npm config get cache)"
-    - uses: actions/cache@v2
-      id: npm-cache
+        path: '**/vendor'
+        key: ${{ runner.os }}-vendor-${{ hashFiles('**/composer.lock') }}
+  
+    - name: Npm Cache
+      uses: actions/cache@v2
       with:
-        path: ${{ steps.npm-cache-path.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+        path: '**/node_modules'
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
 
     # Commands
     - name: Setup .env
