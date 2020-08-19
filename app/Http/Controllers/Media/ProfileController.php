@@ -12,11 +12,11 @@ class ProfileController extends Controller
 {
     public function fromMovies(Client $client): Collection
     {
-        return $client->doRequest(new SonarrProfileRequest())->getData();
+        return $client->doRequest(new RadarrProfileRequest())->getData();
     }
 
     public function fromSeries(Client $client): Collection
     {
-        return $client->doRequest(new RadarrProfileRequest())->getData();
+        return $client->doRequest(new SonarrProfileRequest())->getData();
     }
 }
