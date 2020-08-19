@@ -34,13 +34,13 @@ class Torrent
             case TorrentStatusRpc::Downloading:
                 $this->status = TorrentStatus::Downloading;
                 break;
-                
+
             case TorrentStatusRpc::Seeding:
                 $this->status = TorrentStatus::Seeding;
                 break;
-                
+
             case TorrentStatusRpc::Paused:
-                $this->status = $this->percent_done === 1.0 ? TorrentStatus::Done : TorrentStatus::Paused;
+                $this->status = 1.0 === $this->percent_done ? TorrentStatus::Done : TorrentStatus::Paused;
                 break;
         }
 
@@ -51,9 +51,9 @@ class Torrent
     {
         $icons = [
             TorrentStatus::Downloading => '$mdiDownload',
-            TorrentStatus::Seeding => '$mdiUpload',
-            TorrentStatus::Paused => '',
-            TorrentStatus::Done => '$mdiCheck',
+            TorrentStatus::Seeding     => '$mdiUpload',
+            TorrentStatus::Paused      => '',
+            TorrentStatus::Done        => '$mdiCheck',
         ];
 
         return $icons[$this->status];
