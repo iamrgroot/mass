@@ -30,9 +30,3 @@ Route::domain('home.' . config('app.host'))->group(function () {
             })->where('route', $routes);
         });
 });
-
-Route::domain(config('app.host'))->group(function () {
-    Route::get('/', function () {
-        return view('me');
-    });
-});

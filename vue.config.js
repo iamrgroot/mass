@@ -9,10 +9,6 @@ const pages = {
         entry: './resources/ts/login.ts',
         chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-login-vendors', 'vuetify', 'login']
     },
-    me: {
-        entry: './resources/ts/me.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-me-vendors','vuetify', 'me']
-    },
     home: {
         entry: './resources/ts/home.ts',
         chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-home-vendors','vuetify', 'home']

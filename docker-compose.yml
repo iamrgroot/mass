@@ -50,11 +50,11 @@ services:
         ipv4_address: 172.19.0.4
     labels:
       - traefik.enable=true
-      - traefik.http.routers.http.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
+      - traefik.http.routers.http.rule=Host(`home.${APP_HOST}`)
       - traefik.http.routers.http.entrypoints=http
       - traefik.http.routers.http.middlewares=redirect
       - traefik.http.middlewares.redirect.redirectscheme.scheme=https
-      - traefik.http.routers.https.rule=Host(`${APP_HOST}`, `home.${APP_HOST}`)
+      - traefik.http.routers.https.rule=Host(`home.${APP_HOST}`)
       - traefik.http.routers.https.tls=true
       - traefik.http.routers.https.entrypoints=https
       - traefik.http.routers.https.tls.certresolver=basic
@@ -216,7 +216,7 @@ services:
       - /mnt/data/movies:/data/movies
       - /mnt/data/tvseries:/data/tvshows
       - ./docker-compose/plex/config/:/config
-      - /tmp:/transcode
+      - /tmp:/tmp
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
