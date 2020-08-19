@@ -31,6 +31,8 @@
                     :headers="headers"
                     :items="torrents"
                     :items-per-page="15"
+                    :sort-by="['error_string', 'status', 'rate_download']"
+                    :sort-desc="[true, false, true]"
                 >
                     <template v-slot:body="{ items }">
                         <tbody>
@@ -44,18 +46,23 @@
                                 >
                                     <td>
                                         <v-icon
-                                            v-if="! paused(item)"
+                                            v-if="busy(item) && ! done(item)"
                                             :color="color(item)"
                                             @click="stopTorrent(item)"
                                         >
                                             $mdiPause
                                         </v-icon>
                                         <v-icon
-                                            v-else
+                                            v-else-if="! done(item)"
                                             :color="color(item)"
                                             @click="startTorrent(item)"
                                         >
                                             $mdiPlay
+                                        </v-icon>
+                                    </td>
+                                    <td>
+                                        <v-icon :color="color(item)">
+                                            {{ item.status_icon }}
                                         </v-icon>
                                     </td>
                                     <td>
@@ -93,12 +100,24 @@
                                     class="progress-row pb-3"
                                 >
                                     <td :colspan="headers.length">
-                                        <v-progress-linear
-                                            :value="item.percent_done * 100"
-                                            :color="color(item)"
-                                            :buffer-value="stream(item) ? 0 : 100"
-                                            :stream="stream(item)"
-                                        />
+                                        <v-row
+                                            no-gutters
+                                            align="center"
+                                            justify="space-between"
+                                        >
+                                            <v-progress-linear
+                                                :value="item.percent_done * 100"
+                                                :color="color(item)"
+                                                :buffer-value="stream(item) ? 0 : 100"
+                                                :stream="stream(item)"
+                                                style="max-width: calc(100% - 40px);"
+                                            />
+                                            <span
+                                                class="text-overline"
+                                            >
+                                                {{ $n(item.percent_done * 100, 'integer') }}
+                                            </span>
+                                        </v-row>
                                     </td>
                                 </tr>
                             </template>
@@ -138,14 +157,15 @@ const Torrents = namespace('Torrents');
 })
 export default class TorrentsPage extends Vue {
     private headers = [
-        { text: '', value: 'play_pause', sortable: false },
+        { text: '', value: 'play_pause', sortable: false, width: '1%', },
+        { text: 'Status', value: 'status', width: '3%', },
         { text: 'Name', value: 'name' },
         { text: 'ETA', value: 'eta' },
         { text: 'Download', value: 'rate_download' },
         { text: 'Upload', value: 'rate_upload' },
         { text: 'Size', value: 'size_when_done' },
         { text: 'Error', value: 'error_string' },
-        { text: '', value: 'delete', sortable: false },
+        { text: '', value: 'delete', sortable: false, width: '1%', },
     ];
     private torrent_fetcher!: number;
 
@@ -155,10 +175,27 @@ export default class TorrentsPage extends Vue {
     @Torrents.Action private stopTorrent!: (torrent: Torrent) => Promise<boolean>;
     @Torrents.Action private startTorrent!: (torrent: Torrent) => Promise<boolean>;
 
-    paused(torrent: Torrent): boolean { return torrent.status === TorrentStatus.Paused; }
-    hasError(torrent: Torrent): boolean { return torrent.error_string !== null; }
-    stream(torrent: Torrent): boolean { return ! this.hasError(torrent) && ! this.paused(torrent); }
-    color(torrent: Torrent): string { return this.hasError(torrent) ? 'error' : (this.paused(torrent) ? 'grey' : 'success'); }
+    done(torrent: Torrent): boolean {
+        return torrent.status === TorrentStatus.Done;
+    }
+    busy(torrent: Torrent): boolean {
+        return torrent.status !== TorrentStatus.Paused;
+    }
+    hasError(torrent: Torrent): boolean {
+        return torrent.error_string !== null;
+    }
+    stream(torrent: Torrent): boolean {
+        return ! this.hasError(torrent) && this.busy(torrent);
+    }
+    color(torrent: Torrent): string {
+        if (this.hasError(torrent)) return 'error';
+
+        if (! this.busy(torrent)) return 'grey';
+
+        if (torrent.status === TorrentStatus.Seeding) return 'info';
+
+        return 'success';
+    }
 
     created(): void {
         this.fetchTorrents();

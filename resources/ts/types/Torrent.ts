@@ -1,6 +1,7 @@
 export type Torrent = {
     id: number;
     status: number;
+    status_icon: string;
     name: string;
     error_string: string | null;
     eta: number;
