@@ -16,6 +16,9 @@ import {
     mdiAccount,
     mdiEmail,
     mdiLogout,
+    mdiDownload,
+    mdiUpload,
+    mdiCheck,
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -38,6 +41,9 @@ export default new Vuetify({
             mdiAccount,
             mdiEmail,
             mdiLogout,
+            mdiDownload,
+            mdiUpload,
+            mdiCheck,
         }
     },
 });
