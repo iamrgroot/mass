@@ -50,7 +50,6 @@ class Items extends VuexModule {
         this.add_errors = add_errors;
     }
 
-
     @Action({ rawError: true })
     public fetchItems(type: ItemType): Promise<Item[]> {
         return new Promise((resolve, reject) => {

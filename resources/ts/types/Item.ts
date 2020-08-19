@@ -29,3 +29,7 @@ export type SearchResult = {
     id: number;
     seasons?: Season[];
 }
+
+export type IndexResult = {
+    id: number;
+}

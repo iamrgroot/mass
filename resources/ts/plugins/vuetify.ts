@@ -20,6 +20,7 @@ import {
     mdiUpload,
     mdiCheck,
     mdiKey,
+    mdiMagnifyPlusOutline,
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -46,6 +47,7 @@ export default new Vuetify({
             mdiUpload,
             mdiCheck,
             mdiKey,
+            mdiMagnifyPlusOutline,
         }
     },
 });
