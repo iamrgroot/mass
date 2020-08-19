@@ -14,6 +14,7 @@ Route::domain('home.' . config('app.host'))->group(function () {
             Route::post('search-missing', 'Media\MovieController@searchMissing');
             Route::post('{id}/search-indexer', 'Media\MovieController@searchIndexer');
             Route::post('{id}/refresh', 'Media\MovieController@refresh');
+            Route::post('{indexer_id}/add-manual', 'Media\MovieController@addManual');
 
             Route::put('', 'Media\MovieController@put');
 
@@ -30,6 +31,7 @@ Route::domain('home.' . config('app.host'))->group(function () {
             Route::post('search-missing', 'Media\SerieController@searchMissing');
             Route::post('{id}/search-indexer', 'Media\SerieController@searchIndexer');
             Route::post('{id}/refresh', 'Media\SerieController@refresh');
+            Route::post('{indexer_id}/add-manual', 'Media\SerieController@addManual');
 
             Route::put('', 'Media\SerieController@put');
             Route::put('{id}/toggle-season', 'Media\SerieController@toggleSeason');

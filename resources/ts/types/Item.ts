@@ -10,9 +10,16 @@ export type Feature = {
     text: string;
 }
 
+export type Episode = {
+    id: number;
+    season_number: number;
+    episode_number: number;
+}
+
 export type Season = {
     monitored: boolean;
     season_number: number;
+    episodes: Episode[];
 }
 
 export type Item = {
@@ -31,5 +38,13 @@ export type SearchResult = {
 }
 
 export type IndexResult = {
-    id: number;
+    guid:  string;
+    indexer_id:  number;
+    quality:  string;
+    age:  number;
+    size:  number;
+    title:  string;
+    seeders:  number;
+    leechers:  number;
+    rejections:  string[];
 }

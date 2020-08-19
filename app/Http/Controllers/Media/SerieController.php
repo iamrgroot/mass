@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Library\Http\Client;
+use App\Library\Media\Requests\Sonarr\AddManualRequest;
 use App\Library\Media\Requests\Sonarr\AddSerieRequest;
 use App\Library\Media\Requests\Sonarr\DeleteSerieRequest;
+use App\Library\Media\Requests\Sonarr\ManualSearchRequest;
 use App\Library\Media\Requests\Sonarr\RefreshRequest;
 use App\Library\Media\Requests\Sonarr\SearchCommandRequest;
 use App\Library\Media\Requests\Sonarr\SearchMissingRequest;
@@ -151,6 +153,22 @@ class SerieController extends Controller
     public function searchMissing(Client $client)
     {
         $client->doRequest(new SearchMissingRequest());
+
+        return response('ok');
+    }
+
+    public function manualSearch(int $id, Client $client): Collection
+    {
+        return $client->doRequest(new ManualSearchRequest($id))->getData();
+    }
+
+    public function addManual(Request $request, int $indexer_id, Client $client): Response
+    {
+        $validated = $request->validate([
+            'guid' => 'required|string',
+        ]);
+
+        $client->doRequest(new AddManualRequest($indexer_id, $validated['guid']));
 
         return response('ok');
     }

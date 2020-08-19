@@ -1,6 +1,6 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import { IndexResult } from '@/types/Item';
-import { ItemTypeArgument } from '@/types/Args';
+import { ItemTypeArgument, ManualAddArgument } from '@/types/Args';
 import axios from '@/plugins/axios';
 import { ItemType } from '@/enums/ItemType';
 
@@ -40,6 +40,29 @@ class Indexers extends VuexModule {
                 reject(error);
             }).finally(() => {
                 this.context.commit('setLoading', false);
+            });
+        });
+    }
+    @Action({ rawError: true })
+    public addManual(args: ManualAddArgument): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const url = args.type === ItemType.Movie ?
+                `/async/movies/${args.indexer_id}/add-manual`:
+                `/async/series/${args.indexer_id}/add-manual`;
+
+            axios.post(url, {
+                guid: args.guid
+            }).then(() => {
+                this.context.commit('setIndexerResults', []);
+                this.context.commit('setDialog', false);
+                resolve(true);
+            }).catch(error => {
+                this.context.commit('Notifications/notify', {
+                    color: 'error',
+                    title: 'Error adding indexer entry',
+                }, {root: true});
+
+                reject(error);
             });
         });
     }
