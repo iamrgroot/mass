@@ -28,15 +28,15 @@
                                         <v-text-field
                                             v-model="username"
                                             name="username"
-                                            label="Username"
+                                            prepend-icon="$mdiAccount"
                                         />
                                     </v-col>
                                     <v-col cols="12">
                                         <v-text-field
                                             v-model="password"
                                             name="password"
-                                            label="Password"
                                             type="password"
+                                            prepend-icon="$mdiKey"
                                             @keydown.enter="login"
                                         />
                                     </v-col>

@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 Route::domain('home.' . config('app.host'))->group(function () {
-    Route::get('/login', 'Auth\LoginController@page')->name('login');
-    Route::post('/login', 'Auth\LoginController@login')->name('login');
+    Route::middleware('guest')->group(static function () {
+        Route::get('/login', 'Auth\LoginController@page')->name('login');
+        Route::post('/login', 'Auth\LoginController@login')->name('login');
+    });
+
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::middleware('auth')
