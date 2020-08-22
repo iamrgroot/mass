@@ -12,4 +12,9 @@ class BaseModel extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    public static function getMaintenanceFields(): array
+    {
+        return [];
+    }
 }

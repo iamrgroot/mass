@@ -1,29 +1,27 @@
 <template>
     <div>
         <v-toolbar max-height="64">
-            <v-spacer />
-
             <v-toolbar-items>
                 <v-btn
                     text
                     small
-                    to="/torrents"
+                    @click="home"
                 >
-                    Torrents
+                    Home
                 </v-btn>
+            </v-toolbar-items>
+            <v-spacer />
+
+            <v-toolbar-title>Maintenance</v-toolbar-title>
+
+            <v-spacer />
+            <v-toolbar-items>
                 <v-btn
                     text
                     small
-                    to="/movies"
+                    to="/maintenance/users"
                 >
-                    Movies
-                </v-btn>
-                <v-btn
-                    text
-                    small
-                    to="/series"
-                >
-                    Series
+                    Users
                 </v-btn>
                 <v-btn
                     icon
@@ -38,25 +36,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import NotificationComponent from '@/components/defaults/Notification.vue';
-import { Notification } from '../../types/Notification';
 
-const Notifications = namespace('Notifications');
-
-@Component({
-    components: {
-        NotificationComponent
-    }
-})
+@Component
 export default class Toolbar extends Vue {
-
-    @Notifications.State private notifications!: Notification[];
-
-    @Notifications.Mutation private remove!: (notification_id: number) => void;
-
     logout(): void {
         window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
+    }
+    home(): void {
+        window.location.replace(window.location.protocol + '//' + window.location.host);
     }
 }
 </script>

@@ -10,26 +10,24 @@ Route::domain(config('app.host'))->group(function () {
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-    Route::middleware('auth')
-        ->group(static function () {
-            Route::get('/phpinfo', function () {
-                phpinfo();
-            })->name('phpinfo');
+    Route::middleware('auth')->group(static function () {
+        $routes = [
+            '',
+            'movies',
+            'series',
+            'movies\/\d+',
+            'series\/\d+',
+            'torrents',
+            'requests',
+        ];
 
-            $routes = [
-                '',
-                'movies',
-                'series',
-                'movies/\d+',
-                'series/\d+',
-                'torrents',
-            ];
+        Route::get('/{route}', 'Auth\RouteController@view')
+            ->where('route', implode('|', array_map(fn ($route) => "({$route})", $routes)));
 
-            $routes = array_map(fn ($route) => "({$route})", $routes);
-            $routes = implode('|', $routes);
-
-            Route::get('/{route}', function () {
-                return view('home');
-            })->where('route', $routes);
-        });
+        $routes = [
+            'users',
+        ];
+        Route::get('/maintenance/{route}', 'Maintenance\MaintenanceController@view')
+            ->where('route', implode('|', array_map(fn ($route) => "({$route})", $routes)));
+    });
 });

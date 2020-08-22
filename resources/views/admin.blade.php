@@ -1,5 +1,5 @@
 @php
-  $name = 'home';
+  $name = 'admin';
   $chunk = $name;
 @endphp
 

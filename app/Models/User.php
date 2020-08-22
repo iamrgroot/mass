@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends BaseUser
 {
     use Notifiable;
+    use HasRoles;
 
     public const ADMIN = 1;
 
@@ -35,4 +37,14 @@ class User extends BaseUser
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function getMaintenanceFields(): array
+    {
+        return [
+            'username',
+            'password' => [
+                'type' => 'password',
+            ],
+        ];
+    }
 }

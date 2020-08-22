@@ -29,7 +29,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import Toolbar from '@/components/navigation/AdminToolbar.vue';
+import Toolbar from '@/components/navigation/MaintenanceToolbar.vue';
 import Confirm from '@/components/defaults/Confirm.vue';
 import NotificationComponent from '@/components/defaults/Notification.vue';
 import { Notification } from '@/types/Notification';
