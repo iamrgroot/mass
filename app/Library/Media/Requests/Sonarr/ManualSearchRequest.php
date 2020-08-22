@@ -9,11 +9,11 @@ use GuzzleHttp\Psr7\Response;
 
 class ManualSearchRequest extends SonarrRequest
 {
-    private int $movie_id;
+    private int $episode_id;
 
-    public function __construct(int $movie_id)
+    public function __construct(int $episode_id)
     {
-        $this->movie_id = $movie_id;
+        $this->episode_id = $episode_id;
     }
 
     public function getRoute(): string
@@ -23,7 +23,7 @@ class ManualSearchRequest extends SonarrRequest
 
     public function getParameters(): string
     {
-        return "&movieId={$this->movie_id}";
+        return "&episodeId={$this->episode_id}";
     }
 
     public function getResponseData(Response $response): ResponseInterface
