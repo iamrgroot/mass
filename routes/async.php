@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::domain('home.' . config('app.host'))->group(function () {
+Route::domain(config('app.host'))->group(function () {
     Route::middleware('auth')->group(static function () {
         Route::prefix('movies')->group(static function () {
             Route::get('', 'Media\MovieController@movies');
