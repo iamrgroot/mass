@@ -1,12 +1,14 @@
 # Media Assistant (mass)
 
-Uses docker images
+Uses docker images for Laravel:
+* php + node
 * mysql
 * nginx
+
+Uses docker images for media:
 * transmission
 * sonarr
 * radarr
-* bazarr
 * jackett
 * traefik
 * plex
@@ -17,26 +19,21 @@ Uses docker images
 cp .env.example .env
 ```
 
-Change variables in .env accordingly.
+Change variables in `.env` accordingly.
 
-### Traefik
+:warning: After running the initialization, you can remove the passwords etc from the `.env` for security reasons.
 
-```bash
-cp ./docker-compose/traefik/traefik.toml.example ./docker-compose/traefik/traefik.toml
-```
-
-Edit values in `docker-compose/traefik/traefik.toml`.
-
-### Build & Start
+### Initialize
 
 ```bash
-docker-compose build
 docker-compose up -d
 ```
 
-Wait a second or two to let the containers startup...
+:warning: Wait a second or two to let the containers startup...
 
 ```bash
-docker exec mass composer initialize[-dev]
+docker exec mass composer initialize
 docker-compose restart
 ```
+
+:warning: It can take a second or 2 for Traefik to initialize when using SSL.

@@ -115,7 +115,7 @@
                                             <span
                                                 class="text-overline"
                                             >
-                                                {{ $n(item.percent_done * 100, 'integer') }}
+                                                {{ (item.percent_done * 100).toFixed() }}
                                             </span>
                                         </v-row>
                                     </td>

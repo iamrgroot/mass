@@ -1,9 +1,9 @@
-debug = true
+debug = false
 
 defaultEntryPoints = ["https","http"]
 
 [log]
-  level = "DEBUG"
+  level = "INFO"
 
 [entryPoints]
   [entryPoints.http]
@@ -11,7 +11,7 @@ defaultEntryPoints = ["https","http"]
   [entryPoints.https]
   address = ":443"
 
-[providers.docker]
+[docker]
 
 [retry]
 
@@ -19,7 +19,7 @@ defaultEntryPoints = ["https","http"]
   dashboard = true
   insecure = true
 
-[docker]
+[providers.docker]
   exposedByDefault = false
   watch = true
 
