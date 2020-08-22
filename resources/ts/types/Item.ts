@@ -38,13 +38,13 @@ export type SearchResult = {
 }
 
 export type IndexResult = {
-    guid:  string;
-    indexer_id:  number;
-    quality:  string;
-    age:  number;
-    size:  number;
-    title:  string;
-    seeders:  number;
-    leechers:  number;
-    rejections:  string[];
+    guid: string;
+    indexer_id: number;
+    quality: string;
+    age: number;
+    size: number;
+    title: string;
+    seeders: number;
+    leechers: number;
+    rejections: string[];
 }
