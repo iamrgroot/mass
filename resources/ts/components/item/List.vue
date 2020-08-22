@@ -63,6 +63,10 @@
                 >
                     No {{ is_movie ? 'movies' : 'series' }}
                 </v-alert>
+                <v-progress-linear
+                    v-else-if="loading"
+                    indeterminate
+                />
                 <v-row
                     v-else
                     align="center"
