@@ -20,6 +20,9 @@ import {
     mdiUpload,
     mdiCheck,
     mdiKey,
+    mdiSearchWeb,
+    mdiInformation,
+    mdiCloudDownload,
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -46,6 +49,9 @@ export default new Vuetify({
             mdiUpload,
             mdiCheck,
             mdiKey,
+            mdiSearchWeb,
+            mdiInformation,
+            mdiCloudDownload,
         }
     },
 });

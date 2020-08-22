@@ -18,3 +18,9 @@ export type SerieUpdateArgument = {
     season: number;
     monitor: boolean;
 }
+
+export type ManualAddArgument = {
+    guid: string;
+    indexer_id: number;
+    type: ItemType;
+}

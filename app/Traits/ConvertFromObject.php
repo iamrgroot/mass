@@ -11,7 +11,7 @@ trait ConvertFromObject
         foreach ($object as $key => $value) {
             $key = self::snakeCase($key);
 
-            $skip = self::propertyExists('skipped') && in_array($key, $this->skipped);
+            $skip = self::propertyExists('skip') && in_array($key, $this->skip);
 
             if (! $skip && self::propertyExists($key)) {
                 $this->{$key} = $value;

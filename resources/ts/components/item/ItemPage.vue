@@ -7,34 +7,73 @@
             <v-card-title>
                 {{ item.title }}
                 <v-spacer />
-                <v-btn
-                    icon
-                    class="ma-1"
-                    @click="searchIndexer({
-                        item_id: item.id,
-                        type: item.type
-                    })"
-                >
-                    <v-icon>$mdiMagnify</v-icon>
-                </v-btn>
-                <v-btn
-                    icon
-                    class="ma-1"
-                    @click="refresh({
-                        item_id: item.id,
-                        type: item.type
-                    })"
-                >
-                    <v-icon>$mdiRefresh</v-icon>
-                </v-btn>
-                <v-btn
-                    icon
-                    color="error"
-                    class="ml-1"
-                    @click="remove"
-                >
-                    <v-icon>$mdiDelete</v-icon>
-                </v-btn>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            icon
+                            class="ma-1"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="searchIndexer({
+                                item_id: item.id,
+                                type: item.type
+                            })"
+                        >
+                            <v-icon>$mdiMagnify</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Search automagically</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            v-if="is_movie"
+                            icon
+                            class="ma-1"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="manualSearch({
+                                item_id: item.id,
+                                type: item.type
+                            })"
+                        >
+                            <v-icon>$mdiSearchWeb</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Search manually</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            icon
+                            class="ma-1"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="refresh({
+                                item_id: item.id,
+                                type: item.type
+                            })"
+                        >
+                            <v-icon>$mdiRefresh</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Refresh disk and info</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            icon
+                            class="ma-1"
+                            color="error"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="remove"
+                        >
+                            <v-icon>$mdiDelete</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Delete</span>
+                </v-tooltip>
             </v-card-title>
             <v-divider class="mx-3" />
             <v-card-text>
@@ -81,6 +120,8 @@
                 </v-row>
             </v-card-text>
         </template>
+
+        <SearchDialog />
     </v-card>
 </template>
 
@@ -96,16 +137,19 @@ import { Component } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { Location } from 'vue-router';
 import { ItemTypeArgument } from '@/types/Args';
-import { Item } from '@/types/Item';
+import { Item, IndexResult } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
 import ItemBase from '@/components/item/ItemBase.vue';
 import SeasonsButton from '@/components/item/SeasonsButton.vue';
+import SearchDialog from '@/components/indexer/SearchDialog.vue';
 
 const Items = namespace('Items');
+const Indexers = namespace('Indexers');
 
 @Component({
     components: {
-        SeasonsButton
+        SeasonsButton,
+        SearchDialog
     }
 })
 export default class ItemPage extends ItemBase {
@@ -121,6 +165,8 @@ export default class ItemPage extends ItemBase {
     @Items.Action private delete!: (args: ItemTypeArgument) => Promise<boolean>;
     @Items.Action private searchIndexer!: (args: ItemTypeArgument) => Promise<boolean>;
     @Items.Action private refresh!: (args: ItemTypeArgument) => Promise<boolean>;
+
+    @Indexers.Action private manualSearch!: (args: ItemTypeArgument) => Promise<IndexResult[]>;
 
     created(): void {
         this.fetch();

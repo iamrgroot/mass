@@ -2,6 +2,8 @@
 
 namespace App\Library\Media\DataObjects;
 
+use App\Library\Http\Client;
+use App\Library\Media\Requests\Sonarr\EpisodesRequest;
 use App\Traits\AddRatingFeature;
 use App\Traits\ConvertFromObject;
 
@@ -19,8 +21,11 @@ class Serie extends MediaItem
 
         $this->addRating($object);
 
-        $this->seasons = array_map(
-            fn (object $season) => new Season($season),
+        $client   = new Client();
+        $request  = new EpisodesRequest($this->id);
+        $episodes = $client->doRequest($request)->getData()->groupBy('season_number');
+
+        $this->seasons = array_map(fn (object $season) => new Season($season, $episodes[$season->seasonNumber] ?? collect()),
             $this->seasons
         );
 

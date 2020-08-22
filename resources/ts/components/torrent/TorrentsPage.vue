@@ -158,7 +158,7 @@ const Torrents = namespace('Torrents');
 export default class TorrentsPage extends Vue {
     private headers = [
         { text: '', value: 'play_pause', sortable: false, width: '1%', },
-        { text: 'Status', value: 'status', width: '3%', },
+        { text: 'Status', value: 'status', width: '4%', align: 'center' },
         { text: 'Name', value: 'name' },
         { text: 'ETA', value: 'eta' },
         { text: 'Download', value: 'rate_download' },
