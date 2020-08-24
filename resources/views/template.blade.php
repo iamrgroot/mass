@@ -20,9 +20,9 @@
     <div id="app"></div>
 
     <script>
-      window.blade_errors = {!! json_encode($errors->all() ?? []) !!}
+      window.blade_errors = {!! json_encode($errors->all() ?? []) !!};
       @if(isset($inject))
-          window.injected = {!! json_encode($inject) !!}
+          window.injected = {!! json_encode($inject) !!};
       @endif
     </script>
 

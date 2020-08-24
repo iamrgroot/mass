@@ -13,14 +13,25 @@ class UserTableSeeder extends Seeder
         try {
             DB::beginTransaction();
 
-            /** @var User $user */
-            $user = User::firstOrNew([
+            /** @var User $admin */
+            $admin = User::firstOrNew([
                 'id' => User::ADMIN,
             ]);
 
+            if (! $admin->exists) {
+                $admin->username = config('app.admin_user');
+                $admin->password = bcrypt(config('app.admin_password'));
+                $admin->save();
+            }
+
+            /** @var User $user */
+            $user = User::firstOrNew([
+                'id' => User::USER,
+            ]);
+
             if (! $user->exists) {
-                $user->username = 'admin';
-                $user->password = bcrypt(config('app.admin_password'));
+                $user->username = config('app.user_user');
+                $user->password = bcrypt(config('app.user_password'));
                 $user->save();
             }
 
@@ -56,7 +67,8 @@ class UserTableSeeder extends Seeder
                 $role->permissions()->sync($permissions);
             }
 
-            $user->syncRoles(Role::where('name', 'admin')->firstOrFail());
+            $admin->syncRoles(Role::where('name', 'admin')->firstOrFail());
+            $user->syncRoles(Role::where('name', 'user')->firstOrFail());
 
             DB::commit();
         } catch (Throwable $exception) {

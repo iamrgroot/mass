@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Resources\RoleOptionResource;
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends BaseUser
@@ -12,6 +14,7 @@ class User extends BaseUser
     use HasRoles;
 
     public const ADMIN = 1;
+    public const USER  = 2;
 
     /**
      * The attributes that are not mass assignable.
@@ -38,13 +41,28 @@ class User extends BaseUser
         'email_verified_at' => 'datetime',
     ];
 
-    public static function getMaintenanceFields(): array
+    public static function getMaintenanceFields(bool $options = true): array
     {
-        return [
-            'username',
+        $config = [
+            'username' => [
+                'component' => 'TextField',
+            ],
             'password' => [
-                'type' => 'password',
+                'component'     => 'Password',
+                'hide_in_table' => true,
+            ],
+            'roles' => [
+                'component'     => 'SelectMultiple',
+                'relation'      => $options ? RoleOptionResource::collection(Role::all()) : [],
+                'hide_in_table' => true,
             ],
         ];
+
+        if (false === $options) {
+            $config['model'] = self::class;
+            $config['relations'] = ['roles'];
+        }
+
+        return $config;
     }
 }

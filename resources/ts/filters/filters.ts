@@ -56,8 +56,17 @@ const duration = function(number: number | null): string {
     return `${hours}h ${minutes}m`;
 };
 
+const capitalize = function(string: string | null): string {
+    if (string === null) {
+        return '';
+    }
+
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 export {
     byte,
     bytesPerSecond,
     duration,
+    capitalize,
 };

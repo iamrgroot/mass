@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
-import ItemPage from '@/components/item/ItemPage.vue';
+import MainPage from '@/components/user/MainPage.vue';
 
 Vue.use(VueRouter);
 
@@ -9,12 +9,7 @@ const routes: RouteConfig[] = [
     {
         path: '/',
         name: 'home',
-        redirect: '/movies'
-    },
-    {
-        path: '/movies/:id',
-        name: 'movie',
-        component: ItemPage,
+        component: MainPage,
         // component: () => import(/* webpackChunkName: "item" */ '@/components/item/ItemPage.vue'),
     },
 ];

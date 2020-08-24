@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::domain(config('app.host'))->group(function () {
     Route::middleware('auth')->group(static function () {
+        Route::prefix('maintenance')
+            ->middleware('role:admin')
+            ->group(static function () {
+                Route::get('{table}', 'Maintenance\MaintenanceController@items');
+            });
+
         Route::prefix('movies')->group(static function () {
             Route::get('', 'Media\MovieController@movies');
             Route::get('{id}', 'Media\MovieController@movie');

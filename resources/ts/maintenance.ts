@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import Maintanance from '@/views/Maintanance.vue';
+import Maintenance from '@/views/Maintenance.vue';
 
 import router from '@/router/maintenance';
 import store from '@/store';
@@ -13,5 +13,5 @@ new Vue({
     router,
     store,
     vuetify,
-    render: (h): VNode => h(Maintanance)
+    render: (h): VNode => h(Maintenance)
 }).$mount('#app');
