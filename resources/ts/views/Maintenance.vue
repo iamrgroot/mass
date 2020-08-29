@@ -9,7 +9,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Main from '@/views/Main.vue';
-import Toolbar from '@/components/navigation/MaintenanceToolbar.vue';
+import Toolbar from '@/components/maintenance/MaintenanceToolbar.vue';
 
 @Component({
     components: {
