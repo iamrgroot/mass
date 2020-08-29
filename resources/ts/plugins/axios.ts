@@ -16,9 +16,9 @@ axios.interceptors.request.use(function (request: AxiosRequestConfig): AxiosRequ
     return request;
 });
 
-axios.interceptors.response.use(function (response: AxiosResponse): AxiosResponse<any> | Promise<AxiosResponse<any>> {
+axios.interceptors.response.use(function (response: AxiosResponse): AxiosResponse<unknown> | Promise<AxiosResponse<unknown>> {
     return response;
-}, function (error: any) {
+}, function (error) {
     if (error.response.status === 401) {
         window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
     }

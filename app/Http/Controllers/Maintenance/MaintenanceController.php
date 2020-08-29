@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Maintenance;
 
 use App\Http\Controllers\Controller;
+use App\Models\BaseModel;
 use App\Models\User;
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,38 +31,41 @@ class MaintenanceController extends Controller
 
         abort_if(($config[$table] ?? null) === null, Response::HTTP_INTERNAL_SERVER_ERROR);
 
-        $model = $config[$table]['model'];
+        $model     = $config[$table]['model'];
         $relations = $config[$table]['relations'];
 
         return $model::with($relations)
             ->get()
-            ->map(static function(Model $model) use ($relations) {
-                foreach ($relations as $relation) {
-                    $model->$relation = $model->$relation->pluck('id');
-                    $model->unsetRelation($relation);
-                }
-
-                return $model;
-            });
+            ->map($this->mapRelations($relations));
     }
 
     public function update(Request $request, string $table)
     {
         $config = self::config(false)[$table];
 
-        $model = $config['model'];
-        $relations = $config['relations'];
+        $model_class      = $config['model'];
+        $relations        = $config['relations'];
+        $fields_to_bcrypt = $config['bcrypt'] ?? [];
 
-        unset($config['model']);
-        unset($config['relations']);
+        unset($config['model'], $config['relations'], $config['bcrypt']);
 
-        $validated = $request->validate(
-            array_map(fn($item) => $item['validation'], $config)
-        );
+        /** @var BaseModel|BaseUser $model */
+        $model = $model_class::findOrNew($request->id);
 
+        $validated = $this->validateData($config, $model, $request);
+        $model     = $this->saveModel($model, $validated, $fields_to_bcrypt, $relations);
 
+        return $this->mapRelations($relations)($model);
+    }
 
-        dd($request->all(), $validated, $config);
+    public function delete(string $table, int $model_id): Response
+    {
+        /** @var BaseModel|BaseUser $model */
+        $model = self::config(false)[$table]['model'];
+
+        $model::findOrFail($model_id)->delete();
+
+        return response('ok');
     }
 
     private static function config(bool $to_frontend = true): array
@@ -68,5 +73,61 @@ class MaintenanceController extends Controller
         return [
             'users' => User::getMaintenanceFields($to_frontend),
         ];
+    }
+
+    private function mapRelations(array $relations): Closure
+    {
+        return static function (Model $model) use ($relations) {
+            foreach ($relations as $relation) {
+                $model->{$relation} = $model->{$relation}->pluck('id');
+                $model->unsetRelation($relation);
+            }
+
+            return $model;
+        };
+    }
+
+    private function validateData(array $config, $model, Request $request): array
+    {
+        $keys = array_keys($config);
+
+        $validation = array_map(static function ($item, $key) use ($model, $request) {
+            $rule = $item[$model->exists ? 'validate_edit' : 'validate_new'] ?? null;
+
+            if (null === $rule) {
+                return '';
+            }
+
+            return $rule($request->get($key));
+        },
+            $config,
+            $keys
+        );
+
+        return $request->validate(array_combine($keys, $validation));
+    }
+
+    private function saveModel($model, array $validated, array $fields_to_bcrypt, array $relations)
+    {
+        foreach ($validated as $field => $value) {
+            if (in_array($field, $fields_to_bcrypt)) {
+                $model->{$field} = bcrypt($value);
+            } elseif (! is_array($value) && 'id' !== $field) {
+                $model->{$field} = $value;
+            }
+        }
+
+        $model->save();
+
+        foreach ($validated as $field => $value) {
+            if (is_array($value)) {
+                $model->{$field}()->sync($value);
+            }
+        }
+
+        $model->save();
+        $model->load($relations);
+
+        return $model;
     }
 }

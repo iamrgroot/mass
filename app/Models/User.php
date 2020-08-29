@@ -43,34 +43,45 @@ class User extends BaseUser
 
     public static function getMaintenanceFields(bool $to_frontend = true): array
     {
-        $config = [
-            'id' => [
-                'hide_in_table' => true,
-                'validation' => $to_frontend ? '' : 'required|unique:users,username'
-            ],
-            'username' => [
-                'component' => 'TextField',
-                'validation' => $to_frontend ? '' : 'required|unique:users,username'
-            ],
-            'password' => [
-                'component'     => 'Password',
-                'hide_in_table' => true,
-                'validation' => $to_frontend ? '' : 'nullable|min:8'
-            ],
-            'roles' => [
-                'component'     => 'SelectMultiple',
-                'hide_in_table' => true,
-                'validation' => $to_frontend ? '' : 'array'
-            ],
-        ];
-
-        if($to_frontend) {
-            $config['roles']['relation'] = RoleOptionResource::collection(Role::all());
-        } else {
-            $config['model'] = self::class;
-            $config['relations'] = ['roles'];
+        if ($to_frontend) {
+            return [
+                'id' => [
+                    'hide_in_table' => true,
+                ],
+                'username' => [
+                    'component' => 'TextField',
+                ],
+                'password' => [
+                    'component'     => 'Password',
+                    'hide_in_table' => true,
+                ],
+                'roles' => [
+                    'component'     => 'SelectMultiple',
+                    'hide_in_table' => true,
+                    'relation'      => RoleOptionResource::collection(Role::all()),
+                ],
+            ];
         }
 
-        return $config;
+        return [
+            'model'     => self::class,
+            'relations' => ['roles'],
+            'bcrypt'    => ['password'],
+            'id'        => [
+                'validate_edit' => fn ($value) => 'exists:users',
+            ],
+            'username' => [
+                'validate_new'  => fn ($value)  => 'required|unique:users,username',
+                'validate_edit' => fn ($value) => "required|unique:users,username,{$value},username",
+            ],
+            'password' => [
+                'validate_new'  => fn ($value)  => 'required|min:8',
+                'validate_edit' => fn ($value) => 'optional|min:8',
+            ],
+            'roles' => [
+                'validate_new'  => fn ($value)  => 'required|array',
+                'validate_edit' => fn ($value) => 'required|array',
+            ],
+        ];
     }
 }

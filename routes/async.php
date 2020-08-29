@@ -9,6 +9,7 @@ Route::domain(config('app.host'))->group(function () {
             ->group(static function () {
                 Route::get('{table}', 'Maintenance\MaintenanceController@items');
                 Route::patch('{table}', 'Maintenance\MaintenanceController@update');
+                Route::delete('{table}/{id}', 'Maintenance\MaintenanceController@delete');
             });
 
         Route::prefix('movies')->group(static function () {

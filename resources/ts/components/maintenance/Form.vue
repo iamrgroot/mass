@@ -6,7 +6,7 @@
     >
         <v-card>
             <v-card-title>
-                {{ table | capitalize }}
+                {{ title | capitalize }}
             </v-card-title>
             <v-card-text>
                 <v-row
@@ -43,7 +43,7 @@ import TextField from '@/components/input/TextField.vue';
 import Password from '@/components/input/Password.vue';
 import SelectMultiple from '@/components/input/SelectMultiple.vue';
 import { GeneralObject } from '../../types/Inputs';
-import { getItems, saveItem } from '@/api/maintenance';
+import { saveItem } from '@/api/maintenance';
 
 @Component({
     components: {
@@ -56,7 +56,7 @@ import { getItems, saveItem } from '@/api/maintenance';
     }
 })
 export default class Form extends Vue {
-    @Prop({ required: true }) private value!: GeneralObject;
+    @Prop({ required: true }) private value!: GeneralObject | null;
 
     private errors = {};
 
@@ -66,10 +66,27 @@ export default class Form extends Vue {
     get fields(): GeneralObject {
         return window.injected[this.table] as GeneralObject;
     }
+    get title(): string {
+        let string = 'Edit';
+
+        console.log(this.value);
+        if (this.value !== null && this.value.id !== null && this.value.id < 0) {
+            string = 'New';
+        }
+
+        return `${this.table} - ${string}`;
+    }
 
     async save(): Promise<void> {
+        if (this.value === null || this.value.id === null) {
+            return;
+        }
+
         try {
-            this.$emit('saved', await saveItem(this.table, this.value));
+            const event = this.value.id < 0 ? 'inserted' : 'updated';
+
+            this.$emit(event, await saveItem(this.table, this.value));
+            this.$emit('input', { id: 0 });
         } catch (error) {
             this.errors = error.response.data.errors || [];
         }
