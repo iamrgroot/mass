@@ -24,10 +24,11 @@ Route::domain(config('app.host'))->group(function () {
         Route::get('/{route}', 'Auth\RouteController@view')
             ->where('route', implode('|', array_map(fn ($route) => "({$route})", $routes)));
 
-        $routes = [
+        $maintenance_routes = [
             'users',
+            'roles',
         ];
         Route::get('/maintenance/{route}', 'Maintenance\MaintenanceController@view')
-            ->where('route', implode('|', array_map(fn ($route) => "({$route})", $routes)));
+            ->where('route', implode('|', array_map(fn ($route) => "({$route})", $maintenance_routes)));
     });
 });

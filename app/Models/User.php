@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Http\Resources\RoleOptionResource;
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends BaseUser
@@ -71,15 +70,15 @@ class User extends BaseUser
                 'validate_edit' => fn ($value) => 'exists:users',
             ],
             'username' => [
-                'validate_new'  => fn ($value)  => 'required|unique:users,username',
+                'validate_new'  => fn ($value) => 'required|unique:users,username',
                 'validate_edit' => fn ($value) => "required|unique:users,username,{$value},username",
             ],
             'password' => [
-                'validate_new'  => fn ($value)  => 'required|min:8',
+                'validate_new'  => fn ($value) => 'required|min:8',
                 'validate_edit' => fn ($value) => 'optional|min:8',
             ],
             'roles' => [
-                'validate_new'  => fn ($value)  => 'required|array',
+                'validate_new'  => fn ($value) => 'required|array',
                 'validate_edit' => fn ($value) => 'required|array',
             ],
         ];

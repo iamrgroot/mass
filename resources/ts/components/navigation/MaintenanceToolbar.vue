@@ -17,11 +17,13 @@
             <v-spacer />
             <v-toolbar-items>
                 <v-btn
+                    v-for="route in routes"
+                    :key="route"
                     text
                     small
-                    to="/maintenance/users"
+                    :to="`/maintenance/${route}`"
                 >
-                    Users
+                    {{ route | capitalize }}
                 </v-btn>
                 <v-btn
                     icon
@@ -36,9 +38,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { capitalize } from '@/filters/filters';
 
-@Component
+@Component({
+    filters: {
+        capitalize
+    }
+})
 export default class Toolbar extends Vue {
+    get routes(): string[] {
+        return Object.keys(window.injected);
+    }
     logout(): void {
         window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
     }

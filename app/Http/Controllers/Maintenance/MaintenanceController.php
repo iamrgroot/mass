@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Maintenance;
 
 use App\Http\Controllers\Controller;
 use App\Models\BaseModel;
+use App\Models\Role;
 use App\Models\User;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
@@ -72,6 +73,7 @@ class MaintenanceController extends Controller
     {
         return [
             'users' => User::getMaintenanceFields($to_frontend),
+            'roles' => Role::getMaintenanceFields($to_frontend),
         ];
     }
 
