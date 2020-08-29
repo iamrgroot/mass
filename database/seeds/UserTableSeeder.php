@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Permission;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Auth\Permission;
+use App\Models\Auth\Role;
+use App\Models\Auth\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

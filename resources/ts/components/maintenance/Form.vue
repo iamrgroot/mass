@@ -69,7 +69,6 @@ export default class Form extends Vue {
     get title(): string {
         let string = 'Edit';
 
-        console.log(this.value);
         if (this.value !== null && this.value.id !== null && this.value.id < 0) {
             string = 'New';
         }

@@ -26,7 +26,6 @@ Route::domain(config('app.host'))->group(function () {
 
         $maintenance_routes = [
             'users',
-            'roles',
         ];
         Route::get('/maintenance/{route}', 'Maintenance\MaintenanceController@view')
             ->where('route', implode('|', array_map(fn ($route) => "({$route})", $maintenance_routes)));

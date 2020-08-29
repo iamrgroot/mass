@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Auth;
 
 use App\Http\Resources\RoleOptionResource;
 use Illuminate\Foundation\Auth\User as BaseUser;
