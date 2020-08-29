@@ -3,6 +3,7 @@
         :value="value"
         :label="label"
         :type="show ? 'text' : 'password'"
+        :error-messages="errors"
         v-bind="bind_parameters"
         @input="value => $emit('input', value)"
     />

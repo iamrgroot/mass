@@ -8,6 +8,7 @@ Route::domain(config('app.host'))->group(function () {
             ->middleware('role:admin')
             ->group(static function () {
                 Route::get('{table}', 'Maintenance\MaintenanceController@items');
+                Route::patch('{table}', 'Maintenance\MaintenanceController@update');
             });
 
         Route::prefix('movies')->group(static function () {

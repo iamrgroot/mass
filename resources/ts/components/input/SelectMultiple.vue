@@ -3,6 +3,7 @@
         :value="value"
         :items="options"
         :label="label"
+        :error-messages="errors"
         chips
         multiple
         v-bind="bind_parameters"

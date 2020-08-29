@@ -41,24 +41,32 @@ class User extends BaseUser
         'email_verified_at' => 'datetime',
     ];
 
-    public static function getMaintenanceFields(bool $options = true): array
+    public static function getMaintenanceFields(bool $to_frontend = true): array
     {
         $config = [
+            'id' => [
+                'hide_in_table' => true,
+                'validation' => $to_frontend ? '' : 'required|unique:users,username'
+            ],
             'username' => [
                 'component' => 'TextField',
+                'validation' => $to_frontend ? '' : 'required|unique:users,username'
             ],
             'password' => [
                 'component'     => 'Password',
                 'hide_in_table' => true,
+                'validation' => $to_frontend ? '' : 'nullable|min:8'
             ],
             'roles' => [
                 'component'     => 'SelectMultiple',
-                'relation'      => $options ? RoleOptionResource::collection(Role::all()) : [],
                 'hide_in_table' => true,
+                'validation' => $to_frontend ? '' : 'array'
             ],
         ];
 
-        if (false === $options) {
+        if($to_frontend) {
+            $config['roles']['relation'] = RoleOptionResource::collection(Role::all());
+        } else {
             $config['model'] = self::class;
             $config['relations'] = ['roles'];
         }
