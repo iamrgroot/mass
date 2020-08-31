@@ -9,22 +9,22 @@ class RequestStatusSeeder extends Seeder
     {
         $statuses = [
             [
-                'id'    => 0,
+                'id'    => RequestStatus::REQUEST,
                 'name'  => 'Request',
                 'color' => 'grey',
             ],
             [
-                'id'    => 1,
+                'id'    => RequestStatus::DOWNLOAD,
                 'name'  => 'Downloading',
                 'color' => 'primary',
             ],
             [
-                'id'    => 2,
+                'id'    => RequestStatus::DONE,
                 'name'  => 'Done',
                 'color' => 'success',
             ],
             [
-                'id'    => 3,
+                'id'    => RequestStatus::DENIED,
                 'name'  => 'Denied',
                 'color' => 'error',
             ],

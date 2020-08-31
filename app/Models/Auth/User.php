@@ -3,6 +3,8 @@
 namespace App\Models\Auth;
 
 use App\Http\Resources\RoleOptionResource;
+use App\Models\Request\Request;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -82,5 +84,10 @@ class User extends BaseUser
                 'validate_edit' => fn ($value) => 'required|array',
             ],
         ];
+    }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(Request::class, 'created_by');
     }
 }

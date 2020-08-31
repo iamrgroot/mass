@@ -68,11 +68,11 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import { searchItem } from '@/api/items';
 import { Item, Profile, SearchResult } from '@/types/Item';
 import { ItemAddArgument } from '@/types/Args';
 import { ItemType } from '@/enums/ItemType';
-import { AxiosResponse, CancelTokenSource } from 'axios';
-import axios from '@/plugins/axios';
+import { AxiosResponse } from 'axios';
 
 const Profiles = namespace('Profiles');
 const Items = namespace('Items');
@@ -83,14 +83,12 @@ export default class Add extends Vue {
 
     private results: SearchResult[] = [];
     private search = '';
-    private search_axios: CancelTokenSource | null = null;
     private selected: SearchResult | null = null;
     private selected_profile: number | null = null;
     private selected_seasons: number[] = [];
+    private loading = false;
 
-    get loading(): boolean { return this.search_axios !== null; }
     get is_movie(): boolean { return this.type === ItemType.Movie; }
-    get search_url(): string { return this.is_movie ? 'movies' : 'series'; }
 
     @Profiles.State private profiles!: Profile[];
     @Profiles.Action private fetchProfiles!: (type: ItemType) => Promise<AxiosResponse>;
@@ -110,30 +108,22 @@ export default class Add extends Vue {
         this.doSearch();
     }
 
-
     async created(): Promise<void> {
         await this.fetchProfiles(this.type);
 
         if (this.profiles.length > 0) this.selected_profile = this.profiles[0].id;
     }
 
-
-    doSearch(): void {
+    async doSearch(): Promise<void> {
         if (! this.search) return;
 
-        if (this.search_axios !== null) this.search_axios.cancel();
-
-        this.search_axios = axios.CancelToken.source();
-
-        axios.get(`/async/${this.search_url}/${this.search}/search`, {
-            cancelToken: this.search_axios.token
-        }).then(({ data }) => {
-            this.results = data;
-        }).catch(() => {
-            /** Do nothing when cancelled */
-        }).finally(() => {
-            this.search_axios = null;
-        });
+        this.loading = true;
+        try {
+            this.results = await searchItem(this.search, this.type);
+        } catch (error) {
+            // Nothing
+        }
+        this.loading = false;
     }
     add(): void {
         if (this.selected === null || this.selected_profile === null) return;
