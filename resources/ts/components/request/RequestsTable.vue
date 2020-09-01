@@ -26,13 +26,30 @@
                     :items="requests"
                     :loading="loading"
                 >
+                    <template #[`item.image_url`]="{ value }">
+                        <v-img
+                            contain
+                            :src="value"
+                            max-height="75"
+                            max-width="75"
+                        />
+                    </template>
+                    <template #[`item.type`]="{ value }">
+                        {{ itemString(value) }}
+                    </template>
+                    <template #[`item.created_at`]="{ value }">
+                        <date-chip :date="value" />
+                    </template>
+                    <template #[`item.updated_at`]="{ value }">
+                        <date-chip :date="value" />
+                    </template>
                     <template #[`item.actions`]="{ item }">
-                        <v-icon
+                        <!-- <v-icon
                             color="primary"
                             @click="update(item)"
                         >
                             $mdiPencil
-                        </v-icon>
+                        </v-icon> -->
                         <v-icon
                             color="error"
                             class="ml-3"
@@ -52,14 +69,17 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { request_store } from '@/store/request';
-import { getRequests, putRequest, deleteRequest } from '@/api/request';
+import { getRequests, deleteRequest } from '@/api/request';
 import { Request } from '@/types/Requests';
 import { DataTableHeader } from 'vuetify';
 import RequestAddDialog from '@/components/request/RequestAddDialog.vue';
+import DateChip from '@/components/defaults/DateChip.vue';
+import { ItemType } from '@/enums/ItemType';
 
 @Component({
     components: {
-        RequestAddDialog
+        RequestAddDialog,
+        DateChip
     }
 })
 export default class RequestsTable extends Vue {
@@ -67,7 +87,11 @@ export default class RequestsTable extends Vue {
     private add_dialog = false;
     private request_processing = -1;
     private headers: DataTableHeader[] = [
-        { text: '#', value: 'id' },
+        { text: '', value: 'image_url' },
+        { text: 'Type', value: 'type' },
+        { text: 'Name', value: 'text' },
+        { text: 'Created at', value: 'created_at' },
+        { text: 'Updated at', value: 'updated_at' },
         { text: '', value: 'actions', width: '100px', sortable: false, align: 'end' },
     ];
 
@@ -87,11 +111,6 @@ export default class RequestsTable extends Vue {
         this.requests = await getRequests();
         this.loading = false;
     }
-    async update(): Promise<void> {
-        this.loading = true;
-        this.requests.push(await putRequest());
-        this.loading = false;
-    }
     async remove(request: Request): Promise<void> {
         this.request_processing = request.id;
 
@@ -105,6 +124,9 @@ export default class RequestsTable extends Vue {
         );
 
         this.request_processing = -1;
+    }
+    itemString(type: ItemType): string {
+        return type === ItemType.Movie ? 'Movie' : 'Serie';
     }
 }
 </script>

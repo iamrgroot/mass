@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <requests-table />
-    </div>
+    <requests-table />
 </template>
 
 <script lang="ts">

@@ -6,7 +6,7 @@ axios.defaults.headers.common = {
 };
 
 axios.interceptors.request.use(function (request: AxiosRequestConfig): AxiosRequestConfig | Promise<AxiosRequestConfig> {
-    if (request.method === 'patch') {
+    if (request.method === 'patch' || request.method === 'put') {
         request.headers = {
             ...request.headers,
             accept: 'application/json'

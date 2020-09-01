@@ -33,26 +33,41 @@
                 </span>
             </v-card-title>
             <v-card-text>
-                <v-autocomplete
-                    v-model="selected"
-                    :items="results"
-                    :loading="searching"
-                    :search-input.sync="search"
-                    item-text="text"
-                    item-value="tmdb_id"
-                    label="Search"
-                    placeholder="Start typing"
-                    prepend-icon="$mdiDatabaseSearch"
-                    return-object
-                    cache-items
-                    class="pr-2"
-                />
+                <v-row no-gutters>
+                    <v-col cols="8">
+                        <v-autocomplete
+                            v-model="selected"
+                            :items="results"
+                            :loading="searching"
+                            :search-input.sync="search"
+                            item-text="text"
+                            item-value="tmdb_id"
+                            label="Search"
+                            placeholder="Start typing"
+                            prepend-icon="$mdiDatabaseSearch"
+                            return-object
+                            class="pr-2"
+                            clearable
+                        />
+                    </v-col>
+                    <v-col
+                        cols="4"
+                        align-self="center"
+                    >
+                        <v-img
+                            :src="image_url"
+                            max-height="200"
+                            max-width="100%"
+                            contain
+                        />
+                    </v-col>
+                </v-row>
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
                 <v-btn
                     color="success"
-                    :disabled="selected === null"
+                    :disabled="! selected"
                     text
                     @click="put"
                 >
@@ -72,11 +87,11 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { request_store } from '@/store/request';
-import { putRequest } from '@/api/request';
 import { Request } from '@/types/Requests';
 import { ItemType } from '@/enums/ItemType';
 import { SearchResult } from '@/types/Item';
 import { searchItem } from '@/api/items';
+import axios from '@/plugins/axios';
 
 @Component
 export default class RequestAddDialog extends Vue {
@@ -97,6 +112,21 @@ export default class RequestAddDialog extends Vue {
     get requests(): Request[] {
         return request_store.requests;
     }
+    get image_url(): string {
+        const shiba = '/images/shiba_poster.jpg';
+
+        if (! this.selected) {
+            return shiba;
+        }
+
+        const image = this.selected.images.find(image => image.coverType === 'poster');
+
+        if (! image) {
+            return shiba;
+        }
+
+        return image.url.replace('http://', 'https://');
+    }
 
     @Watch('search')
     onSearchChanged(): void {
@@ -104,7 +134,13 @@ export default class RequestAddDialog extends Vue {
     }
 
     async put(): Promise<void> {
-        this.requests.push(await putRequest());
+        // TODO remove headers for image
+        // console.log(axios.get('https://artworks.thetvdb.com/banners/posters/269586-11.jpg', {headers: { Origin: '', Referer: ''}}));
+
+        // if (this.selected) {
+        //     this.requests.push(await putRequest(this.selected));
+        //     this.$emit('input', false);
+        // }
     }
     async searchItem(): Promise<void> {
         if (! this.search) return;

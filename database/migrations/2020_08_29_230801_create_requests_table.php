@@ -13,9 +13,11 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedSmallInteger('request_status_id');
-            $table->unsignedBigInteger('item_id');
             $table->unsignedSmallInteger('type');
+            $table->unsignedBigInteger('item_id');
+            $table->string('text');
+            $table->string('image_url');
+            $table->unsignedSmallInteger('request_status_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');
             $table->timestamps();
