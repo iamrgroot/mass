@@ -11,6 +11,8 @@ Route::domain(config('app.host'))->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::middleware('auth')->group(static function () {
+        Route::get('image', 'Media\ImageController@image');
+
         $routes = [
             '',
             'movies',

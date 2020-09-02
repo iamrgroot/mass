@@ -22,6 +22,11 @@ class CreateRequestsTable extends Migration
             $table->unsignedBigInteger('updated_by');
             $table->timestamps();
 
+            $table->foreign('request_status_id')
+                ->references('id')
+                ->on('request_statuses')
+                ->onDelete('restrict');
+
             $table->foreign('created_by')
                 ->references('id')
                 ->on('users')

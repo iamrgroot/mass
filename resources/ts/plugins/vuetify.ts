@@ -24,6 +24,7 @@ import {
     mdiInformation,
     mdiCloudDownload,
     mdiPencil,
+    mdiTimerSand
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -58,7 +59,8 @@ export default new Vuetify({
             mdiSearchWeb,
             mdiInformation,
             mdiCloudDownload,
-            mdiPencil
+            mdiPencil,
+            mdiTimerSand
         }
     },
 });

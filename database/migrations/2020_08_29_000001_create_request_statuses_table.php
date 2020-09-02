@@ -12,9 +12,10 @@ class CreateRequestStatusesTable extends Migration
     public function up()
     {
         Schema::create('request_statuses', function (Blueprint $table) {
-            $table->id();
+            $table->smallIncrements('id')->unsigned();
             $table->string('name');
             $table->string('color');
+            $table->string('icon');
         });
     }
 

@@ -91,7 +91,8 @@ import { Request } from '@/types/Requests';
 import { ItemType } from '@/enums/ItemType';
 import { SearchResult } from '@/types/Item';
 import { searchItem } from '@/api/items';
-import axios from '@/plugins/axios';
+import { getImageURL } from '@/helpers/images';
+import { putRequest } from '@/api/request';
 
 @Component
 export default class RequestAddDialog extends Vue {
@@ -125,7 +126,7 @@ export default class RequestAddDialog extends Vue {
             return shiba;
         }
 
-        return image.url.replace('http://', 'https://');
+        return getImageURL(this.type, image.url);
     }
 
     @Watch('search')
@@ -134,13 +135,10 @@ export default class RequestAddDialog extends Vue {
     }
 
     async put(): Promise<void> {
-        // TODO remove headers for image
-        // console.log(axios.get('https://artworks.thetvdb.com/banners/posters/269586-11.jpg', {headers: { Origin: '', Referer: ''}}));
-
-        // if (this.selected) {
-        //     this.requests.push(await putRequest(this.selected));
-        //     this.$emit('input', false);
-        // }
+        if (this.selected) {
+            this.requests.push(await putRequest(this.selected));
+            this.$emit('input', false);
+        }
     }
     async searchItem(): Promise<void> {
         if (! this.search) return;

@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Auth;
 
 class UserRequestController extends Controller
 {
+    private const RELATIONS = ['status'];
+
     public function requests(): AnonymousResourceCollection
     {
-        return RequestResource::collection(Auth::user()->requests);
+        return RequestResource::collection(Request::with(self::RELATIONS)->get());
     }
 
     public function put(HttpRequest $request): RequestResource
@@ -28,7 +30,9 @@ class UserRequestController extends Controller
             'item.images'  => 'required|array',
         ]);
 
-        $image_url = $validated['item']['images'][0]['url'] ?? '/images/shiba_poster.jpg';
+        $images    = collect($validated['item']['images']);
+        $image     = $images->firstWhere('coverType', 'poster');
+        $image_url = $image['url'] ?? '/images/shiba_poster.jpg';
 
         $tvdb_id = $validated['item']['tvdb_id'] ?? null;
         $tmdb_id = $validated['item']['tmdb_id'] ?? null;
@@ -49,6 +53,7 @@ class UserRequestController extends Controller
         ]);
 
         $request->save();
+        $request->load(self::RELATIONS);
 
         return RequestResource::make($request);
     }

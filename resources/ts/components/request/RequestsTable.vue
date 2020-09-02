@@ -26,10 +26,10 @@
                     :items="requests"
                     :loading="loading"
                 >
-                    <template #[`item.image_url`]="{ value }">
+                    <template #[`item.image_url`]="{ item }">
                         <v-img
                             contain
-                            :src="value"
+                            :src="getImageURL(item)"
                             max-height="75"
                             max-width="75"
                         />
@@ -43,13 +43,14 @@
                     <template #[`item.updated_at`]="{ value }">
                         <date-chip :date="value" />
                     </template>
+                    <template #[`item.status`]="{ value }">
+                        <icon-tooltip
+                            :icon="value.icon"
+                            :text="value.text"
+                            :color="value.color"
+                        />
+                    </template>
                     <template #[`item.actions`]="{ item }">
-                        <!-- <v-icon
-                            color="primary"
-                            @click="update(item)"
-                        >
-                            $mdiPencil
-                        </v-icon> -->
                         <v-icon
                             color="error"
                             class="ml-3"
@@ -73,13 +74,16 @@ import { getRequests, deleteRequest } from '@/api/request';
 import { Request } from '@/types/Requests';
 import { DataTableHeader } from 'vuetify';
 import RequestAddDialog from '@/components/request/RequestAddDialog.vue';
+import IconTooltip from '@/components/defaults/IconTooltip.vue';
 import DateChip from '@/components/defaults/DateChip.vue';
 import { ItemType } from '@/enums/ItemType';
+import { getImageURL } from '@/helpers/images';
 
 @Component({
     components: {
         RequestAddDialog,
-        DateChip
+        DateChip,
+        IconTooltip
     }
 })
 export default class RequestsTable extends Vue {
@@ -92,6 +96,7 @@ export default class RequestsTable extends Vue {
         { text: 'Name', value: 'text' },
         { text: 'Created at', value: 'created_at' },
         { text: 'Updated at', value: 'updated_at' },
+        { text: 'Status', value: 'status' },
         { text: '', value: 'actions', width: '100px', sortable: false, align: 'end' },
     ];
 
@@ -127,6 +132,9 @@ export default class RequestsTable extends Vue {
     }
     itemString(type: ItemType): string {
         return type === ItemType.Movie ? 'Movie' : 'Serie';
+    }
+    getImageURL(item: Request) {
+        return getImageURL(item.type, item.image_url);
     }
 }
 </script>

@@ -12,6 +12,7 @@ class RequestStatusResource extends JsonResource
             'text'  => $this->name,
             'value' => $this->id,
             'color' => $this->color,
+            'icon'  => $this->icon,
         ];
     }
 }
