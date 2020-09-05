@@ -38,14 +38,12 @@
                         <template v-if="item.status.value === RequestStatus.Request">
                             <icon-tooltip
                                 :icon="RequestStatusIcon.Approved"
-                                :text="RequestStatusName.Approved"
                                 color="green"
                                 classes="ml-3"
                                 @click="update(item.id, RequestStatus.Approved)"
                             />
                             <icon-tooltip
                                 :icon="RequestStatusIcon.Denied"
-                                :text="RequestStatusName.Denied"
                                 color="red"
                                 classes="ml-3"
                                 @click="update(item.id, RequestStatus.Denied)"
