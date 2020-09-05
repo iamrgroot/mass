@@ -1,8 +1,5 @@
 <template>
-    <v-tooltip
-        :disabled="text"
-        bottom
-    >
+    <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
             <v-icon
                 :color="color"

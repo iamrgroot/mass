@@ -36,18 +36,20 @@
                     </template>
                     <template #[`item.actions`]="{ item }">
                         <template v-if="item.status.value === RequestStatus.Request">
-                            <icon-tooltip
-                                :icon="RequestStatusIcon.Approved"
+                            <v-icon
                                 color="green"
-                                classes="ml-3"
+                                class="ml-3"
                                 @click="update(item.id, RequestStatus.Approved)"
-                            />
-                            <icon-tooltip
-                                :icon="RequestStatusIcon.Denied"
+                            >
+                                {{ RequestStatusIcon.Approved }}
+                            </v-icon>
+                            <v-icon
                                 color="red"
-                                classes="ml-3"
+                                class="ml-3"
                                 @click="update(item.id, RequestStatus.Denied)"
-                            />
+                            >
+                                {{ RequestStatusIcon.Denied }}
+                            </v-icon>
                         </template>
                         <template v-else>
                             <icon-tooltip
