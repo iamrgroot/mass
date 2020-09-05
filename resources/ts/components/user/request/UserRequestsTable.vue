@@ -71,7 +71,7 @@ import { request_store } from '@/store/request';
 import { getRequests, deleteRequest } from '@/api/request';
 import { Request } from '@/types/Requests';
 import { DataTableHeader } from 'vuetify';
-import RequestAddDialog from '@/components/request/RequestAddDialog.vue';
+import RequestAddDialog from '@/components/user/request/RequestAddDialog.vue';
 import IconTooltip from '@/components/defaults/IconTooltip.vue';
 import DateChip from '@/components/defaults/DateChip.vue';
 import ImagePreview from '@/components/defaults/ImagePreview.vue';
@@ -86,7 +86,7 @@ import { getImageURL } from '@/helpers/images';
         ImagePreview,
     }
 })
-export default class RequestsTable extends Vue {
+export default class UserRequestsTable extends Vue {
     private loading = false;
     private add_dialog = false;
     private request_processing = -1;

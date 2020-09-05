@@ -89,7 +89,7 @@ import { namespace } from 'vuex-class';
 import sortBy from 'lodash/sortBy';
 import { Item } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
-import ItemComponent from '@/components/item/Item.vue';
+import ItemComponent from '@/components/admin/item/Item.vue';
 
 const Items = namespace('Items');
 

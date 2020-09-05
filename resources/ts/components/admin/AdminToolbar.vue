@@ -4,27 +4,10 @@
             <v-spacer />
 
             <v-toolbar-items>
-                <v-btn
-                    text
-                    small
-                    to="/torrents"
-                >
-                    Torrents
-                </v-btn>
-                <v-btn
-                    text
-                    small
-                    to="/movies"
-                >
-                    Movies
-                </v-btn>
-                <v-btn
-                    text
-                    small
-                    to="/series"
-                >
-                    Series
-                </v-btn>
+                <toolbar-button route="requests" />
+                <toolbar-button route="torrents" />
+                <toolbar-button route="movies" />
+                <toolbar-button route="series" />
                 <v-btn
                     icon
                     @click="logout"
@@ -38,9 +21,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import ToolbarButton from '@/components/defaults/ToolbarButton.vue';
 
-@Component
-export default class Toolbar extends Vue {
+@Component({
+    components: {
+        ToolbarButton
+    }
+})
+export default class AdminToolbar extends Vue {
     logout(): void {
         window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
     }

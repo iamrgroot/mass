@@ -139,9 +139,9 @@ import { Location } from 'vue-router';
 import { ItemTypeArgument } from '@/types/Args';
 import { Item, IndexResult } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
-import ItemBase from '@/components/item/ItemBase.vue';
-import SeasonsButton from '@/components/item/SeasonsButton.vue';
-import SearchDialog from '@/components/indexer/SearchDialog.vue';
+import ItemBase from '@/components/admin/item/ItemBase.vue';
+import SeasonsButton from '@/components/admin/item/SeasonsButton.vue';
+import SearchDialog from '@/components/admin/indexer/SearchDialog.vue';
 
 const Items = namespace('Items');
 const Indexers = namespace('Indexers');

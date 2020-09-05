@@ -17,8 +17,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { ItemType } from '@/enums/ItemType';
 
-import ItemList from '@/components/item/List.vue';
-import ItemAdd from '@/components/item/Add.vue';
+import ItemList from '@/components/admin/item/List.vue';
+import ItemAdd from '@/components/admin/item/Add.vue';
 
 @Component({
     components: {

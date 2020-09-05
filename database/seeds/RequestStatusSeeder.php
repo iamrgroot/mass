@@ -15,7 +15,13 @@ class RequestStatusSeeder extends Seeder
                 'icon'  => '$mdiTimerSand',
             ],
             [
-                'id'    => RequestStatus::DOWNLOAD,
+                'id'    => RequestStatus::APPROVED,
+                'name'  => 'Approved',
+                'color' => 'primary',
+                'icon'  => '$mdiCheck',
+            ],
+            [
+                'id'    => RequestStatus::DOWNLOADING,
                 'name'  => 'Downloading',
                 'color' => 'primary',
                 'icon'  => '$mdiDownload',
@@ -24,7 +30,7 @@ class RequestStatusSeeder extends Seeder
                 'id'    => RequestStatus::DONE,
                 'name'  => 'Done',
                 'color' => 'success',
-                'icon'  => '$mdiCheck',
+                'icon'  => '$mdiCloudCheck',
             ],
             [
                 'id'    => RequestStatus::DENIED,

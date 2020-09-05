@@ -1,15 +1,15 @@
 <template>
-    <requests-table />
+    <user-requests-table />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import RequestsTable from '@/components/request/RequestsTable.vue';
+import UserRequestsTable from '@/components/user/request/UserRequestsTable.vue';
 
 @Component({
     components: {
-        RequestsTable
+        UserRequestsTable
     }
 })
 export default class MainPage extends Vue {
