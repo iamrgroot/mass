@@ -93,6 +93,7 @@ import { SearchResult } from '@/types/Item';
 import { searchItem } from '@/api/items';
 import { getImageURL } from '@/helpers/images';
 import { putRequest } from '@/api/request';
+import find from 'lodash/find';
 
 @Component
 export default class RequestAddDialog extends Vue {
@@ -145,7 +146,11 @@ export default class RequestAddDialog extends Vue {
 
         this.searching = true;
         try {
-            this.results = await searchItem(this.search, this.type);
+            const results = await searchItem(this.search, this.type);
+
+            const search = this.type === ItemType.Movie ? 'tmdb_id' : 'tvdb_id';
+
+            this.results = results.filter(result => ! find(this.requests, {type: this.type, item_id: result[search]}));
         } catch (error) {
             // Nothing
         }

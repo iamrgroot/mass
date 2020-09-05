@@ -27,11 +27,9 @@
                     :loading="loading"
                 >
                     <template #[`item.image_url`]="{ item }">
-                        <v-img
-                            contain
+                        <image-preview
                             :src="getImageURL(item)"
-                            max-height="75"
-                            max-width="75"
+                            right
                         />
                     </template>
                     <template #[`item.type`]="{ value }">
@@ -76,6 +74,7 @@ import { DataTableHeader } from 'vuetify';
 import RequestAddDialog from '@/components/request/RequestAddDialog.vue';
 import IconTooltip from '@/components/defaults/IconTooltip.vue';
 import DateChip from '@/components/defaults/DateChip.vue';
+import ImagePreview from '@/components/defaults/ImagePreview.vue';
 import { ItemType } from '@/enums/ItemType';
 import { getImageURL } from '@/helpers/images';
 
@@ -83,7 +82,8 @@ import { getImageURL } from '@/helpers/images';
     components: {
         RequestAddDialog,
         DateChip,
-        IconTooltip
+        IconTooltip,
+        ImagePreview,
     }
 })
 export default class RequestsTable extends Vue {
@@ -133,7 +133,7 @@ export default class RequestsTable extends Vue {
     itemString(type: ItemType): string {
         return type === ItemType.Movie ? 'Movie' : 'Serie';
     }
-    getImageURL(item: Request) {
+    getImageURL(item: Request): string {
         return getImageURL(item.type, item.image_url);
     }
 }

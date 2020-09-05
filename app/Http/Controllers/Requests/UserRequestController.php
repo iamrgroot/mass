@@ -42,6 +42,8 @@ class UserRequestController extends Controller
         $type    = null === $tvdb_id ? ItemType::Movie : ItemType::Serie;
         $item_id = null === $tvdb_id ? $tmdb_id : $tvdb_id;
 
+        abort_if(Request::where('type', $type)->where('item_id', $item_id)->exists(), Response::HTTP_UNPROCESSABLE_ENTITY);
+
         $request = new Request([
             'type'              => $type,
             'item_id'           => $item_id,
