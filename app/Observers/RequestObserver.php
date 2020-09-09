@@ -5,7 +5,6 @@ namespace App\Observers;
 use App\Library\Media\Handlers\RequestPutter;
 use App\Models\Request\Request;
 use App\Models\Request\RequestStatus;
-use Exception;
 use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -22,13 +21,13 @@ class RequestObserver
 
     private function handleStatusChange(Request $request): void
     {
-        if ($request->request_status_id === RequestStatus::APPROVED) {
+        if (RequestStatus::APPROVED === $request->request_status_id) {
             try {
                 RequestPutter::put($request);
 
                 $request->request_status_id = RequestStatus::DOWNLOADING;
                 $request->save();
-            }  catch (BadResponseException $exception) {
+            } catch (BadResponseException $exception) {
                 $errors = collect(json_decode($exception->getResponse()->getBody()->getContents()));
 
                 if (! $errors->contains(fn (object $error) => Str::contains($error->errorMessage, 'already been added'))) {

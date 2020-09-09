@@ -18,7 +18,7 @@ class RequestPutter
 
     public static function put(Request $request): void
     {
-        if ($request->type === ItemType::Movie) {
+        if (ItemType::Movie === $request->type) {
             self::putMovie($request);
         } else {
             self::putSerie($request);
@@ -27,7 +27,7 @@ class RequestPutter
 
     private static function putMovie(Request $request): void
     {
-        $client = new Client();
+        $client         = new Client();
         $search_request = new MovieSearchByIdRequest($request->item_id);
 
         /** @var SearchResult $result */
@@ -52,7 +52,7 @@ class RequestPutter
 
     private static function putSerie(Request $request): void
     {
-        $client = new Client();
+        $client         = new Client();
         $search_request = new SerieSearchByIdRequest($request->item_id);
 
         /** @var SearchResult $result */
