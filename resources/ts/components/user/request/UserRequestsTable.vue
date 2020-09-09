@@ -50,6 +50,7 @@
                     </template>
                     <template #[`item.actions`]="{ item }">
                         <v-icon
+                            v-if="item.created_by_current_user"
                             color="error"
                             class="ml-3"
                             @click="remove(item)"

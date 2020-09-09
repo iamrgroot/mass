@@ -77,7 +77,7 @@ class User extends BaseUser
             ],
             'password' => [
                 'validate_new'  => fn ($value) => 'required|min:8',
-                'validate_edit' => fn ($value) => 'optional|min:8',
+                'validate_edit' => fn ($value) => 'sometimes|min:8',
             ],
             'roles' => [
                 'validate_new'  => fn ($value) => 'required|array',

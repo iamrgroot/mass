@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import sortBy from 'lodash/sortBy';
 import { Item } from '@/types/Item';
@@ -99,8 +99,6 @@ const Items = namespace('Items');
     }
 })
 export default class List extends Vue {
-    @Prop({ required: true }) private type!: number;
-
     private no_columns = 1;
     private sorted_on = '';
     private descending = false;
@@ -114,6 +112,7 @@ export default class List extends Vue {
             sortBy(this.items, this.sorted_on);
     }
 
+    @Items.State private type!: ItemType;
     @Items.State public items!: Item[];
     @Items.State public loading!: boolean;
     @Items.Action public fetchItems!: (type: ItemType) => Promise<Item[]>

@@ -38,6 +38,12 @@ class RequestStatusSeeder extends Seeder
                 'color' => 'error',
                 'icon'  => '$mdiClose',
             ],
+            [
+                'id'    => RequestStatus::ERROR,
+                'name'  => 'Error',
+                'color' => 'error',
+                'icon'  => '$mdiAlertCircle',
+            ],
         ];
 
         foreach ($statuses as $status) {

@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { searchItem } from '@/api/items';
 import { Item, Profile, SearchResult } from '@/types/Item';
@@ -79,8 +79,6 @@ const Items = namespace('Items');
 
 @Component
 export default class Add extends Vue {
-    @Prop({ required: true }) private type!: number;
-
     private results: SearchResult[] = [];
     private search = '';
     private selected: SearchResult | null = null;
@@ -93,6 +91,7 @@ export default class Add extends Vue {
     @Profiles.State private profiles!: Profile[];
     @Profiles.Action private fetchProfiles!: (type: ItemType) => Promise<AxiosResponse>;
 
+    @Items.State private type!: ItemType;
     @Items.State private add_errors!: string[];
     @Items.State private adding!: boolean;
     @Items.Action private addItem!: (args: ItemAddArgument) => Promise<Item>

@@ -4,6 +4,7 @@ export enum RequestStatus {
     Download = 3,
     Done = 4,
     Denied = 5,
+    Error = 6,
 }
 
 export enum RequestStatusIcon {
@@ -12,6 +13,7 @@ export enum RequestStatusIcon {
     Download = '$mdiDownload',
     Done = '$mdiCloudCheck',
     Denied = '$mdiClose',
+    Error = '$mdiAlertCircle',
 }
 
 export enum RequestStatusName {
@@ -20,4 +22,5 @@ export enum RequestStatusName {
     Download = 'Downloading',
     Done = 'Done',
     Denied = 'Denied',
+    Error = 'Error',
 }

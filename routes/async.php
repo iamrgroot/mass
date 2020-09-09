@@ -61,6 +61,10 @@ Route::domain(config('app.host'))->group(function () {
                 Route::post('{id}/stop', 'Media\TorrentController@stop');
                 Route::post('{id}/start', 'Media\TorrentController@start');
             });
+
+            Route::prefix('requests')->group(static function () {
+                Route::post('{request}/status/{status}', 'Requests\AdminRequestController@updateStatus');
+            });
         });
 
         /* User routes */

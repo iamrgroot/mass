@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Requests;
 use App\Enums\ItemType;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RequestResource;
+use App\Models\Auth\User;
 use App\Models\Request\Request;
 use App\Models\Request\RequestStatus;
 use Illuminate\Http\Request as HttpRequest;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserRequestController extends Controller
 {
-    private const RELATIONS = ['status'];
+    public const RELATIONS = ['status'];
 
     public function requests(): AnonymousResourceCollection
     {
@@ -62,7 +63,10 @@ class UserRequestController extends Controller
 
     public function delete(Request $request): bool
     {
-        abort_if($request->created_by !== Auth::id(), Response::HTTP_FORBIDDEN);
+        /** @var User $user */
+        $user = Auth::user();
+
+        abort_if(! $user->hasRole('admin') && $request->created_by !== $user->id, Response::HTTP_FORBIDDEN);
 
         return $request->delete();
     }

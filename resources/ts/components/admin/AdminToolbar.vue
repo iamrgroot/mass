@@ -1,6 +1,16 @@
 <template>
     <div>
         <v-toolbar max-height="64">
+            <v-toolbar-items>
+                <v-btn
+                    text
+                    small
+                    @click="maintenance"
+                >
+                    Maintenance
+                </v-btn>
+            </v-toolbar-items>
+
             <v-spacer />
 
             <v-toolbar-items>
@@ -31,6 +41,9 @@ import ToolbarButton from '@/components/defaults/ToolbarButton.vue';
 export default class AdminToolbar extends Vue {
     logout(): void {
         window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
+    }
+    maintenance(): void {
+        window.location.replace(window.location.protocol + '//' + window.location.host + '/maintenance/users');
     }
 }
 </script>

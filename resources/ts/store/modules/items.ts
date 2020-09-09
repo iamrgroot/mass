@@ -6,6 +6,7 @@ import axios from '@/plugins/axios';
 
 @Module({ namespaced: true })
 class Items extends VuexModule {
+    public type!: ItemType;
     public item: Item | null = null;
     public items: Item[] = [];
     public loading = false;
@@ -14,8 +15,10 @@ class Items extends VuexModule {
     public add_errors: string[] = [];
 
     @Mutation
-    public resetItems(): void {
+    public setType(type: ItemType): void {
+        this.type = type;
         this.items = [];
+        this.item = null;
     }
     @Mutation
     public setItems(items: Item[]): void {

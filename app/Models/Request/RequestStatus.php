@@ -11,4 +11,5 @@ class RequestStatus extends BaseModel
     public const DOWNLOADING = 3;
     public const DONE     = 4;
     public const DENIED   = 5;
+    public const ERROR   = 6;
 }

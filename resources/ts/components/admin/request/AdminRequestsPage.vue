@@ -34,29 +34,62 @@
                     <template #[`item.updated_at`]="{ value }">
                         <date-chip :date="value" />
                     </template>
+                    <template #[`item.status`]="{ value }">
+                        <icon-tooltip
+                            :icon="value.icon"
+                            :text="value.text"
+                            :color="value.color"
+                        />
+                    </template>
                     <template #[`item.actions`]="{ item }">
                         <template v-if="item.status.value === RequestStatus.Request">
                             <v-icon
                                 color="green"
                                 class="ml-3"
-                                @click="update(item.id, RequestStatus.Approved)"
+                                @click="update(item, RequestStatus.Approved)"
                             >
                                 {{ RequestStatusIcon.Approved }}
                             </v-icon>
                             <v-icon
                                 color="red"
                                 class="ml-3"
-                                @click="update(item.id, RequestStatus.Denied)"
+                                @click="update(item, RequestStatus.Denied)"
                             >
                                 {{ RequestStatusIcon.Denied }}
                             </v-icon>
                         </template>
-                        <template v-else>
+                        <template v-else-if="item.status.value === RequestStatus.Error">
                             <icon-tooltip
                                 :icon="item.status.icon"
-                                :text="item.status.text"
+                                text="See system log for error. Click to try again."
                                 :color="item.status.color"
                                 classes="ml-3"
+                                @click="update(item, RequestStatus.Approved)"
+                            />
+                        </template>
+                        <template v-else-if="item.status.value === RequestStatus.Download">
+                            <v-icon
+                                color="success"
+                                class="ml-3"
+                                @click="update(item, RequestStatus.Done)"
+                            >
+                                {{ RequestStatusIcon.Done }}
+                            </v-icon>
+                            <v-icon
+                                color="error"
+                                class="ml-3"
+                                @click="update(item, RequestStatus.Error)"
+                            >
+                                {{ RequestStatusIcon.Error }}
+                            </v-icon>
+                        </template>
+                        <template v-if="item.status.value === RequestStatus.Denied">
+                            <icon-tooltip
+                                :icon="RequestStatusIcon.Request"
+                                text="Reset"
+                                color="primary"
+                                classes="ml-3"
+                                @click="update(item, RequestStatus.Request)"
                             />
                         </template>
                         <v-icon
@@ -78,7 +111,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { request_store } from '@/store/request';
-import { getRequests, deleteRequest } from '@/api/request';
+import { getRequests, deleteRequest, postRequestStatus } from '@/api/request';
 import { Request } from '@/types/Requests';
 import { DataTableHeader } from 'vuetify';
 import RequestAddDialog from '@/components/user/request/RequestAddDialog.vue';
@@ -108,7 +141,7 @@ export default class UserRequestsTable extends Vue {
         { text: 'Created at', value: 'created_at' },
         { text: 'Updated at', value: 'updated_at' },
         { text: 'Status', value: 'status' },
-        { text: '', value: 'actions', width: '200px', sortable: false, align: 'end' },
+        { text: 'Actions', value: 'actions', width: '200px', sortable: false, align: 'end' },
     ];
     private RequestStatus = RequestStatus;
     private RequestStatusIcon = RequestStatusIcon;
@@ -144,9 +177,18 @@ export default class UserRequestsTable extends Vue {
 
         this.request_processing = -1;
     }
-    async update(request_id: number, status: RequestStatus): Promise<void> {
-        // TODO
-        request_id = status;
+    async update(request: Request, status: RequestStatus): Promise<void> {
+        this.request_processing = request.id;
+
+        const updated_request = await postRequestStatus(request.id, status);
+
+        this.requests.splice(
+            this.requests.findIndex(old_item => {
+                return request.id === old_item.id;
+            }),
+            1,
+            updated_request
+        );
     }
 
     itemString(type: ItemType): string {

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class RequestResource extends JsonResource
 {
@@ -17,7 +18,7 @@ class RequestResource extends JsonResource
             'status'     => new RequestStatusResource($this->whenLoaded('status')),
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
-            'created_by' => $this->created_by,
+            'created_by_current_user' => $this->created_by === Auth::id(),
         ];
     }
 }
