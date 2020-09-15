@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::domain(config('app.host'))->group(function () {
+Route::domain(config('app.host'))->group(static function () {
     Route::middleware('auth')->group(static function () {
         /*
          * Admin routes
@@ -65,16 +65,19 @@ Route::domain(config('app.host'))->group(function () {
             Route::prefix('requests')->group(static function () {
                 Route::post('{request}/status/{status}', 'Requests\AdminRequestController@updateStatus');
             });
+
+            Route::prefix('system')->group(static function () {
+                Route::get('', 'System\SystemController@get');
+            });
         });
 
         /* User routes */
         Route::middleware('role:user|admin')->group(static function () {
-            Route::prefix('requests')
-                ->group(static function () {
-                    Route::get('', 'Requests\UserRequestController@requests');
-                    Route::put('', 'Requests\UserRequestController@put');
-                    Route::delete('{request}', 'Requests\UserRequestController@delete');
-                });
+            Route::prefix('requests')->group(static function () {
+                Route::get('', 'Requests\UserRequestController@requests');
+                Route::put('', 'Requests\UserRequestController@put');
+                Route::delete('{request}', 'Requests\UserRequestController@delete');
+            });
 
             Route::get('movies/{search}/search', 'Media\MovieController@search');
             Route::get('series/{search}/search', 'Media\SerieController@search');

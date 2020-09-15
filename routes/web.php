@@ -25,7 +25,7 @@ Route::domain(config('app.host'))->group(function () {
                 'series\/\d+',
                 'torrents',
                 'requests',
-                'system'
+                'system',
             ];
 
             Route::get('/{route}', 'Auth\RouteController@view')
