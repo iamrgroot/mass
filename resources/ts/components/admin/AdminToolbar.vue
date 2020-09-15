@@ -14,6 +14,7 @@
             <v-spacer />
 
             <v-toolbar-items>
+                <toolbar-button route="system" />
                 <toolbar-button route="requests" />
                 <toolbar-button route="torrents" />
                 <toolbar-button route="movies" />
