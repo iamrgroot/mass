@@ -12,9 +12,10 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.5",
-        "laravel/framework": "^7.0",
+        "laravel/framework": "^7.27",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0"
+        "laravel/ui": "^2.0",
+        "spatie/laravel-permission": "^3.16"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
@@ -84,20 +85,24 @@
             "@php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --config=./php_cs.php --path-mode=intersection . --ansi --dry-run"
         ],
         "update-app" : [
+            "@php artisan down",
             "composer install --optimize-autoloader --no-dev",
             "@php artisan config:cache",
             "@php artisan migrate --no-interaction --force",
             "@php artisan view:clear",
             "npm install",
-            "npm run build-silent"
+            "npm run build-silent",
+            "@php artisan up"
         ],
         "update-app-dev" : [
+            "@php artisan down",
             "composer install",
             "@php artisan config:cache",
             "@php artisan migrate --no-interaction --force",
             "@php artisan view:clear",
             "npm install",
-            "npm run dev-silent"
+            "npm run dev-silent",
+            "@php artisan up"
         ],
         "cleanup-local-branches" : [
             "git fetch --prune",

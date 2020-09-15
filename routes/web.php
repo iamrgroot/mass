@@ -10,26 +10,32 @@ Route::domain(config('app.host'))->group(function () {
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-    Route::middleware('auth')
-        ->group(static function () {
-            Route::get('/phpinfo', function () {
-                phpinfo();
-            })->name('phpinfo');
+    Route::middleware('auth')->group(static function () {
+        Route::get('image', 'Media\ImageController@image');
 
+        Route::middleware('role:user')->group(static function () {
+            Route::get('', 'Auth\RouteController@view');
+        });
+
+        Route::middleware('role:admin')->group(static function () {
             $routes = [
                 '',
                 'movies',
                 'series',
-                'movies/\d+',
-                'series/\d+',
+                'movies\/\d+',
+                'series\/\d+',
                 'torrents',
+                'requests',
             ];
 
-            $routes = array_map(fn ($route) => "({$route})", $routes);
-            $routes = implode('|', $routes);
+            Route::get('/{route}', 'Auth\RouteController@view')
+                ->where('route', implode('|', array_map(fn ($route) => "({$route})", $routes)));
 
-            Route::get('/{route}', function () {
-                return view('home');
-            })->where('route', $routes);
+            $maintenance_routes = [
+                'users',
+            ];
+            Route::get('/maintenance/{route}', 'Maintenance\MaintenanceController@view')
+                ->where('route', implode('|', array_map(fn ($route) => "({$route})", $maintenance_routes)));
         });
+    });
 });

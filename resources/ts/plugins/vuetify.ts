@@ -23,11 +23,23 @@ import {
     mdiSearchWeb,
     mdiInformation,
     mdiCloudDownload,
+    mdiPencil,
+    mdiTimerSand,
+    mdiClose,
+    mdiCloudCheck,
+    mdiAlertCircle,
+    mdiMovie,
+    mdiTelevision
 } from '@mdi/js';
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
+    theme: {
+        options: {
+            customProperties: true,
+        },
+    },
     icons: {
         iconfont: 'mdiSvg',
         values: {
@@ -52,6 +64,13 @@ export default new Vuetify({
             mdiSearchWeb,
             mdiInformation,
             mdiCloudDownload,
+            mdiPencil,
+            mdiTimerSand,
+            mdiClose,
+            mdiCloudCheck,
+            mdiAlertCircle,
+            mdiMovie,
+            mdiTelevision
         }
     },
 });
