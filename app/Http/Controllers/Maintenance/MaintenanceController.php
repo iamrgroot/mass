@@ -11,10 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\View;
 
 class MaintenanceController extends Controller
 {
-    public function view()
+    public function view(): View
     {
         $config = self::config();
 
