@@ -27,7 +27,9 @@ import {
     mdiTimerSand,
     mdiClose,
     mdiCloudCheck,
-    mdiAlertCircle
+    mdiAlertCircle,
+    mdiMovie,
+    mdiTelevision
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -66,7 +68,9 @@ export default new Vuetify({
             mdiTimerSand,
             mdiClose,
             mdiCloudCheck,
-            mdiAlertCircle
+            mdiAlertCircle,
+            mdiMovie,
+            mdiTelevision
         }
     },
 });

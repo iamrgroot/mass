@@ -13,23 +13,29 @@ Route::domain(config('app.host'))->group(function () {
     Route::middleware('auth')->group(static function () {
         Route::get('image', 'Media\ImageController@image');
 
-        $routes = [
-            '',
-            'movies',
-            'series',
-            'movies\/\d+',
-            'series\/\d+',
-            'torrents',
-            'requests',
-        ];
+        Route::middleware('role:user')->group(static function () {
+            Route::get('', 'Auth\RouteController@view');
+        });
 
-        Route::get('/{route}', 'Auth\RouteController@view')
-            ->where('route', implode('|', array_map(fn ($route) => "({$route})", $routes)));
+        Route::middleware('role:admin')->group(static function () {
+            $routes = [
+                '',
+                'movies',
+                'series',
+                'movies\/\d+',
+                'series\/\d+',
+                'torrents',
+                'requests',
+            ];
 
-        $maintenance_routes = [
-            'users',
-        ];
-        Route::get('/maintenance/{route}', 'Maintenance\MaintenanceController@view')
-            ->where('route', implode('|', array_map(fn ($route) => "({$route})", $maintenance_routes)));
+            Route::get('/{route}', 'Auth\RouteController@view')
+                ->where('route', implode('|', array_map(fn ($route) => "({$route})", $routes)));
+
+            $maintenance_routes = [
+                'users',
+            ];
+            Route::get('/maintenance/{route}', 'Maintenance\MaintenanceController@view')
+                ->where('route', implode('|', array_map(fn ($route) => "({$route})", $maintenance_routes)));
+        });
     });
 });

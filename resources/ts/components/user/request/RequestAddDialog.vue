@@ -7,30 +7,27 @@
         <v-card>
             <v-card-title>
                 Add:
-                <span
-                    :class="{
-                        'ml-3': true,
-                        'text-decoration-underline': true,
-                        'selected': type === movie_type
-                    }"
-                    style="cursor: pointer;"
-                    @click="changeType(movie_type)"
+                <v-btn-toggle
+                    v-model="type"
+                    mandatory
+                    color="primary"
+                    borderless
+                    class="ml-5"
+                    @change="changeType()"
                 >
-                    Movie
-                </span>
-                <span class="ml-3">/</span>
-                <span
-                    :class="{
-                        'ml-3': true,
-                        clickable: true,
-                        'text-decoration-underline': true,
-                        'selected': type !== movie_type
-                    }"
-                    style="cursor: pointer;"
-                    @click="changeType(serie_type)"
-                >
-                    Serie
-                </span>
+                    <v-btn :value="movie_type">
+                        <span class="hidden-sm-and-down">Movie</span>
+                        <v-icon right>
+                            $mdiMovie
+                        </v-icon>
+                    </v-btn>
+                    <v-btn :value="serie_type">
+                        <span class="hidden-sm-and-down">Series</span>
+                        <v-icon right>
+                            $mdiTelevision
+                        </v-icon>
+                    </v-btn>
+                </v-btn-toggle>
             </v-card-title>
             <v-card-text>
                 <v-row no-gutters>
@@ -156,8 +153,7 @@ export default class RequestAddDialog extends Vue {
         }
         this.searching = false;
     }
-    changeType(type: ItemType): void {
-        this.type = type;
+    changeType(): void {
         this.search = '';
         this.selected = null;
         this.results = [];
