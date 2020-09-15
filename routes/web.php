@@ -13,13 +13,12 @@ Route::domain(config('app.host'))->group(function () {
     Route::middleware('auth')->group(static function () {
         Route::get('image', 'Media\ImageController@image');
 
-        Route::middleware('role:user')->group(static function () {
+        Route::middleware('role:user|admin')->group(static function () {
             Route::get('', 'Auth\RouteController@view');
         });
 
         Route::middleware('role:admin')->group(static function () {
             $routes = [
-                '',
                 'movies',
                 'series',
                 'movies\/\d+',
