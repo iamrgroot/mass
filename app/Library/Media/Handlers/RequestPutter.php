@@ -66,7 +66,7 @@ class RequestPutter
             'tvdbId'           => $result->tvdb_id,
             'year'             => $result->year,
             'seasons'          => $result->seasons,
-            'path'             => config('apis.radarr.folder') . $result->title,
+            'path'             => config('apis.sonarr.folder') . $result->title,
             'monitored'        => true,
             'seasonFolder'     => true,
             'addOptions'       => [
