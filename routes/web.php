@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 Route::domain(config('app.host'))->group(function () {
     Route::middleware('guest')->group(static function () {
         Route::get('/login', 'Auth\LoginController@page')->name('login');
-        Route::post('/login', 'Auth\LoginController@login')->name('login');
+        Route::post('/login', 'Auth\LoginController@login');
     });
 
-    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::get('/logout', 'Auth\LoginController@logout');
 
     Route::middleware('auth')->group(static function () {
         Route::get('image', 'Media\ImageController@image');

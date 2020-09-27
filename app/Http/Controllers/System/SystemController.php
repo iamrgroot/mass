@@ -10,15 +10,5 @@ class SystemController extends Controller
 {
     public function get()
     {
-        // https://github.com/jrgp/linfo
-
-        /** @var Linux $parser */
-        // $parser = (new Linfo())->getParser();
-        // $parser->determineCPUPercentage();
-        // dump($parser->getCPUUsage());
-        // dump($parser->getVirtualization());
-        // dump($parser->getUpTime());
-        // dump($parser->getRam());
-        // dump($parser->getCPU());
     }
 }

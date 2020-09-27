@@ -69,19 +69,19 @@ class User extends BaseUser
             'relations' => ['roles'],
             'bcrypt'    => ['password'],
             'id'        => [
-                'validate_edit' => fn ($value) => 'exists:users',
+                'validate_edit' => fn ($_) => 'exists:users',
             ],
             'username' => [
-                'validate_new'  => fn ($value) => 'required|unique:users,username',
+                'validate_new'  => fn ($_) => 'required|unique:users,username',
                 'validate_edit' => fn ($value) => "required|unique:users,username,{$value},username",
             ],
             'password' => [
-                'validate_new'  => fn ($value) => 'required|min:8',
-                'validate_edit' => fn ($value) => 'sometimes|min:8',
+                'validate_new'  => fn ($_) => 'required|min:8',
+                'validate_edit' => fn ($_) => 'sometimes|min:8',
             ],
             'roles' => [
-                'validate_new'  => fn ($value) => 'required|array',
-                'validate_edit' => fn ($value) => 'required|array',
+                'validate_new'  => fn ($_) => 'required|array',
+                'validate_edit' => fn ($_) => 'required|array',
             ],
         ];
     }
