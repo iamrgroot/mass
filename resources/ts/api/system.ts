@@ -1,6 +1,10 @@
 import axios from '@/plugins/axios';
-import { SystemData } from '@/types/System';
+import { Setting, SettingValue } from '@/types/System';
 
-export async function getSystemData(): Promise<SystemData> {
-    return (await axios.get('/async/system')).data;
+export async function getSettings(): Promise<Setting[]> {
+    return (await axios.get('/async/system/settings')).data;
+}
+
+export async function updateSetting(name: string, value: SettingValue): Promise<Setting> {
+    return (await axios.patch('/async/system/setting', {name, value})).data;
 }

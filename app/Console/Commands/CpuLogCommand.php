@@ -15,6 +15,8 @@ class CpuLogCommand extends Command
 
     public function handle()
     {
+        Log::debug('Running CpuLogCommand...');
+
         $setting = Setting::whereDiskLog()->firstOrFail();
 
         if (true !== $setting->value) {

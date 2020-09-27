@@ -13,19 +13,19 @@ class SettingsSeeder extends Seeder
                 'type'      => Setting::TYPE_BOOLEAN,
                 'name'      => Setting::NAME_LOG_DISK,
                 'value'     => Setting::encodeValue(false, Setting::TYPE_BOOLEAN),
-                'component' => 'Switch',
+                'component' => 'Boolean',
             ],
             [
                 'type'      => Setting::TYPE_BOOLEAN,
                 'name'      => Setting::NAME_LOG_MEMORY,
                 'value'     => Setting::encodeValue(false, Setting::TYPE_BOOLEAN),
-                'component' => 'Switch',
+                'component' => 'Boolean',
             ],
             [
                 'type'      => Setting::TYPE_BOOLEAN,
                 'name'      => Setting::NAME_LOG_CPU,
                 'value'     => Setting::encodeValue(false, Setting::TYPE_BOOLEAN),
-                'component' => 'Switch',
+                'component' => 'Boolean',
             ],
         ];
 

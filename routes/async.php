@@ -67,7 +67,7 @@ Route::domain(config('app.host'))->group(static function () {
             });
 
             Route::prefix('system')->group(static function () {
-                Route::get('', 'System\SystemController@get');
+                Route::get('settings', 'System\SystemController@settings');
             });
         });
 

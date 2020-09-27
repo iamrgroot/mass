@@ -11,8 +11,12 @@ class SettingResource extends JsonResource
         return [
             'name'       => $this->name,
             'component'  => $this->component,
+            'previous_value' => $this->value,
             'value'      => $this->value,
             'updated_at' => $this->updated_at,
+            'updating' => false,
+            'success' => false,
+            'error' => false,
         ];
     }
 }

@@ -17,6 +17,8 @@ class DiskLogCommand extends Command
 
     public function handle()
     {
+        Log::debug('Running DiskLogCommand...');
+
         $setting = Setting::whereDiskLog()->firstOrFail();
 
         if (true !== $setting->value) {

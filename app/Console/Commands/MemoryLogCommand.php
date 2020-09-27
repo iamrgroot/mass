@@ -16,6 +16,8 @@ class MemoryLogCommand extends Command
 
     public function handle()
     {
+        Log::debug('Running MemoryLogCommand...');
+
         $setting = Setting::whereDiskLog()->firstOrFail();
 
         if (true !== $setting->value) {

@@ -1,40 +1,54 @@
 <template>
-    <v-card
-        :loading="loading"
-        class="ma-3"
-    >
-        <v-card-title>
-            <span>System</span>
-            <v-spacer />
-            <v-btn
-                icon
-                class="ma-2"
-                @click="fetch"
-            >
-                <v-icon>$mdiRefresh</v-icon>
-            </v-btn>
-        </v-card-title>
-        <v-divider class="mx-3" />
-        <v-card-text>
-            test
-        </v-card-text>
-    </v-card>
+    <div>
+        <v-card
+            :loading="loading"
+            class="ma-3"
+        >
+            <v-card-title>
+                <span>System</span>
+                <v-spacer />
+                <v-icon
+                    @click="settings_dialog = true"
+                >
+                    $mdiCog
+                </v-icon>
+            </v-card-title>
+            <v-divider class="mx-3" />
+            <v-card-text>
+                test
+            </v-card-text>
+        </v-card>
+
+        <settings-bottom-sheet />
+    </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { getSystemData } from '@/api/system';
-import { SystemData } from '@/types/System';
+import { system_store } from '@/store/system';
+import { Setting } from '@/types/System';
 
-@Component
+import SettingsBottomSheet from '@/components/admin/system/SettingsBottomSheet.vue';
+
+@Component({
+    components: {
+        SettingsBottomSheet,
+    }
+})
 export default class SystemPage extends Vue {
     private loading = false;
-    private data: SystemData | null = null;
 
-    async fetch(): Promise<void> {
-        this.loading = true;
-        this.data = await getSystemData();
-        this.loading = false;
+    get settings(): Setting[] {
+        return system_store.settings;
+    }
+    set settings(settings: Setting[]) {
+        system_store.settings = settings;
+    }
+    get settings_dialog(): boolean {
+        return system_store.settings_dialog;
+    }
+    set settings_dialog(settings_dialog: boolean) {
+        system_store.settings_dialog = settings_dialog;
     }
 }
 </script>
