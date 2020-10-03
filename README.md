@@ -1,6 +1,6 @@
 # Media Assistant (mass)
 
-Uses docker images for Laravel:
+Uses docker images for Laravel (see https://github.com/IAmRGroot/docker-laravel):
 * php + node
 * mysql
 * nginx
