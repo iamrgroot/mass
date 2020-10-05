@@ -68,6 +68,11 @@ Route::domain(config('app.host'))->group(static function () {
 
             Route::prefix('system')->group(static function () {
                 Route::get('settings', 'System\SystemController@settings');
+                Route::patch('setting', 'System\SystemController@patch');
+
+                Route::get('cpu-logs', 'System\LogController@cpuLogs');
+                Route::get('memory-logs', 'System\LogController@memoryLogs');
+                Route::get('disk-logs', 'System\LogController@diskLogs');
             });
         });
 

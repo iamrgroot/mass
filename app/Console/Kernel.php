@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
             CpuLogCommand::class,
             MemoryLogCommand::class,
         ];
-        
+
         foreach ($every_minute as $command) {
             $schedule->command($command)->everyMinute();
         }

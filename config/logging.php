@@ -1,9 +1,5 @@
 <?php
 
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SyslogUdpHandler;
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -41,16 +37,18 @@ return [
         ],
 
         'single' => [
-            'driver' => 'single',
-            'path'   => storage_path('logs/laravel.log'),
-            'level'  => env('LOG_LEVEL', 'info'),
+            'driver'     => 'single',
+            'path'       => storage_path('logs/laravel.log'),
+            'level'      => env('LOG_LEVEL', 'info'),
+            'permission' => 0664,
         ],
 
         'daily' => [
-            'driver' => 'daily',
-            'path'   => storage_path('logs/laravel.log'),
-            'level'  => env('LOG_LEVEL', 'info'),
-            'days'   => 14,
+            'driver'     => 'daily',
+            'path'       => storage_path('logs/laravel.log'),
+            'level'      => env('LOG_LEVEL', 'info'),
+            'days'       => 14,
+            'permission' => 0664,
         ],
     ],
 ];

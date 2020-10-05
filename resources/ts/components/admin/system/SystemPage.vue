@@ -15,7 +15,17 @@
             </v-card-title>
             <v-divider class="mx-3" />
             <v-card-text>
-                test
+                <v-row>
+                    <v-col cols="6">
+                        <cpu-log-card />
+                    </v-col>
+                    <v-col cols="6">
+                        <disk-log-card />
+                    </v-col>
+                    <v-col cols="6">
+                        <memory-log-card />
+                    </v-col>
+                </v-row>
             </v-card-text>
         </v-card>
 
@@ -25,14 +35,20 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { system_store } from '@/store/system';
+import { fetchLogs, system_store } from '@/store/system';
 import { Setting } from '@/types/System';
 
 import SettingsBottomSheet from '@/components/admin/system/SettingsBottomSheet.vue';
+import CpuLogCard from '@/components/admin/system/logs/CpuLogCard.vue';
+import DiskLogCard from '@/components/admin/system/logs/DiskLogCard.vue';
+import MemoryLogCard from '@/components/admin/system/logs/MemoryLogCard.vue';
 
 @Component({
     components: {
         SettingsBottomSheet,
+        CpuLogCard,
+        DiskLogCard,
+        MemoryLogCard,
     }
 })
 export default class SystemPage extends Vue {
@@ -49,6 +65,10 @@ export default class SystemPage extends Vue {
     }
     set settings_dialog(settings_dialog: boolean) {
         system_store.settings_dialog = settings_dialog;
+    }
+
+    created(): void {
+        fetchLogs();
     }
 }
 </script>
