@@ -1,18 +1,50 @@
 version: "3.7"
 services:
   mass:
-    image: iamrgroot/mass:php7.4-node14
+    image: iamrgroot/laravel:${DOCKER_TAG}
     container_name: mass
     user: ${UID}
     environment:
       TZ: ${TZ}
+      CONTAINER_ROLE: app
     restart: unless-stopped
-    working_dir: /var/www/
     volumes:
       - ./:/var/www
     networks:
       mass:
         ipv4_address: 172.19.0.2
+
+  mass-queue:
+    image: iamrgroot/laravel:${DOCKER_TAG}
+    container_name: mass-queue
+    depends_on:
+      - mass
+    user: ${UID}
+    environment:
+      TZ: ${TZ}
+      CONTAINER_ROLE: queue
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+    networks:
+      mass:
+        ipv4_address: 172.19.0.12
+
+  mass-scheduler:
+    image: iamrgroot/laravel:${DOCKER_TAG}
+    container_name: mass-scheduler
+    depends_on:
+      - mass
+    user: ${UID}
+    environment:
+      TZ: ${TZ}
+      CONTAINER_ROLE: scheduler
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+    networks:
+      mass:
+        ipv4_address: 172.19.0.13
   
   mass-db:
     image: mysql:latest

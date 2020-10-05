@@ -29,7 +29,9 @@ import {
     mdiCloudCheck,
     mdiAlertCircle,
     mdiMovie,
-    mdiTelevision
+    mdiTelevision,
+    mdiCog,
+    mdiMessageAlert
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -70,7 +72,9 @@ export default new Vuetify({
             mdiCloudCheck,
             mdiAlertCircle,
             mdiMovie,
-            mdiTelevision
+            mdiTelevision,
+            mdiCog,
+            mdiMessageAlert
         }
     },
 });

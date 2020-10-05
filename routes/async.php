@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::domain(config('app.host'))->group(function () {
+Route::domain(config('app.host'))->group(static function () {
     Route::middleware('auth')->group(static function () {
         /*
          * Admin routes
@@ -65,16 +65,26 @@ Route::domain(config('app.host'))->group(function () {
             Route::prefix('requests')->group(static function () {
                 Route::post('{request}/status/{status}', 'Requests\AdminRequestController@updateStatus');
             });
+
+            Route::prefix('system')->group(static function () {
+                Route::get('settings', 'System\SystemController@settings');
+                Route::patch('setting', 'System\SystemController@patch');
+
+                Route::get('cpu-logs', 'System\LogController@cpuLogs');
+                Route::get('memory-logs', 'System\LogController@memoryLogs');
+                Route::get('disk-logs', 'System\LogController@diskLogs');
+                Route::get('laravel-logs', 'System\LogController@laravelLogs');
+                Route::get('{index}/laravel-log', 'System\LogController@laravelLog');
+            });
         });
 
         /* User routes */
         Route::middleware('role:user|admin')->group(static function () {
-            Route::prefix('requests')
-                ->group(static function () {
-                    Route::get('', 'Requests\UserRequestController@requests');
-                    Route::put('', 'Requests\UserRequestController@put');
-                    Route::delete('{request}', 'Requests\UserRequestController@delete');
-                });
+            Route::prefix('requests')->group(static function () {
+                Route::get('', 'Requests\UserRequestController@requests');
+                Route::put('', 'Requests\UserRequestController@put');
+                Route::delete('{request}', 'Requests\UserRequestController@delete');
+            });
 
             Route::get('movies/{search}/search', 'Media\MovieController@search');
             Route::get('series/{search}/search', 'Media\SerieController@search');

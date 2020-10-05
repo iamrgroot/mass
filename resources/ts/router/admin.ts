@@ -5,6 +5,7 @@ import ListPage from '@/components/admin/item/ListPage.vue';
 import ItemPage from '@/components/admin/item/ItemPage.vue';
 import TorrentsPage from '@/components/admin/torrent/TorrentsPage.vue';
 import AdminRequestsPage from '@/components/admin/request/AdminRequestsPage.vue';
+import SystemPage from '@/components/admin/system/SystemPage.vue';
 
 Vue.use(VueRouter);
 
@@ -18,37 +19,38 @@ const routes: RouteConfig[] = [
         path: '/movies/:id',
         name: 'movie',
         component: ItemPage,
+        // TODO maybe ?
         // component: () => import(/* webpackChunkName: "item" */ '@/components/item/ItemPage.vue'),
     },
     {
         path: '/movies',
         name: 'movies',
         component: ListPage,
-        // component: () => import(/* webpackChunkName: "item-list" */ '@/components/item/ListPage.vue'),
     },
     {
         path: '/series/:id',
         name: 'serie',
         component: ItemPage,
-        // component: () => import(/* webpackChunkName: "item" */ '@/components/item/ItemPage.vue'),
     },
     {
         path: '/series',
         name: 'series',
         component: ListPage,
-        // component: () => import(/* webpackChunkName: "item-list" */ '@/components/item/ListPage.vue'),
     },
     {
         path: '/torrents',
         name: 'torrents',
         component: TorrentsPage,
-        // component: () => import(/* webpackChunkName: "torrents" */ '@/components/torrent/TorrentsPage.vue'),
     },
     {
         path: '/requests',
         name: 'requests',
         component: AdminRequestsPage,
-        // component: () => import(/* webpackChunkName: "requests" */ '@/components/torrent/TorrentsPage.vue'),
+    },
+    {
+        path: '/system',
+        name: 'system',
+        component: SystemPage,
     },
 ];
 

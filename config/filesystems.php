@@ -41,6 +41,10 @@ return [
     */
 
     'disks' => [
+        'logs' => [
+            'driver' => 'local',
+            'root'   => storage_path('logs'),
+        ],
         'sonarr' => [
             'driver' => 'local',
             'root'   => base_path('docker-compose/sonarr'),
