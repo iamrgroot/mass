@@ -7,6 +7,7 @@
             <v-card-title>
                 <span>System</span>
                 <v-spacer />
+                <laravel-logs-button />
                 <v-icon
                     @click="settings_dialog = true"
                 >
@@ -42,6 +43,7 @@ import SettingsBottomSheet from '@/components/admin/system/SettingsBottomSheet.v
 import CpuLogCard from '@/components/admin/system/logs/CpuLogCard.vue';
 import DiskLogCard from '@/components/admin/system/logs/DiskLogCard.vue';
 import MemoryLogCard from '@/components/admin/system/logs/MemoryLogCard.vue';
+import LaravelLogsButton from '@/components/admin/system/logs/LaravelLogsButton.vue';
 
 @Component({
     components: {
@@ -49,6 +51,7 @@ import MemoryLogCard from '@/components/admin/system/logs/MemoryLogCard.vue';
         CpuLogCard,
         DiskLogCard,
         MemoryLogCard,
+        LaravelLogsButton,
     }
 })
 export default class SystemPage extends Vue {

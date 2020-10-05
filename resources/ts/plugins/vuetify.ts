@@ -30,7 +30,8 @@ import {
     mdiAlertCircle,
     mdiMovie,
     mdiTelevision,
-    mdiCog
+    mdiCog,
+    mdiMessageAlert
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -72,7 +73,8 @@ export default new Vuetify({
             mdiAlertCircle,
             mdiMovie,
             mdiTelevision,
-            mdiCog
+            mdiCog,
+            mdiMessageAlert
         }
     },
 });

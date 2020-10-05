@@ -20,3 +20,11 @@ export async function getDiskLogs(): Promise<DiskLog[]> {
 export async function getMemoryLogs(): Promise<MemoryLog[]> {
     return (await axios.get('/async/system/memory-logs')).data;
 }
+
+export async function getLaravelLogs(): Promise<string[]> {
+    return (await axios.get('/async/system/laravel-logs')).data;
+}
+
+export async function getLaravelLog(index: number): Promise<string> {
+    return (await axios.get(`/async/system/${index}/laravel-log`)).data;
+}

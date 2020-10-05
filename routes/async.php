@@ -73,6 +73,8 @@ Route::domain(config('app.host'))->group(static function () {
                 Route::get('cpu-logs', 'System\LogController@cpuLogs');
                 Route::get('memory-logs', 'System\LogController@memoryLogs');
                 Route::get('disk-logs', 'System\LogController@diskLogs');
+                Route::get('laravel-logs', 'System\LogController@laravelLogs');
+                Route::get('{index}/laravel-log', 'System\LogController@laravelLog');
             });
         });
 
