@@ -107,7 +107,8 @@
         ],
         "cleanup-local-branches" : [
             "git fetch --prune",
-            "bash -c \"(git branch | grep -v '^*' | xargs git branch -D) || echo 'No other local branches to delete.'\""
+            "bash -c \"(git branch | grep -v '^*' | xargs git branch -D) || echo 'No other local branches to delete.'\"",
+            "git tag -l | xargs git tag -d && git fetch -t"
         ]
     }
 }
