@@ -37,3 +37,7 @@ docker-compose restart
 ```
 
 :warning: It can take a second or 2 for Traefik to initialize when using SSL.
+
+### Credits
+
+Placeholder image in the app was created and provided by [petegrev](https://www.petegrev.co.uk)
