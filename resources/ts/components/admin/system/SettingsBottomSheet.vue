@@ -49,10 +49,12 @@ import { system_store } from '@/store/system';
 import { Setting } from '@/types/System';
 
 import Boolean from '@/components/input/Boolean.vue';
+import SelectProfile from '@/components/input/SelectProfile.vue';
 
 @Component({
     components: {
         Boolean,
+        SelectProfile,
     }
 })
 export default class SettingsBottomSheet extends Vue {

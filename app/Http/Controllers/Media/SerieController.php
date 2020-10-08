@@ -8,6 +8,7 @@ use App\Library\Media\Requests\Sonarr\AddManualRequest;
 use App\Library\Media\Requests\Sonarr\AddSerieRequest;
 use App\Library\Media\Requests\Sonarr\DeleteSerieRequest;
 use App\Library\Media\Requests\Sonarr\ManualSearchRequest;
+use App\Library\Media\Requests\Sonarr\PutSerieRequest;
 use App\Library\Media\Requests\Sonarr\RefreshRequest;
 use App\Library\Media\Requests\Sonarr\SearchCommandRequest;
 use App\Library\Media\Requests\Sonarr\SearchMissingRequest;
@@ -23,6 +24,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class SerieController extends Controller
 {
@@ -171,5 +173,27 @@ class SerieController extends Controller
         $client->doRequest(new AddManualRequest($indexer_id, $validated['guid']));
 
         return response('ok');
+    }
+
+    public function patchProfile(Request $request, Client $client, int $id): JsonResponse
+    {
+        $validated = $request->validate([
+            'profile_id' => [
+                'required',
+                Rule::in(array_column(config('profiles.from_serie'), 'id')),
+            ],
+        ]);
+
+        $serie = json_decode(
+            $client->doRequest(new SerieRequest($id))->getResponse()->getBody()->getContents()
+        );
+
+        $serie->profileId = $validated['profile_id'];
+
+        $request = new PutSerieRequest((array) $serie);
+
+        return response()->json(
+            $client->doRequest($request)->getData()
+        );
     }
 }

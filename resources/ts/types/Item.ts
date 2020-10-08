@@ -28,6 +28,7 @@ export type Item = {
     rating: number;
     image_url: string;
     imdb_id: string;
+    profile_id: number;
     features: Feature[];
     seasons?: Season[];
 }

@@ -11,6 +11,7 @@ use App\Library\Media\Requests\Radarr\ManualSearchRequest;
 use App\Library\Media\Requests\Radarr\MovieImageRequest;
 use App\Library\Media\Requests\Radarr\MovieRequest;
 use App\Library\Media\Requests\Radarr\MoviesRequest;
+use App\Library\Media\Requests\Radarr\PutMovieRequest;
 use App\Library\Media\Requests\Radarr\RefreshRequest;
 use App\Library\Media\Requests\Radarr\SearchCommandRequest;
 use App\Library\Media\Requests\Radarr\SearchMissingRequest;
@@ -22,6 +23,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class MovieController extends Controller
 {
@@ -131,5 +133,27 @@ class MovieController extends Controller
         $client->doRequest(new AddManualRequest($indexer_id, $validated['guid']));
 
         return response('ok');
+    }
+
+    public function patchProfile(Request $request, Client $client, int $id): JsonResponse
+    {
+        $validated = $request->validate([
+            'profile_id' => [
+                'required',
+                Rule::in(array_column(config('profiles.from_movie'), 'id')),
+            ],
+        ]);
+
+        $movie = json_decode(
+            $client->doRequest(new MovieRequest($id))->getResponse()->getBody()->getContents()
+        );
+
+        $movie->profileId = $validated['profile_id'];
+
+        $request = new PutMovieRequest((array) $movie);
+
+        return response()->json(
+            $client->doRequest($request)->getData()
+        );
     }
 }

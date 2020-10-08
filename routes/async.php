@@ -29,6 +29,8 @@ Route::domain(config('app.host'))->group(static function () {
                 Route::put('', 'Media\MovieController@put');
 
                 Route::delete('{id}/delete', 'Media\MovieController@delete');
+
+                Route::patch('{id}/profile', 'Media\MovieController@patchProfile');
             });
 
             Route::prefix('series')->group(static function () {
@@ -46,6 +48,8 @@ Route::domain(config('app.host'))->group(static function () {
                 Route::put('{id}/toggle-season', 'Media\SerieController@toggleSeason');
 
                 Route::delete('{id}/delete', 'Media\SerieController@delete');
+
+                Route::patch('{id}/profile', 'Media\SerieController@patchProfile');
             });
 
             Route::prefix('profiles')->group(static function () {
@@ -69,6 +73,7 @@ Route::domain(config('app.host'))->group(static function () {
             Route::prefix('system')->group(static function () {
                 Route::get('settings', 'System\SystemController@settings');
                 Route::patch('setting', 'System\SystemController@patch');
+                Route::post('flush-cache', 'System\SystemController@flushCache');
 
                 Route::get('cpu-logs', 'System\LogController@cpuLogs');
                 Route::get('memory-logs', 'System\LogController@memoryLogs');

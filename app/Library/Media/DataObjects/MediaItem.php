@@ -11,6 +11,7 @@ class MediaItem
 
     public int $type;
     public int $id;
+    public int $profile_id;
     public string $title;
     public string $overview;
     public int $size_on_disk;

@@ -24,3 +24,9 @@ export type ManualAddArgument = {
     indexer_id: number;
     type: ItemType;
 }
+
+export type ChangeProfileArgument = {
+    item_type: ItemType;
+    item_id: number;
+    profile_id: number;
+}
