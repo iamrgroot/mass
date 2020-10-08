@@ -9,9 +9,17 @@ const pages = {
         entry: './resources/ts/login.ts',
         chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-login-vendors', 'vuetify', 'login']
     },
-    home: {
-        entry: './resources/ts/home.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-home-vendors','vuetify', 'home']
+    admin: {
+        entry: './resources/ts/admin.ts',
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-admin-vendors','vuetify', 'admin']
+    },
+    maintenance: {
+        entry: './resources/ts/maintenance.ts',
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-maintenance-vendors','vuetify', 'maintenance']
+    },
+    user: {
+        entry: './resources/ts/user.ts',
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-user-vendors','vuetify', 'user']
     },
 };
 
