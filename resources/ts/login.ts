@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import Login from './views/Login.vue';
+import Login from '@/views/Login.vue';
 
 Vue.config.productionTip = false;
 

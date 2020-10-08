@@ -12,4 +12,16 @@ class BaseModel extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * Allow mass assignment.
+     *
+     * @var array
+     */
+    public $guarded = [];
+
+    public static function getMaintenanceFields(): array
+    {
+        return [];
+    }
 }

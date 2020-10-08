@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CpuLogCommand;
+use App\Console\Commands\DiskLogCommand;
+use App\Console\Commands\MemoryLogCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -12,8 +15,7 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
-    protected $commands = [
-    ];
+    protected $commands = [];
 
     /**
      * Define the application's command schedule.
@@ -22,7 +24,22 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $thirty_minutes = [
+            DiskLogCommand::class,
+        ];
+
+        foreach ($thirty_minutes as $command) {
+            $schedule->command($command)->everyThirtyMinutes();
+        }
+
+        $every_minute = [
+            CpuLogCommand::class,
+            MemoryLogCommand::class,
+        ];
+
+        foreach ($every_minute as $command) {
+            $schedule->command($command)->everyMinute();
+        }
     }
 
     /**
