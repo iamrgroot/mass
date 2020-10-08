@@ -1,8 +1,46 @@
 <?php
 
-use App\Library\Http\Client;
-use App\Library\Media\Requests\TransmissionRequest;
-use GuzzleHttp\Exception\ClientException;
+use App\Library\Media\Handlers\TransmissionSessionGetter;
+use Illuminate\Support\Facades\Log;
+
+$default = [
+    'sonarr' => [
+        'host'    => env('SONARR_HOST', null),
+        'ip'      => env('SONARR_IP', null),
+        'port'    => env('SONARR_PORT', null),
+        'api_key' => env('SONARR_API_KEY', null),
+        'folder'  => env('SONARR_FOLDER', null),
+    ],
+    'radarr' => [
+        'host'    => env('RADARR_HOST', null),
+        'ip'      => env('RADARR_IP', null),
+        'port'    => env('RADARR_PORT', null),
+        'api_key' => env('RADARR_API_KEY', null),
+        'folder'  => env('RADARR_FOLDER', null),
+    ],
+    'transmission' => [
+        'host'       => env('TRANSMISSION_HOST', null),
+        'ip'         => env('TRANSMISSION_IP', null),
+        'port'       => env('TRANSMISSION_PORT', null),
+        'session_id' => null,
+    ],
+    'jackett' => [
+        'host'    => env('JACKETT_HOST', null),
+        'ip'      => env('JACKETT_IP', null),
+        'port'    => env('JACKETT_PORT', null),
+        'api_key' => env('JACKETT_API_KEY', null),
+    ],
+];
+
+if (false === env('AUTO_CONFIG', true)) {
+    try {
+        $default['transmission.session_id'] = TransmissionSessionGetter::getSession($default['transmission.ip'], $default['transmission.port']);
+    } catch (\Throwable $th) {
+        Log::error($th->getMessage());
+    }
+
+    return $default;
+}
 
 try {
     $sonarr_config = new SimpleXMLElement(
@@ -29,26 +67,10 @@ try {
         )
     );
 
-    $request = new TransmissionRequest();
-
     $transmission_host       = env('TRANSMISSION_HOST', 'transmission');
     $transmission_ip         = gethostbyname($transmission_host);
     $transmission_port       = (int) $transmission_config->{'rpc-port'};
-    $transmission_session_id = '';
-
-    try {
-        $client = new Client();
-        $client->request('GET', "http://{$transmission_ip}:{$transmission_port}/{$request->getRoute()}");
-    } catch (ClientException $exception) {
-        $response = $exception->getResponse()->getBody()->getContents();
-
-        $matches = [];
-        preg_match('/<code>(.+)<\/code>/', $response, $matches);
-
-        if (count($matches) > 1) {
-            $transmission_session_id = trim(explode(':', $matches[1])[1]);
-        }
-    }
+    $transmission_session_id = TransmissionSessionGetter::getSession($transmission_ip, $transmission_port);
 
     return [
         'sonarr' => [
@@ -79,32 +101,5 @@ try {
         ],
     ];
 } catch (Exception $exception) {
-    return [
-        'sonarr' => [
-            'host'    => null,
-            'ip'      => null,
-            'port'    => null,
-            'api_key' => null,
-            'folder'  => null,
-        ],
-        'radarr' => [
-            'host'    => null,
-            'ip'      => null,
-            'port'    => null,
-            'api_key' => null,
-            'folder'  => null,
-        ],
-        'transmission' => [
-            'host'       => null,
-            'ip'         => null,
-            'port'       => null,
-            'session_id' => null,
-        ],
-        'jackett' => [
-            'host'    => null,
-            'ip'      => null,
-            'port'    => null,
-            'api_key' => null,
-        ],
-    ];
+    return $default;
 }
