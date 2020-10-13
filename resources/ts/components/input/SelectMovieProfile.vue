@@ -15,13 +15,13 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import TextField from '@/components/input/TextField.vue';
-import { namespace } from 'vuex-class';
+import { profile_store } from '@/store/profiles';
 import { Profile } from '@/types/Item';
 
-const Profiles = namespace('Profiles');
-
 @Component
-export default class SelectMultiple extends TextField {
-    @Profiles.State private profiles!: Profile[];
+export default class SelectMovieProfile extends TextField {
+    get profiles(): Profile[] {
+        return profile_store.movie_profiles;
+    }
 }
 </script>

@@ -51,6 +51,16 @@ class Setting extends BaseModel
         throw new Exception("Type {$this->type} does not exist");
     }
 
+    public function scopeWhereMovieProfile(Builder $query): Builder
+    {
+        return $query->where('name', self::NAME_MOVIE_PROFILE);
+    }
+
+    public function scopeWhereSerieProfile(Builder $query): Builder
+    {
+        return $query->where('name', self::NAME_SERIE_PROFILE);
+    }
+
     public function scopeWhereCpuULog(Builder $query): Builder
     {
         return $query->where('name', self::NAME_LOG_CPU);

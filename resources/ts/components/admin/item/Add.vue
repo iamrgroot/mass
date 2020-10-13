@@ -69,12 +69,11 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { searchItem } from '@/api/items';
+import { profile_store } from '@/store/profiles';
 import { Item, Profile, SearchResult } from '@/types/Item';
 import { ItemAddArgument } from '@/types/Args';
 import { ItemType } from '@/enums/ItemType';
-import { AxiosResponse } from 'axios';
 
-const Profiles = namespace('Profiles');
 const Items = namespace('Items');
 
 @Component
@@ -88,8 +87,9 @@ export default class Add extends Vue {
 
     get is_movie(): boolean { return this.type === ItemType.Movie; }
 
-    @Profiles.State private profiles!: Profile[];
-    @Profiles.Action private fetchProfiles!: (type: ItemType) => Promise<AxiosResponse>;
+    get profiles(): Profile[] {
+        return this.is_movie ? profile_store.movie_profiles : profile_store.serie_profiles;
+    }
 
     @Items.State private type!: ItemType;
     @Items.State private add_errors!: string[];
@@ -108,8 +108,6 @@ export default class Add extends Vue {
     }
 
     async created(): Promise<void> {
-        await this.fetchProfiles(this.type);
-
         if (this.profiles.length > 0) this.selected_profile = this.profiles[0].id;
     }
 

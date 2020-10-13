@@ -151,8 +151,9 @@
 import { Component } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { Location } from 'vue-router';
+import { profile_store } from '@/store/profiles';
 import { ItemTypeArgument } from '@/types/Args';
-import { Item, IndexResult, Profile } from '@/types/Item';
+import { Item, IndexResult } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
 import ItemBase from '@/components/admin/item/ItemBase.vue';
 import SeasonsButton from '@/components/admin/item/SeasonsButton.vue';
@@ -161,7 +162,6 @@ import ProfileDialog from '@/components/admin/item/ProfileDialog.vue';
 
 const Items = namespace('Items');
 const Indexers = namespace('Indexers');
-const Profiles = namespace('Profiles');
 
 @Component({
     components: {
@@ -186,12 +186,8 @@ export default class ItemPage extends ItemBase {
 
     @Indexers.Action private manualSearch!: (args: ItemTypeArgument) => Promise<IndexResult[]>;
 
-    @Profiles.Action private fetchProfiles!: (type: ItemType) => Promise<Profile[]>;
-    @Profiles.Mutation private setProfileDialog!: (dialog: boolean) => Promise<void>;
-
     created(): void {
         this.fetch();
-        this.fetchProfiles(this.item_type);
     }
 
     fetch(): void {
@@ -217,6 +213,9 @@ export default class ItemPage extends ItemBase {
                 this.$router.push(this.redirect);
             });
         });
+    }
+    setProfileDialog(dialog: boolean): void {
+        profile_store.dialog = dialog;
     }
 }
 </script>

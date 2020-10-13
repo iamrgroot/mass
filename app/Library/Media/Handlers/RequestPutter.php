@@ -10,12 +10,10 @@ use App\Library\Media\Requests\Radarr\SearchByIdRequest as MovieSearchByIdReques
 use App\Library\Media\Requests\Sonarr\AddSerieRequest;
 use App\Library\Media\Requests\Sonarr\SearchByIdRequest as SerieSearchByIdRequest;
 use App\Models\Request\Request;
+use App\Models\System\Setting;
 
 class RequestPutter
 {
-    // TODO make configurable
-    private const PROFILE_ID = 1;
-
     public static function put(Request $request): void
     {
         if (ItemType::Movie === $request->type) {
@@ -31,11 +29,12 @@ class RequestPutter
         $search_request = new MovieSearchByIdRequest($request->item_id);
 
         /** @var SearchResult $result */
-        $result = $client->doRequest($search_request)->getData()->first();
+        $result          = $client->doRequest($search_request)->getData()->first();
+        $profile_setting = Setting::whereMovieProfile()->firstOrFail();
 
         $put_request = new AddMovieRequest([
             'title'            => $result->title,
-            'qualityProfileId' => self::PROFILE_ID,
+            'qualityProfileId' => $profile_setting->value,
             'titleSlug'        => $result->title_slug,
             'images'           => $result->images,
             'tmdbId'           => $result->tmdb_id,
@@ -56,11 +55,12 @@ class RequestPutter
         $search_request = new SerieSearchByIdRequest($request->item_id);
 
         /** @var SearchResult $result */
-        $result = $client->doRequest($search_request)->getData()->first();
+        $result          = $client->doRequest($search_request)->getData()->first();
+        $profile_setting = Setting::whereSerieProfile()->firstOrFail();
 
         $put_request = new AddSerieRequest([
             'title'            => $result->title,
-            'qualityProfileId' => self::PROFILE_ID,
+            'qualityProfileId' => $profile_setting->value,
             'titleSlug'        => $result->title_slug,
             'images'           => $result->images,
             'tvdbId'           => $result->tvdb_id,

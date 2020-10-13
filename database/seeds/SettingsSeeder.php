@@ -34,13 +34,13 @@ class SettingsSeeder extends Seeder
                 'type'      => Setting::TYPE_INTEGER,
                 'name'      => Setting::NAME_MOVIE_PROFILE,
                 'value'     => Setting::encodeValue($movie_profile, Setting::TYPE_INTEGER),
-                'component' => 'SelectProfile',
+                'component' => 'SelectMovieProfile',
             ],
             [
                 'type'      => Setting::TYPE_INTEGER,
                 'name'      => Setting::NAME_SERIE_PROFILE,
                 'value'     => Setting::encodeValue($serie_profile, Setting::TYPE_INTEGER),
-                'component' => 'SelectProfile',
+                'component' => 'SelectSerieProfile',
             ],
         ];
 
