@@ -31,7 +31,8 @@ import {
     mdiMovie,
     mdiTelevision,
     mdiCog,
-    mdiMessageAlert
+    mdiMessageAlert,
+    mdiQualityHigh
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -74,7 +75,8 @@ export default new Vuetify({
             mdiMovie,
             mdiTelevision,
             mdiCog,
-            mdiMessageAlert
+            mdiMessageAlert,
+            mdiQualityHigh
         }
     },
 });

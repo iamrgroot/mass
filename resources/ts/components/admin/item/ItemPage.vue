@@ -14,6 +14,20 @@
                             class="ma-1"
                             v-bind="attrs"
                             v-on="on"
+                            @click="setProfileDialog(true)"
+                        >
+                            <v-icon>$mdiQualityHigh</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Change quality</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            icon
+                            class="ma-1"
+                            v-bind="attrs"
+                            v-on="on"
                             @click="searchIndexer({
                                 item_id: item.id,
                                 type: item.type
@@ -121,7 +135,8 @@
             </v-card-text>
         </template>
 
-        <SearchDialog />
+        <search-dialog />
+        <profile-dialog />
     </v-card>
 </template>
 
@@ -136,12 +151,14 @@
 import { Component } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { Location } from 'vue-router';
+import { profile_store } from '@/store/profiles';
 import { ItemTypeArgument } from '@/types/Args';
 import { Item, IndexResult } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
 import ItemBase from '@/components/admin/item/ItemBase.vue';
 import SeasonsButton from '@/components/admin/item/SeasonsButton.vue';
 import SearchDialog from '@/components/admin/indexer/SearchDialog.vue';
+import ProfileDialog from '@/components/admin/item/ProfileDialog.vue';
 
 const Items = namespace('Items');
 const Indexers = namespace('Indexers');
@@ -149,7 +166,8 @@ const Indexers = namespace('Indexers');
 @Component({
     components: {
         SeasonsButton,
-        SearchDialog
+        SearchDialog,
+        ProfileDialog
     }
 })
 export default class ItemPage extends ItemBase {
@@ -195,6 +213,9 @@ export default class ItemPage extends ItemBase {
                 this.$router.push(this.redirect);
             });
         });
+    }
+    setProfileDialog(dialog: boolean): void {
+        profile_store.dialog = dialog;
     }
 }
 </script>

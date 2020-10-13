@@ -8,6 +8,9 @@ class SettingsSeeder extends Seeder
 {
     public function run(): void
     {
+        $movie_profile = config('profiles.from_movie')[0]['id'];
+        $serie_profile = config('profiles.from_serie')[0]['id'];
+
         $default_settings = [
             [
                 'type'      => Setting::TYPE_BOOLEAN,
@@ -26,6 +29,18 @@ class SettingsSeeder extends Seeder
                 'name'      => Setting::NAME_LOG_CPU,
                 'value'     => Setting::encodeValue(false, Setting::TYPE_BOOLEAN),
                 'component' => 'Boolean',
+            ],
+            [
+                'type'      => Setting::TYPE_INTEGER,
+                'name'      => Setting::NAME_MOVIE_PROFILE,
+                'value'     => Setting::encodeValue($movie_profile, Setting::TYPE_INTEGER),
+                'component' => 'SelectMovieProfile',
+            ],
+            [
+                'type'      => Setting::TYPE_INTEGER,
+                'name'      => Setting::NAME_SERIE_PROFILE,
+                'value'     => Setting::encodeValue($serie_profile, Setting::TYPE_INTEGER),
+                'component' => 'SelectSerieProfile',
             ],
         ];
 

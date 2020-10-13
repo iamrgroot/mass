@@ -11,9 +11,11 @@ class Setting extends BaseModel
     public const TYPE_BOOLEAN = 'boolean';
     public const TYPE_INTEGER = 'integer';
 
-    public const NAME_LOG_CPU    = 'Log CPU';
-    public const NAME_LOG_MEMORY = 'Log memory';
-    public const NAME_LOG_DISK   = 'Log disk';
+    public const NAME_LOG_CPU         = 'Log CPU';
+    public const NAME_LOG_MEMORY      = 'Log memory';
+    public const NAME_LOG_DISK        = 'Log disk';
+    public const NAME_MOVIE_PROFILE   = 'Movie profile';
+    public const NAME_SERIE_PROFILE   = 'Serie profile';
 
     // Disable created_at timestamp column
     const CREATED_AT = null;
@@ -25,6 +27,8 @@ class Setting extends BaseModel
         switch ($type) {
             case self::TYPE_BOOLEAN:
                 return true === $value ? '1' : '0';
+            case self::TYPE_INTEGER:
+                return (string) $value;
         }
 
         throw new Exception("Type {$type} does not exist");
@@ -40,9 +44,21 @@ class Setting extends BaseModel
         switch ($this->type) {
             case self::TYPE_BOOLEAN:
                 return '1' === $value;
+            case self::TYPE_INTEGER:
+                return (int) $value;
         }
 
         throw new Exception("Type {$this->type} does not exist");
+    }
+
+    public function scopeWhereMovieProfile(Builder $query): Builder
+    {
+        return $query->where('name', self::NAME_MOVIE_PROFILE);
+    }
+
+    public function scopeWhereSerieProfile(Builder $query): Builder
+    {
+        return $query->where('name', self::NAME_SERIE_PROFILE);
     }
 
     public function scopeWhereCpuULog(Builder $query): Builder

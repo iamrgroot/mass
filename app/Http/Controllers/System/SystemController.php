@@ -8,6 +8,7 @@ use App\Models\System\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
 
 class SystemController extends Controller
 {
@@ -28,6 +29,13 @@ class SystemController extends Controller
         $setting        = Setting::where('name', $validated['name'])->firstOrFail();
         $setting->value = Setting::encodeValue($validated['value'], $setting->type);
         $setting->save();
+
+        return response('ok');
+    }
+
+    public function flushCache(): Response
+    {
+        Artisan::call('config:cache');
 
         return response('ok');
     }

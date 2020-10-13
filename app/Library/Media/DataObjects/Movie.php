@@ -23,6 +23,11 @@ class Movie extends MediaItem
         $this->type = ItemType::Movie;
         $this->addRating($object);
 
+        $profiles = config('profiles.from_movie');
+        $key      = array_search($this->profile_id, array_column($profiles, 'id'));
+
+        $this->features->add(new Feature($profiles[$key]['name'] ?? '???'));
+
         if (! $object->hasFile) {
             return;
         }

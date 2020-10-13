@@ -1,7 +1,7 @@
 import axios from '@/plugins/axios';
 import { CancelTokenSource } from 'axios';
 import { ItemType } from '@/enums/ItemType';
-import { SearchResult } from '@/types/Item';
+import { Item, SearchResult } from '@/types/Item';
 
 let search_axios: CancelTokenSource | null = null;
 
@@ -21,4 +21,12 @@ export async function searchItem(search: string, type: ItemType): Promise<Search
     search_axios = null;
 
     return data;
+}
+
+export async function updateProfile(item_type: ItemType, item_id: number, profile_id: number): Promise<Item> {
+    const url = item_type === ItemType.Movie ?
+        `/async/movies/${item_id}/profile` :
+        `/async/series/${item_id}/profile`;
+
+    return (await axios.patch(url, { profile_id: profile_id })).data;
 }

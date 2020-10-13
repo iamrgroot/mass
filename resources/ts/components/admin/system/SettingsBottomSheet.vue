@@ -49,10 +49,14 @@ import { system_store } from '@/store/system';
 import { Setting } from '@/types/System';
 
 import Boolean from '@/components/input/Boolean.vue';
+import SelectMovieProfile from '@/components/input/SelectMovieProfile.vue';
+import SelectSerieProfile from '@/components/input/SelectSerieProfile.vue';
 
 @Component({
     components: {
         Boolean,
+        SelectMovieProfile,
+        SelectSerieProfile,
     }
 })
 export default class SettingsBottomSheet extends Vue {
