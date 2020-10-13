@@ -17,7 +17,11 @@ try {
     $from_movie = array_map(fn (Profile $profile) => (array) $profile, $from_movie);
     $from_serie = array_map(fn (Profile $profile) => (array) $profile, $from_serie);
 } catch (\Throwable $th) {
-    Log::error($th->getMessage());
+    try {
+        Log::error($th->getMessage());
+    } catch (\Throwable $th) {
+        // Do nothing
+    }
 }
 
 return [

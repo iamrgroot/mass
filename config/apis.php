@@ -36,35 +36,44 @@ if (false === env('AUTO_CONFIG', true)) {
     try {
         $default['transmission.session_id'] = TransmissionSessionGetter::getSession($default['transmission.ip'], $default['transmission.port']);
     } catch (\Throwable $th) {
-        Log::error($th->getMessage());
+        try {
+            Log::error($th->getMessage());
+        } catch (\Throwable $th) {
+            // Do nothing
+        }
     }
 
     return $default;
 }
 
 try {
+    $files = [
+        base_path('docker-compose/sonarr/config/config.xml'),
+        base_path('docker-compose/radarr/config/config.xml'),
+        base_path('docker-compose/jackett/config/Jackett/ServerConfig.json'),
+        base_path('docker-compose/transmission/config/settings.json'),
+    ];
+
+    foreach ($files as $file) {
+        if (! file_exists($file)) {
+            return $default;
+        }
+    }
+
     $sonarr_config = new SimpleXMLElement(
-        file_get_contents(
-            base_path('docker-compose/sonarr/config/config.xml')
-        )
+        file_get_contents($files[0])
     );
 
     $radarr_config = new SimpleXMLElement(
-        file_get_contents(
-            base_path('docker-compose/radarr/config/config.xml')
-        )
+        file_get_contents($files[1])
     );
 
     $jackett_config = json_decode(
-        file_get_contents(
-            base_path('docker-compose/jackett/config/Jackett/ServerConfig.json')
-        )
+        file_get_contents($files[2])
     );
 
     $transmission_config = json_decode(
-        file_get_contents(
-            base_path('docker-compose/transmission/config/settings.json')
-        )
+        file_get_contents($files[3])
     );
 
     $transmission_host       = env('TRANSMISSION_HOST', 'transmission');
@@ -100,6 +109,6 @@ try {
             'api_key' => (string) $jackett_config->APIKey,
         ],
     ];
-} catch (Exception $exception) {
+} catch (Throwable $exception) {
     return $default;
 }
