@@ -28,12 +28,24 @@ export type Item = {
     rating: number;
     image_url: string;
     imdb_id: string;
+    profile_id: number;
     features: Feature[];
     seasons?: Season[];
 }
 
+export type Image = {
+    coverType: string;
+    url: string;
+}
+
 export type SearchResult = {
-    id: number;
+    tvdb_id?: number;
+    tmdb_id?: number;
+    title: string;
+    title_slug: string;
+    year: string;
+    text: string;
+    images: Image[];
     seasons?: Season[];
 }
 

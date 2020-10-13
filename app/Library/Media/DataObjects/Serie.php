@@ -21,6 +21,11 @@ class Serie extends MediaItem
 
         $this->addRating($object);
 
+        $profiles = config('profiles.from_serie');
+        $key      = array_search($this->profile_id, array_column($profiles, 'id'));
+
+        $this->features->add(new Feature($profiles[$key]['name'] ?? '???'));
+
         $client   = new Client();
         $request  = new EpisodesRequest($this->id);
         $episodes = $client->doRequest($request)->getData()->groupBy('season_number');

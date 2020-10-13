@@ -10,11 +10,17 @@ class SearchResponse extends BaseResponse
 {
     public function getData(): Collection
     {
-        return collect(
-            array_map(
+        $data = json_decode($this->getResponse()->getBody()->getContents());
+
+        if (is_array($data)) {
+            $data = array_map(
                 fn (object $search_result) => new SearchResult($search_result),
-                json_decode($this->getResponse()->getBody()->getContents())
-            )
-        );
+                $data
+            );
+        } else {
+            $data = [new SearchResult($data)];
+        }
+
+        return collect($data);
     }
 }

@@ -1,13 +1,21 @@
 <template>
-    <v-btn
-        icon
-        class="ma-1"
-        @click="$emit('click')"
-    >
-        <v-icon>
-            {{ icon }}
-        </v-icon>
-    </v-btn>
+    <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+            <v-icon
+                :color="color"
+                :style="{
+                    cursor: has_click_listener ? 'pointer' : 'default'
+                }"
+                :class="classes"
+                v-bind="attrs"
+                v-on="on"
+                @click="$emit('click')"
+            >
+                {{ icon }}
+            </v-icon>
+        </template>
+        <span>{{ text }}</span>
+    </v-tooltip>
 </template>
 
 
@@ -17,5 +25,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component
 export default class Confirm extends Vue {
     @Prop({required: true}) private icon!: string;
+    @Prop({required: true}) private text!: string;
+    @Prop({default: ''}) private color!: string;
+    @Prop({default: ''}) private classes!: string;
+
+    get has_click_listener(): boolean {
+        return !! this.$listeners && !! this.$listeners.click;
+    }
 }
 </script>

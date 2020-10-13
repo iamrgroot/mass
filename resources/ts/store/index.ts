@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import Profiles from '@/store/modules/profiles';
 import Items from '@/store/modules/items';
 import Notifications from '@/store/modules/notifications';
 import Torrents from '@/store/modules/torrents';
@@ -14,7 +13,6 @@ const store = new Vuex.Store({
         // User: null,
     },
     modules: {
-        Profiles,
         Items,
         Notifications,
         Torrents,

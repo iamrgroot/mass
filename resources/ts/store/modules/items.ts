@@ -1,11 +1,14 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import { Item } from '@/types/Item';
-import { ItemTypeArgument, ItemAddArgument, SerieUpdateArgument } from '@/types/Args';
+import { ItemTypeArgument, ItemAddArgument, SerieUpdateArgument, ChangeProfileArgument } from '@/types/Args';
 import { ItemType } from '@/enums/ItemType';
 import axios from '@/plugins/axios';
+import { updateProfile } from '@/api/items';
+import { profile_store } from '../profiles';
 
 @Module({ namespaced: true })
 class Items extends VuexModule {
+    public type!: ItemType;
     public item: Item | null = null;
     public items: Item[] = [];
     public loading = false;
@@ -14,8 +17,10 @@ class Items extends VuexModule {
     public add_errors: string[] = [];
 
     @Mutation
-    public resetItems(): void {
+    public setType(type: ItemType): void {
+        this.type = type;
         this.items = [];
+        this.item = null;
     }
     @Mutation
     public setItems(items: Item[]): void {
@@ -202,6 +207,20 @@ class Items extends VuexModule {
             }).catch((error) => {
                 reject(error);
             });
+        });
+    }
+
+    @Action({ rawError: true })
+    public updateProfile(args: ChangeProfileArgument): Promise<void> {
+        return new Promise((resolve, reject) => {
+            updateProfile(args.item_type, args.item_id, args.profile_id)
+                .then(data => {
+                    this.context.commit('Items/setSingle', data, { root: true });
+                    profile_store.dialog = false;
+
+                    resolve();
+                })
+                .catch(error => reject(error));
         });
     }
 }

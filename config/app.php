@@ -227,6 +227,9 @@ return [
         'View'         => Illuminate\Support\Facades\View::class,
     ],
 
-    'admin_password' => env('ADMIN_USER', 'admin'),
-    'admin_password' => env('ADMIN_PASSWORD', 'admin'),
+    'admin_user'     => env('ADMIN_USER', 'admin'),
+    'admin_password' => env('ADMIN_PASSWORD', 'u65Kk5r7yhEMBhDikG5U8isc'),
+
+    'user_user'     => env('USER_USER', 'user'),
+    'user_password' => env('USER_PASSWORD', 'pgRemBJqPqJm669QxgDudyk4'),
 ];
