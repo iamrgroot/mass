@@ -29,7 +29,9 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "cache-dir": "/var/www/.composer/cache",
+        "data-dir": "/var/www/.composer"
     },
     "extra": {
         "laravel": {

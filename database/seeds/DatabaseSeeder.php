@@ -9,9 +9,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call('UserTableSeeder');
-        $this->call('DockerSeeder');
-        $this->call('CreateRequestStatusesTable');
-        $this->call('SettingsSeeder');
+        $this->call(UserTableSeeder::class);
+        $this->call(DockerSeeder::class);
+        $this->call(RequestStatusesTable::class);
+        $this->call(SettingsSeeder::class);
     }
 }
