@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserTableSeeder::class);
         $this->call(DockerSeeder::class);
-        $this->call(RequestStatusesTable::class);
+        $this->call(StatusSeeder::class);
         $this->call(SettingsSeeder::class);
     }
 }

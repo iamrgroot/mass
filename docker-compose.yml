@@ -4,7 +4,6 @@ services:
     image: iamrgroot/laravel:${DOCKER_TAG}
     container_name: mass
     user: ${UID}
-    command: bash /usr/bin/start.sh
     environment:
       TZ: ${TZ}
       CONTAINER_ROLE: app
@@ -22,7 +21,6 @@ services:
     image: iamrgroot/laravel:${DOCKER_TAG}
     container_name: mass-queue
     user: ${UID}
-    command: bash /usr/bin/start.sh
     depends_on:
       - mass
     environment:
@@ -39,7 +37,6 @@ services:
     image: iamrgroot/laravel:${DOCKER_TAG}
     container_name: mass-scheduler
     user: ${UID}
-    command: bash /usr/bin/start.sh
     depends_on:
       - mass
     environment:

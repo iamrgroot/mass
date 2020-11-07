@@ -1,10 +1,13 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class UserTableSeeder extends Seeder
 {

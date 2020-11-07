@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Auth\User;
 use App\Models\System\Setting;
 use Illuminate\Database\Seeder;
@@ -8,8 +10,8 @@ class SettingsSeeder extends Seeder
 {
     public function run(): void
     {
-        $movie_profile = config('profiles.from_movie')[0]['id'];
-        $serie_profile = config('profiles.from_serie')[0]['id'];
+        $movie_profile = config('profiles.from_movie')[0]['id'] ?? 1;
+        $serie_profile = config('profiles.from_serie')[0]['id'] ?? 1;
 
         $default_settings = [
             [
@@ -17,7 +19,7 @@ class SettingsSeeder extends Seeder
                 'name'      => Setting::NAME_LOG_DISK,
                 'value'     => Setting::encodeValue(false, Setting::TYPE_BOOLEAN),
                 'component' => 'Boolean',
-            ],
+        ],
             [
                 'type'      => Setting::TYPE_BOOLEAN,
                 'name'      => Setting::NAME_LOG_MEMORY,

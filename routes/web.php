@@ -1,20 +1,24 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RouteController;
+use App\Http\Controllers\Maintenance\MaintenanceController;
+use App\Http\Controllers\Media\ImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::domain(config('app.host'))->group(function () {
     Route::middleware('guest')->group(static function () {
-        Route::get('/login', 'Auth\LoginController@page')->name('login');
-        Route::post('/login', 'Auth\LoginController@login');
+        Route::get('/login', [LoginController::class, 'page'])->name('login');
+        Route::post('/login', [LoginController::class, 'login']);
     });
 
-    Route::get('/logout', 'Auth\LoginController@logout');
+    Route::get('/logout', [LoginController::class, 'logout']);
 
     Route::middleware('auth')->group(static function () {
-        Route::get('image', 'Media\ImageController@image');
+        Route::get('image', [ImageController::class, 'image']);
 
         Route::middleware('role:user|admin')->group(static function () {
-            Route::get('', 'Auth\RouteController@view');
+            Route::get('', [RouteController::class, 'view']);
         });
 
         Route::middleware('role:admin')->group(static function () {
@@ -28,13 +32,13 @@ Route::domain(config('app.host'))->group(function () {
                 'system',
             ];
 
-            Route::get('/{route}', 'Auth\RouteController@view')
+            Route::get('/{route}', [RouteController::class, 'view'])
                 ->where('route', implode('|', array_map(fn ($route) => "({$route})", $routes)));
 
             $maintenance_routes = [
                 'users',
             ];
-            Route::get('/maintenance/{route}', 'Maintenance\MaintenanceController@view')
+            Route::get('/maintenance/{route}', [MaintenanceController::class, 'view'])
                 ->where('route', implode('|', array_map(fn ($route) => "({$route})", $maintenance_routes)));
         });
     });

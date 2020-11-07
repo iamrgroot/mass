@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Radarr\DownloadClient as RadarrDownloadClient;
 use App\Models\Radarr\Indexer as RadarrIndexer;
 use App\Models\Radarr\RootFolder as RadarrRootFolder;

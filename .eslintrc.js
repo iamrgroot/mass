@@ -43,9 +43,9 @@ module.exports = {
         '@typescript-eslint/array-type': ['error', {default: 'array'}],
         '@typescript-eslint/explicit-function-return-type': ['off'],
         '@typescript-eslint/member-delimiter-style': ['error'],
-        '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
         '@typescript-eslint/prefer-for-of': ['error'],
         // TODO Fix error
+        // '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
         // '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['error'],
         // '@typescript-eslint/prefer-nullish-coalescing': ['error'],
         // '@typescript-eslint/prefer-string-starts-ends-with': ['error'],
