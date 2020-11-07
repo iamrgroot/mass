@@ -7,6 +7,8 @@ import { updateProfile } from '@/api/items';
 import { useProfiles } from './profiles';
 import { useNotifications } from './notifications';
 
+// TODO correct type?
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useItems = () => {
     const item_store = reactive({
         item_type: ItemType.Movie,

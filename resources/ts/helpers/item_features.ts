@@ -1,6 +1,8 @@
 import { ItemType } from '@/enums/ItemType';
 import { Item } from '@/types/Item';
 
+// TODO correct type?
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useItemFeatures = () => {
     const static_image_location = '/images/shiba_poster.jpg';
 

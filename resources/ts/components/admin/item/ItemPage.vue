@@ -138,21 +138,12 @@
 </style>
 
 <script lang="ts">
-import { computed, defineComponent, SetupContext, toRefs } from '@vue/composition-api';
+import { computed, defineComponent, SetupContext } from '@vue/composition-api';
 import { useItems } from '@/store/items';
 import { useItemFeatures } from '@/helpers/item_features';
 import { useIndexers } from '@/store/indexers';
 import { Location } from 'vue-router';
 import { useProfiles } from '@/store/profiles';
-
-export default defineComponent({
-    setup(props, vm) {
-        return useItemManagement(vm);
-    },
-    created() {
-        this.fetch();
-    }
-});
 
 const useItemManagement = (vm: SetupContext) => {
     const {
@@ -174,9 +165,11 @@ const useItemManagement = (vm: SetupContext) => {
     });
 
     const fetch = (): void => {
+        if (! item.value) return;
+
         fetchItem(
             Number(vm.root.$route.params.id),
-            item.value!.type
+            item.value.type
         ).catch(() => {
 
             vm.root.$router.push(redirect.value);
@@ -210,4 +203,14 @@ const useItemManagement = (vm: SetupContext) => {
         ...useItemFeatures(),
     };
 };
+
+// TODO fix returns in setup instead of useitemmanage
+export default defineComponent({
+    setup(props, vm) {
+        return useItemManagement(vm);
+    },
+    created() {
+        this.fetch();
+    }
+});
 </script>

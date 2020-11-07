@@ -1,5 +1,7 @@
 import { reactive, toRefs } from '@vue/composition-api';
 
+// TODO correct type?
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useLocale = () => {
     const locale_store = reactive({
         locale: 'nl'

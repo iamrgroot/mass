@@ -7,6 +7,8 @@ import { getMovieProfiles, getSeriesProfiles } from '@/api/profiles';
 import { useItems } from './items';
 import { ItemType } from '@/enums/ItemType';
 
+// TODO correct type?
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useProfiles = () => {
     const profile_store = reactive({
         movie_profiles: [] as Profile[],

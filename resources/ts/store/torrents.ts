@@ -4,6 +4,8 @@ import axios from '@/plugins/axios';
 
 import { Torrent } from '@/types/Torrent';
 
+// TODO correct type?
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useTorrents = () => {
     const torrent_store = reactive({
         torrents: [] as Torrent[],

@@ -90,7 +90,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api';
-import { useProfiles } from '@/store/profiles';
 import { useItems } from '@/store/items';
 import { useIndexers } from '@/store/indexers';
 

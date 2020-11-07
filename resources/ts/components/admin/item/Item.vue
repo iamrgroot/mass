@@ -75,9 +75,11 @@ export default defineComponent({
         const item_features = useItemFeatures();
 
         const goTo = (): void => {
+            if (!item.value) return;
+
             const route = item_is_movie ? 'movie' : 'serie';
 
-            vm.root.$router.push({ name: route, params: { id: String(item.value!.id) }});
+            vm.root.$router.push({ name: route, params: { id: String(item.value.id) }});
         };
 
         return {

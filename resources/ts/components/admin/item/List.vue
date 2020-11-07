@@ -94,27 +94,6 @@ import { useItems } from '@/store/items';
 import sortBy from 'lodash/sortBy';
 import { Item } from '@/types/Item';
 
-export default defineComponent({
-    setup() {
-        const {
-            items,
-            items_loading,
-            type_is_movie,
-            fetchItems,
-        } = useItems();
-
-        return {
-            ...useItemList(),
-            items,
-            items_loading,
-            fetchItems,
-        };
-    },
-    created() {
-        this.fetchItems();
-    }
-});
-
 const useItemList = () => {
     const { items } = useItems();
 
@@ -137,4 +116,24 @@ const useItemList = () => {
         sorted_items,
     };
 };
+
+export default defineComponent({
+    setup() {
+        const {
+            items,
+            items_loading,
+            fetchItems,
+        } = useItems();
+
+        return {
+            ...useItemList(),
+            items,
+            items_loading,
+            fetchItems,
+        };
+    },
+    created() {
+        this.fetchItems();
+    }
+});
 </script>

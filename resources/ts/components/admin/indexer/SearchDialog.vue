@@ -86,51 +86,7 @@ import { DataTableHeader } from 'vuetify';
 import { byte } from '@/filters/filters';
 
 import { useIndexers } from '@/store/indexers';
-import { ItemType } from '@/enums/ItemType';
-import { Item } from '@/types/Item';
-
-export default defineComponent({
-    setup() {
-        const {
-            indexer_dialog,
-            indexer_loading,
-            indexer_results,
-            searchIndexers,
-            addTorrentFromIndexer,
-        } = useIndexers();
-
-        const { headers } = useIndexerTable();
-
-        const { item } = useItem();
-
-        return {
-            indexer_dialog,
-            indexer_loading,
-            indexer_results,
-            searchIndexers,
-            addTorrentFromIndexer,
-            headers,
-            item,
-        };
-    }
-});
-
-function useItem() {
-    // TODO get item from store
-    const item = {
-        type: ItemType.Movie,
-        id: 1,
-        rating: 1,
-        image_url: '',
-        imdb_id: '',
-        profile_id: 1,
-        features: [],
-    } as Item;
-
-    return {
-        item,
-    };
-}
+import { useItems } from '@/store/items';
 
 function useIndexerTable() {
     const headers = [
@@ -147,4 +103,31 @@ function useIndexerTable() {
         headers,
     };
 }
+
+export default defineComponent({
+    setup() {
+        const {
+            indexer_dialog,
+            indexer_loading,
+            indexer_results,
+            searchIndexers,
+            addTorrentFromIndexer,
+        } = useIndexers();
+
+        const { headers } = useIndexerTable();
+
+        const { item } = useItems();
+
+        return {
+            indexer_dialog,
+            indexer_loading,
+            indexer_results,
+            searchIndexers,
+            addTorrentFromIndexer,
+            headers,
+            item,
+            byte,
+        };
+    }
+});
 </script>

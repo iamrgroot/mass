@@ -75,14 +75,6 @@ import { useProfiles } from '@/store/profiles';
 
 import { SearchResult } from '@/types/Item';
 
-export default defineComponent({
-    setup() {
-        return {
-            ...useSearch(),
-        };
-    },
-});
-
 const useSearch = () => {
     const search_data = reactive({
         search_results: [] as SearchResult[],
@@ -94,7 +86,7 @@ const useSearch = () => {
     });
 
     const { relevant_profiles } = useProfiles();
-    const { item_type, type_is_movie, item_add_errors, item, addItem } = useItems();
+    const { type_is_movie, item_add_errors, addItem } = useItems();
 
     if (relevant_profiles.value.length > 0) {
         search_data.selected_profile = relevant_profiles.value[0].id;
@@ -106,9 +98,7 @@ const useSearch = () => {
         }
     });
 
-    watch(() => search_data.search, () => doSearch());
-
-    const doSearch = async () => {
+    watch(() => search_data.search, async () => {
         const { item } = useItems();
 
         if (! search_data.search || !item.value) return;
@@ -120,7 +110,7 @@ const useSearch = () => {
             // Nothing
         }
         search_data.search_loading = false;
-    };
+    });
 
     const add = (): void => {
         if (search_data.selected === null || search_data.selected_profile === null) return;
@@ -140,4 +130,12 @@ const useSearch = () => {
         type_is_movie,
     };
 };
+
+export default defineComponent({
+    setup() {
+        return {
+            ...useSearch(),
+        };
+    },
+});
 </script>

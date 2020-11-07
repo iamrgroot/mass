@@ -44,6 +44,8 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': ['off'],
         '@typescript-eslint/member-delimiter-style': ['error'],
         '@typescript-eslint/prefer-for-of': ['error'],
+        // TODO check snake case rule?
+        '@typescript-eslint/camelcase': ['off'],
         // TODO Fix error
         // '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
         // '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['error'],

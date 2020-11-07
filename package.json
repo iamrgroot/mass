@@ -7,8 +7,8 @@
         "dev": "vue-cli-service build --mode development",
         "dev-silent": "vue-cli-service build --mode development --silent",
         "watch": "vue-cli-service build --mode development --watch",
-        "lint": "npx eslint --fix --ext .js,.ts,.vue ./resources/ts ./.eslintrc.js ./babel.config.js ./vue.config.js",
-        "lint-dry": "npx eslint --ext .js,.ts,.vue ./resources/ts ./.eslintrc.js ./babel.config.js ./vue.config.js"
+        "lint": "npx eslint --fix --ext .js,.ts,.vue ./resources/ts ./babel.config.js ./vue.config.js",
+        "lint-dry": "npx eslint --ext .js,.ts,.vue ./resources/ts ./babel.config.js ./vue.config.js"
     },
     "dependencies": {
         "@types/lodash": "^4.14.157",
