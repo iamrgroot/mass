@@ -20,6 +20,7 @@
         "spatie/laravel-permission": "^3.16"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.8",
         "facade/ignition": "^2.5",
         "friendsofphp/php-cs-fixer": "^2.16",
         "fzaninotto/faker": "^1.9.1",
@@ -109,6 +110,10 @@
             "git fetch --prune",
             "bash -c \"(git branch | grep -v '^*' | xargs git branch -D) || echo 'No other local branches to delete.'\"",
             "git tag -l | xargs git tag -d && git fetch -t"
+        ],
+        "ide-helper": [
+            "@php artisan ide-helper:models --dir=\"app/Models\" -W -r",
+            "composer format-php"
         ]
     }
 }

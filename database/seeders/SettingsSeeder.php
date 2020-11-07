@@ -19,7 +19,7 @@ class SettingsSeeder extends Seeder
                 'name'      => Setting::NAME_LOG_DISK,
                 'value'     => Setting::encodeValue(false, Setting::TYPE_BOOLEAN),
                 'component' => 'Boolean',
-        ],
+            ],
             [
                 'type'      => Setting::TYPE_BOOLEAN,
                 'name'      => Setting::NAME_LOG_MEMORY,

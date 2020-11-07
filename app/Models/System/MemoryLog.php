@@ -4,6 +4,22 @@ namespace App\Models\System;
 
 use App\Models\BaseModel;
 
+/**
+ * App\Models\System\MemoryLog
+ *
+ * @property integer $id
+ * @property integer $used_space
+ * @property integer $total_space
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|MemoryLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MemoryLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MemoryLog query()
+ * @method static \Illuminate\Database\Eloquent\Builder|MemoryLog whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MemoryLog whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MemoryLog whereTotalSpace($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MemoryLog whereUsedSpace($value)
+ * @mixin \Eloquent
+ */
 class MemoryLog extends BaseModel
 {
     // Disable created_at timestamp column

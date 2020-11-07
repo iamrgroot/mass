@@ -6,6 +6,33 @@ use App\Models\BaseModel;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * App\Models\System\Setting
+ *
+ * @property integer $id
+ * @property string $type
+ * @property string $name
+ * @property bool|int|mixed $value
+ * @property string $component
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property integer $updated_by
+ * @method static Builder|Setting newModelQuery()
+ * @method static Builder|Setting newQuery()
+ * @method static Builder|Setting query()
+ * @method static Builder|Setting whereComponent($value)
+ * @method static Builder|Setting whereCpuULog()
+ * @method static Builder|Setting whereDiskLog()
+ * @method static Builder|Setting whereId($value)
+ * @method static Builder|Setting whereMemoryLog()
+ * @method static Builder|Setting whereMovieProfile()
+ * @method static Builder|Setting whereName($value)
+ * @method static Builder|Setting whereSerieProfile()
+ * @method static Builder|Setting whereType($value)
+ * @method static Builder|Setting whereUpdatedAt($value)
+ * @method static Builder|Setting whereUpdatedBy($value)
+ * @method static Builder|Setting whereValue($value)
+ * @mixin \Eloquent
+ */
 class Setting extends BaseModel
 {
     public const TYPE_BOOLEAN = 'boolean';
