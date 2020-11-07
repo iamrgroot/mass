@@ -91,10 +91,10 @@ import { Item } from '@/types/Item';
 
 export default defineComponent({
     setup() {
-        const { 
+        const {
             indexer_dialog,
             indexer_loading,
-            indexer_results, 
+            indexer_results,
             searchIndexers,
             addTorrentFromIndexer,
         } = useIndexers();
@@ -106,14 +106,14 @@ export default defineComponent({
         return {
             indexer_dialog,
             indexer_loading,
-            indexer_results, 
+            indexer_results,
             searchIndexers,
             addTorrentFromIndexer,
             headers,
             item,
-        }
+        };
     }
-})
+});
 
 function useItem() {
     // TODO get item from store
@@ -129,7 +129,7 @@ function useItem() {
 
     return {
         item,
-    }
+    };
 }
 
 function useIndexerTable() {
@@ -145,6 +145,6 @@ function useIndexerTable() {
 
     return {
         headers,
-    }
+    };
 }
 </script>

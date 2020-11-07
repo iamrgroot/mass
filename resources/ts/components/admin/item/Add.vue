@@ -79,11 +79,11 @@ export default defineComponent({
     setup() {
         return {
             ...useSearch(),
-        }
+        };
     },
 });
 
-const useSearch = () => {    
+const useSearch = () => {
     const search_data = reactive({
         search_results: [] as SearchResult[],
         search: '',
@@ -122,7 +122,7 @@ const useSearch = () => {
         search_data.search_loading = false;
     };
 
-    const add = (): void  => {
+    const add = (): void => {
         if (search_data.selected === null || search_data.selected_profile === null) return;
 
         addItem(
@@ -139,5 +139,5 @@ const useSearch = () => {
         relevant_profiles,
         type_is_movie,
     };
-}
+};
 </script>

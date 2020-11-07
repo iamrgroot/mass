@@ -155,15 +155,15 @@ export default defineComponent({
 });
 
 const useItemManagement = (vm: SetupContext) => {
-    const { 
-        item, 
-        item_is_movie, 
+    const {
+        item,
+        item_is_movie,
         item_loading,
         fetchItem,
         deleteItem,
         refreshItem,
     } = useItems();
-    const { 
+    const {
         searchIndexers,
         searchIndexersAutomatically,
     } = useIndexers();
@@ -192,14 +192,14 @@ const useItemManagement = (vm: SetupContext) => {
             }
 
             deleteItem(item.value.id, item.value.type)
-            .then(() => {
-                vm.root.$router.push(redirect.value);
-            });
+                .then(() => {
+                    vm.root.$router.push(redirect.value);
+                });
         });
-    }
+    };
     return {
-        item, 
-        item_is_movie, 
+        item,
+        item_is_movie,
         item_loading,
         fetch,
         remove,

@@ -78,8 +78,8 @@ export const useItems = () => {
     };
 
     const addItem = (
-        item: SearchResult, 
-        profile: number, 
+        item: SearchResult,
+        profile: number,
         seasons: number[]|null
     ): Promise<Item> => {
         return new Promise((resolve, reject) => {
@@ -161,13 +161,13 @@ export const useItems = () => {
             });
         });
     };
-    
+
     const updateItemProfile = (item_id: number, type: ItemType, profile_id: number): Promise<void> => {
         return new Promise((resolve, reject) => {
             updateProfile(type, item_id, profile_id)
                 .then(data => {
                     item_store.item = data;
-                    
+
                     const { profile_dialog } = useProfiles();
                     profile_dialog.value = false;
 
@@ -186,5 +186,5 @@ export const useItems = () => {
         toggleSeason,
         refreshItem,
         updateItemProfile,
-    }
-}
+    };
+};

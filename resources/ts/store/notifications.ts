@@ -22,10 +22,10 @@ export const useNotifications = () => {
             }),
             1
         );
-    }
+    };
     return {
         ...toRefs(notification_store),
         notify,
         removeNotification,
     };
-}
+};

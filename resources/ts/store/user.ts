@@ -7,5 +7,5 @@ export const useUser = () => {
 
     return {
         ...toRefs(user_store),
-    }
+    };
 };

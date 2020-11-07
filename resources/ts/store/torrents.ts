@@ -63,5 +63,5 @@ export const useTorrents = () => {
         removeTorrent,
         stopTorrent,
         startTorrent,
-    }
+    };
 };

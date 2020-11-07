@@ -33,7 +33,7 @@ export const useProfiles = () => {
         });
     };
 
-    const fetchSerieProfiles = (): Promise<Profile[]>  => {
+    const fetchSerieProfiles = (): Promise<Profile[]> => {
         return new Promise((resolve, reject) => {
             getSeriesProfiles()
                 .then(data => {
@@ -46,7 +46,7 @@ export const useProfiles = () => {
 
     const initializeProfiles = (): void => {
         profile_store.profiles_loading = true;
-    
+
         Promise.all([
             fetchMovieProfiles(),
             fetchSerieProfiles(),
@@ -60,5 +60,5 @@ export const useProfiles = () => {
         fetchMovieProfiles,
         fetchSerieProfiles,
         initializeProfiles,
-    }
+    };
 };

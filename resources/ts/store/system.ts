@@ -21,7 +21,7 @@ export const useSystem = () => {
             }).catch(reject);
         });
     };
-    const fetchDiskLog = () => { 
+    const fetchDiskLog = () => {
         return new Promise((resolve, reject) => {
             getDiskLogs().then(data => {
                 system_store.disk_logs = data;
@@ -30,7 +30,7 @@ export const useSystem = () => {
         });
     };
 
-    const fetchMemoryLog = () => { 
+    const fetchMemoryLog = () => {
         return new Promise((resolve, reject) => {
             getMemoryLogs().then(data => {
                 system_store.memory_logs = data;
@@ -54,4 +54,4 @@ export const useSystem = () => {
         fetchMemoryLog,
         fetchLogs,
     };
-}
+};

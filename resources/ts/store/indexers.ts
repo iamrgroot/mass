@@ -42,11 +42,11 @@ export const useIndexers = () => {
         return new Promise((resolve, reject) => {
             indexer_store.indexer_dialog = true;
             indexer_store.indexer_loading = true;
-    
+
             const url = type === ItemType.Movie ?
                 `/async/movies/${item_id}/manual-search` :
                 `/async/series/${item_id}/manual-search`;
-    
+
             axios.get(url).then(({ data }) => {
                 indexer_store.indexer_results = data;
                 resolve(data);
@@ -57,19 +57,19 @@ export const useIndexers = () => {
             });
         });
     }
-    
+
     function addTorrentFromIndexer(guid: string, indexer_id: number, type: ItemType): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?
                 `/async/movies/${indexer_id}/add-manual`:
                 `/async/series/${indexer_id}/add-manual`;
-    
+
             axios.post(url, {
                 guid: guid
             }).then(() => {
                 indexer_store.indexer_results = [];
                 indexer_store.indexer_dialog = false;
-    
+
                 resolve(true);
             }).catch(error => {
                 const { notify } = useNotifications();
@@ -78,17 +78,17 @@ export const useIndexers = () => {
                     color: 'error',
                     title: 'Error adding indexer entry',
                 });
-    
+
                 reject(error);
             });
         });
-    };
+    }
 
     return {
         ...toRefs(indexer_store),
         searchIndexersAutomatically,
         searchIndexers,
         addTorrentFromIndexer,
-    }
-}
+    };
+};
 

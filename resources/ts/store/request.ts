@@ -9,5 +9,5 @@ export const useRequests = () => {
 
     return {
         ...toRefs(request_store),
-    }
-}
+    };
+};

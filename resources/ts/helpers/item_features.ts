@@ -20,8 +20,8 @@ export const useItemFeatures = () => {
             `/async/series/${item.id}/image?${Date.now()}`;
     };
 
-    const imdbLink = (item: Item): string => { 
-        return `https://www.imdb.com/title/${item.imdb_id}`; 
+    const imdbLink = (item: Item): string => {
+        return `https://www.imdb.com/title/${item.imdb_id}`;
     };
 
     return {

@@ -135,6 +135,6 @@ const useItemList = () => {
     return {
         ...toRefs(item_list_data),
         sorted_items,
-    }
+    };
 };
 </script>

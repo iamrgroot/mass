@@ -14,4 +14,4 @@ export const useLocale = () => {
         ...toRefs(locale_store),
         short_time_options,
     };
-}
+};
