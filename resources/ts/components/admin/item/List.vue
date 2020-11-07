@@ -1,6 +1,6 @@
 <template>
     <v-card
-        :loading="loading"
+        :loading="items_loading"
         min-width="100%"
     >
         <v-card-title>
@@ -44,7 +44,7 @@
             </v-btn>
             <v-btn
                 icon
-                @click="fetchItems(type)"
+                @click="fetchItems()"
             >
                 <v-icon>$mdiRefresh</v-icon>
             </v-btn>
@@ -61,10 +61,10 @@
                     icon="$mdiCloudAlert"
                     class="text-center"
                 >
-                    No {{ is_movie ? 'movies' : 'series' }}
+                    No {{ type_is_movie ? 'movies' : 'series' }}
                 </v-alert>
                 <v-progress-linear
-                    v-else-if="loading"
+                    v-else-if="items_loading"
                     indeterminate
                 />
                 <v-row
@@ -88,41 +88,53 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api';
+
+import { useItems } from '@/store/items';
 import sortBy from 'lodash/sortBy';
 import { Item } from '@/types/Item';
-import { ItemType } from '@/enums/ItemType';
-import ItemComponent from '@/components/admin/item/Item.vue';
 
-const Items = namespace('Items');
+export default defineComponent({
+    setup() {
+        const {
+            items,
+            items_loading,
+            type_is_movie,
+            fetchItems,
+        } = useItems();
 
-@Component({
-    components: {
-        ItemComponent,
+        return {
+            ...useItemList(),
+            items,
+            items_loading,
+            fetchItems,
+        };
+    },
+    created() {
+        this.fetchItems();
     }
-})
-export default class List extends Vue {
-    private no_columns = 1;
-    private sorted_on = '';
-    private descending = false;
+});
 
-    get is_movie(): boolean { return this.type === ItemType.Movie; }
-    get sorted_items(): Item[] {
-        if (this.sorted_on === '') return this.items;
+const useItemList = () => {
+    const { items } = useItems();
 
-        return this.descending ?
-            sortBy(this.items, this.sorted_on).reverse() :
-            sortBy(this.items, this.sorted_on);
+    const item_list_data = reactive({
+        no_columns: 1,
+        sorted_on: '',
+        descending: false,
+    });
+
+    const sorted_items = computed((): Item[] => {
+        if (item_list_data.sorted_on === '') return items.value;
+
+        return item_list_data.descending ?
+            sortBy(items.value, item_list_data.sorted_on).reverse() :
+            sortBy(items.value, item_list_data.sorted_on);
+    });
+
+    return {
+        ...toRefs(item_list_data),
+        sorted_items,
     }
-
-    @Items.State private type!: ItemType;
-    @Items.State public items!: Item[];
-    @Items.State public loading!: boolean;
-    @Items.Action public fetchItems!: (type: ItemType) => Promise<Item[]>
-
-    created(): void {
-        this.fetchItems(this.type);
-    }
-}
+};
 </script>

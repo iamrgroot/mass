@@ -1,5 +1,11 @@
-import Vue from 'vue';
+import { reactive, toRefs } from '@vue/composition-api';
 
-export const user_store = Vue.observable({
-    user: window.user,
-});
+export const useUser = () => {
+    const user_store = reactive({
+        user: window.user,
+    });
+
+    return {
+        ...toRefs(user_store),
+    }
+};

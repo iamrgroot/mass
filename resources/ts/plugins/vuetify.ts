@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
+import VueCompositionAPI from '@vue/composition-api';
 
 import {
     mdiDatabaseSearch,
@@ -36,6 +37,7 @@ import {
 } from '@mdi/js';
 
 Vue.use(Vuetify);
+Vue.use(VueCompositionAPI);
 
 export default new Vuetify({
     theme: {

@@ -1,6 +1,13 @@
-import Vue from 'vue';
+import { reactive, toRefs } from '@vue/composition-api';
+
 import { Request } from '@/types/Requests';
 
-export const request_store = Vue.observable({
-    requests: [] as Request[],
-});
+export const useRequests = () => {
+    const request_store = reactive({
+        requests: [] as Request[],
+    });
+
+    return {
+        ...toRefs(request_store),
+    }
+}
