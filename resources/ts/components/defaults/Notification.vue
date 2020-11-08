@@ -38,7 +38,7 @@ import { defineComponent, ref, watch } from '@vue/composition-api';
 export default defineComponent({
     props: {
         notification: {
-            type: Notification,
+            type: Object,
             required: true,
         },
         total: {

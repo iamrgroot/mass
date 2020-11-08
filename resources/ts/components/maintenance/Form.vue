@@ -37,14 +37,14 @@
 </template>
 
 <script lang="ts">
-
-import { computed, defineComponent, ref } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 
 import TextField from '@/components/input/TextField.vue';
 import Password from '@/components/input/Password.vue';
 import SelectMultiple from '@/components/input/SelectMultiple.vue';
-import { GeneralObject } from '@/types/Inputs';
+
 import { saveItem } from '@/api/maintenance';
+import { useMaintenance } from '@/store/maintenance';
 
 export default defineComponent({
     components: {
@@ -59,10 +59,8 @@ export default defineComponent({
         },
     },
     setup(props, vm) {
-        const errors = ref({});
+        const { errors, fields, table } = useMaintenance(vm);
 
-        const table = computed((): string => vm.root.$route.name as string);
-        const fields = computed((): GeneralObject => window.injected[table.value] as GeneralObject);
         const title = computed((): string => {
             let string = 'Edit';
 
@@ -89,10 +87,10 @@ export default defineComponent({
         };
 
         return {
-            save,
             errors,
             fields,
-            title
+            save,
+            title,
         };
     }
 });

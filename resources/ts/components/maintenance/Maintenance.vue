@@ -33,97 +33,98 @@
         <Form
             v-model="selected_item"
             @updated="updateRecord"
-            @inserted="insertRecord"
+            @inserted="records.push(item)"
         />
     </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { computed, defineComponent, reactive, SetupContext, toRefs } from '@vue/composition-api';
+
 import { capitalize } from '@/filters/filters';
-import { getItems, deleteItem } from '@/api/maintenance';
+
 import Form from '@/components/maintenance/Form.vue';
-import { DataTableHeader } from 'vuetify';
 import { GeneralObject } from '@/types/Inputs';
+import { useMaintenance } from '@/store/maintenance';
+import { DataTableHeader } from 'vuetify';
+import { deleteItem, getItems } from '@/api/maintenance';
+import { updateObject } from '@/helpers/object';
+import { updateArrayItem, removeArrayItem } from '@/helpers/array';
 
-@Component({
-    components: {
-        Form,
-    },
-    filters: {
-        capitalize
-    }
-})
-export default class Maintenance extends Vue {
-    private records: GeneralObject[] = [];
-    private selected_item: GeneralObject = { id: 0 };
+const useMaintenanceTable = (vm: SetupContext) => {
+    const table_store = reactive({
+        records: [] as GeneralObject[],
+        selected_item: { id: 0 } as GeneralObject,
+    });
 
-    get table(): string {
-        return this.$route.name as string;
-    }
-    get fields(): GeneralObject {
-        return window.injected[this.table] as GeneralObject;
-    }
-    get headers(): DataTableHeader[] {
-        const headers = Object.keys(this.fields)
+    const { fields, table } = useMaintenance(vm);
+
+    const headers = computed((): DataTableHeader[] => {
+        const headers = Object.keys(fields.value)
             .filter(item =>
-                (this.fields[item] as GeneralObject)['hide_in_table'] !== true
+                (fields.value[item] as GeneralObject)['hide_in_table'] !== true
             )
             .map(item => {
                 return { text: capitalize(item), value: item } as DataTableHeader;
             });
         headers.push({ text: '', value: 'actions', width: '100px', align: 'end', sortable: false } as DataTableHeader);
+
         return headers;
-    }
+    });
 
-    async created(): Promise<void> {
-        this.records = await getItems(this.table);
-    }
+    const newItem = (): void => {
+        const fields_copy = {...fields.value};
 
-    newItem(): void {
-        const fields = {...this.fields};
-
-        for (const key in fields) {
-            fields[key] = null;
+        for (const key in fields_copy) {
+            fields_copy[key] = null;
         }
 
-        this.selected_item = Object.assign(
-            {},
-            this.selected_item,
-            {
-                ...fields,
-                id: -1
-            }
-        );
-    }
-    update(item: GeneralObject): void {
-        this.selected_item = Object.assign({}, this.selected_item, item);
-    }
-    async remove(item: GeneralObject): Promise<void> {
-        if (! await this.$root.$confirm('Delete?')) {
+        updateObject(table_store.selected_item, {
+            ...fields,
+            id: -1
+        });
+    };
+
+    const update = (item: GeneralObject): void => {
+        updateObject(table_store.selected_item, item);
+    };
+
+    const remove = async (item: GeneralObject): Promise<void> =>{
+        if (! await vm.root.$confirm('Delete?')) {
             return;
         }
 
-        await deleteItem(this.table, item);
+        await deleteItem(table.value, item);
 
-        this.records.splice(
-            this.records.findIndex(old_item => {
-                return item.id === old_item.id;
-            }),
-            1
-        );
+        removeArrayItem(table_store.records, item);
+    };
+
+    const updateRecord = (item: GeneralObject): void => {
+        updateArrayItem(table_store.records, item);
+    };
+
+    return {
+        ...toRefs(table_store),
+        table,
+        headers,
+        newItem,
+        update,
+        remove,
+        updateRecord
+    };
+};
+
+export default defineComponent({
+    components: {
+        Form,
+    },
+    setup(props, vm) {
+        return {
+            ...useMaintenanceTable(vm),
+        };
+    },
+    async created() {
+        this.records = await getItems(this.table);
     }
-    updateRecord(item: GeneralObject): void {
-        this.records.splice(
-            this.records.findIndex(old_item => {
-                return item.id === old_item.id;
-            }),
-            1,
-            item
-        );
-    }
-    insertRecord(item: GeneralObject): void {
-        this.records.push(item);
-    }
-}
+});
 </script>

@@ -7,16 +7,15 @@ import { useNotifications } from '@/store/notifications';
 import { IndexResult } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
 
+const indexer_store = reactive({
+    indexer_dialog: false,
+    indexer_loading: false,
+    indexer_results: [] as IndexResult[]
+});
+
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useIndexers = () => {
-    const indexer_store = reactive({
-        indexer_dialog: false,
-        indexer_loading: false,
-        indexer_results: [] as IndexResult[]
-    });
-
-
     const searchIndexersAutomatically = (item_id: number, type: ItemType): Promise<boolean> => {
         return new Promise((resolve, reject) => {
             const url = type === ItemType.Movie ?

@@ -5,15 +5,15 @@ import { deleteRequest, getRequests, postRequestStatus } from '@/api/request';
 import { RequestStatus } from '@/enums/RequestStatus';
 import { removeArrayItem, updateArrayItem } from '@/helpers/array';
 
+const request_store = reactive({
+    requests: [] as Request[],
+    requests_loading: false,
+    processing_request_id: -1,
+});
+
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useRequests = () => {
-    const request_store = reactive({
-        requests: [] as Request[],
-        requests_loading: false,
-        processing_request_id: -1,
-    });
-
     const fetchRequests = (): Promise<Request[]> => {
         return new Promise((resolve, reject) => {
             request_store.requests_loading = true;

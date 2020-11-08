@@ -125,7 +125,9 @@ import { useItems } from '@/store/items';
 import { getImageURL } from '@/helpers/images';
 import { RequestStatus, RequestStatusIcon, RequestStatusName } from '@/enums/RequestStatus';
 
-const useRequestTable = () => {
+// TODO correct type?
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
+export const useRequestTable = () => {
     const table_data = reactive({
         add_dialog: false,
         headers: [

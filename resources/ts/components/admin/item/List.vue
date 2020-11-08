@@ -4,7 +4,7 @@
         min-width="100%"
     >
         <v-card-title>
-            {{ is_movie ? 'Movies' : 'Series' }}
+            {{ item_is_movie ? 'Movies' : 'Series' }}
             <v-spacer />
             <v-select
                 v-model="no_columns"
@@ -90,6 +90,8 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api';
 
+import ItemComponent from '@/components/admin/item/Item.vue';
+
 import { useItems } from '@/store/items';
 import sortBy from 'lodash/sortBy';
 import { Item } from '@/types/Item';
@@ -118,17 +120,24 @@ const useItemList = () => {
 };
 
 export default defineComponent({
+    components: {
+        ItemComponent,
+    },
     setup() {
         const {
             items,
             items_loading,
             fetchItems,
+            item_is_movie,
+            type_is_movie,
         } = useItems();
 
         return {
             ...useItemList(),
             items,
             items_loading,
+            item_is_movie,
+            type_is_movie,
             fetchItems,
         };
     },

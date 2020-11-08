@@ -66,25 +66,30 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import { useItems } from '@/store/items';
+
 import { useItemFeatures } from '@/helpers/item_features';
+import { ItemType } from '@/enums/ItemType';
 
 export default defineComponent({
+    props: {
+        item: {
+            type: Object,
+            required: true,
+        }
+    },
     setup(props, vm) {
-        const { item, item_is_movie } = useItems();
         const item_features = useItemFeatures();
 
         const goTo = (): void => {
-            if (!item.value) return;
+            if (! props.item) return;
 
-            const route = item_is_movie ? 'movie' : 'serie';
+            const route = props.item.type === ItemType.Movie ? 'movie' : 'serie';
 
-            vm.root.$router.push({ name: route, params: { id: String(item.value.id) }});
+            vm.root.$router.push({ name: route, params: { id: String(props.item.id) }});
         };
 
         return {
             goTo,
-            item,
             ...item_features,
         };
     }

@@ -2,13 +2,13 @@ import { reactive, toRefs } from '@vue/composition-api';
 
 import { Notification } from '@/types/Notification';
 
+const notification_store = reactive({
+    notifications: [] as Notification[],
+});
+
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useNotifications = () => {
-    const notification_store = reactive({
-        notifications: [] as Notification[],
-    });
-
     const notify = (notification: Notification): void => {
         if (! notification.id) notification.id = Date.now();
         if (! notification.timeout) notification.timeout = 5000;

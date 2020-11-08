@@ -38,7 +38,7 @@
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
-                            v-if="is_movie"
+                            v-if="item_is_movie"
                             icon
                             class="ma-1"
                             v-bind="attrs"

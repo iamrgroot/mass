@@ -86,11 +86,11 @@ const useSearch = () => {
     });
 
     const { relevant_profiles } = useProfiles();
-    const { type_is_movie, item_add_errors, addItem } = useItems();
+    const { type_is_movie, item_add_errors, addItem, item_type } = useItems();
 
-    if (relevant_profiles.value.length > 0) {
-        search_data.selected_profile = relevant_profiles.value[0].id;
-    }
+    watch(relevant_profiles, () => {
+        if (relevant_profiles.value.length > 0) search_data.selected_profile = relevant_profiles.value[0].id;
+    });
 
     watch(() => search_data.selected?.seasons, () => {
         if (search_data.selected?.seasons) {
@@ -99,13 +99,11 @@ const useSearch = () => {
     });
 
     watch(() => search_data.search, async () => {
-        const { item } = useItems();
-
-        if (! search_data.search || !item.value) return;
+        if (! search_data.search) return;
 
         search_data.search_loading = true;
         try {
-            search_data.search_results = await searchItem(search_data.search, item.value.type);
+            search_data.search_results = await searchItem(search_data.search, item_type.value);
         } catch (error) {
             // Nothing
         }
@@ -113,7 +111,7 @@ const useSearch = () => {
     });
 
     const add = (): void => {
-        if (search_data.selected === null || search_data.selected_profile === null) return;
+        if (! search_data.selected || ! search_data.selected_profile) return;
 
         addItem(
             search_data.selected,
@@ -126,8 +124,9 @@ const useSearch = () => {
         ...toRefs(search_data),
         add,
         item_add_errors,
-        relevant_profiles,
         type_is_movie,
+        item_type,
+        relevant_profiles,
     };
 };
 

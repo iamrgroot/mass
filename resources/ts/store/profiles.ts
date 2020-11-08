@@ -4,24 +4,23 @@ import { computed, reactive, toRefs } from '@vue/composition-api';
 import { Profile } from '@/types/Item';
 
 import { getMovieProfiles, getSeriesProfiles } from '@/api/profiles';
-import { useItems } from './items';
 import { ItemType } from '@/enums/ItemType';
+import { useItems } from './items';
+
+const profile_store = reactive({
+    movie_profiles: [] as Profile[],
+    serie_profiles: [] as Profile[],
+    profiles_loading: false,
+    profile_dialog: false,
+});
 
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useProfiles = () => {
-    const profile_store = reactive({
-        movie_profiles: [] as Profile[],
-        serie_profiles: [] as Profile[],
-        profiles_loading: false,
-        profile_dialog: false,
-        relevant_profiles: computed((): Profile[] => {
-            const { item } = useItems();
+    const relevant_profiles = computed((): Profile[] => {     
+        const { item_type } = useItems();
 
-            if (! item.value) return [];
-
-            return item.value.type === ItemType.Movie ? profile_store.movie_profiles : profile_store.serie_profiles;
-        })
+        return item_type.value === ItemType.Movie ? profile_store.movie_profiles : profile_store.serie_profiles;
     });
 
     const fetchMovieProfiles = (): Promise<Profile[]> => {
@@ -59,6 +58,7 @@ export const useProfiles = () => {
 
     return {
         ...toRefs(profile_store),
+        relevant_profiles,
         fetchMovieProfiles,
         fetchSerieProfiles,
         initializeProfiles,

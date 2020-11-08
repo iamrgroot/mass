@@ -22,17 +22,16 @@ export default defineComponent({
         ItemList,
         ItemAdd,
     },
-    setup() {
+    setup(props, vm) {
         const { item_type } = useItems();
+
+        item_type.value = vm.root.$router.currentRoute.name === 'movies' ?
+            ItemType.Movie :
+            ItemType.Serie;
 
         return {
             item_type,
         };
     },
-    created() {
-        this.item_type = this.$router.currentRoute.name === 'movies' ?
-            ItemType.Movie :
-            ItemType.Serie;
-    }
 });
 </script>

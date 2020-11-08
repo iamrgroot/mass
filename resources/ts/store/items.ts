@@ -7,21 +7,21 @@ import { updateProfile } from '@/api/items';
 import { useProfiles } from './profiles';
 import { useNotifications } from './notifications';
 
+const item_store = reactive({
+    item_type: ItemType.Movie,
+    item: null as Item| null,
+    items: [] as Item[],
+    items_loading: false,
+    item_loading: true,
+    item_adding: false,
+    item_add_errors: [] as string[],
+    type_is_movie: computed((): boolean => item_store.item_type === ItemType.Movie),
+    item_is_movie: computed((): boolean => item_store.item?.type === ItemType.Movie),
+});
+
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useItems = () => {
-    const item_store = reactive({
-        item_type: ItemType.Movie,
-        item: null as Item| null,
-        items: [] as Item[],
-        items_loading: false,
-        item_loading: true,
-        item_adding: false,
-        item_add_errors: [] as string[],
-        type_is_movie: computed((): boolean => item_store.item_type === ItemType.Movie),
-        item_is_movie: computed((): boolean => item_store.item?.type === ItemType.Movie),
-    });
-
     const fetchItems = (): Promise<Item[]> => {
         return new Promise((resolve, reject) => {
             const url = item_store.item_type === ItemType.Movie ?
@@ -85,11 +85,7 @@ export const useItems = () => {
         seasons: number[]|null
     ): Promise<Item> => {
         return new Promise((resolve, reject) => {
-            if (! item_store.item) {
-                return;
-            }
-
-            const url = item_store.item.type === ItemType.Movie ?
+            const url = item_store.item_type === ItemType.Movie ?
                 '/async/movies' :
                 '/async/series';
 

@@ -4,14 +4,14 @@ import axios from '@/plugins/axios';
 
 import { Torrent } from '@/types/Torrent';
 
+const torrent_store = reactive({
+    torrents: [] as Torrent[],
+    torrents_loading: false,
+});
+
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useTorrents = () => {
-    const torrent_store = reactive({
-        torrents: [] as Torrent[],
-        torrents_loading: false,
-    });
-
     const fetchTorrents = (): Promise<Torrent[]> => {
         return new Promise((resolve, reject) => {
             torrent_store.torrents_loading = true;

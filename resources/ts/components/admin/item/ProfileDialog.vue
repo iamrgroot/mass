@@ -41,7 +41,7 @@ import { useItems } from '@/store/items';
 
 export default defineComponent({
     setup() {
-        const { profiles_loading, profile_dialog, relevant_profiles, } = useProfiles();
+        const { profiles_loading, profile_dialog, relevant_profiles } = useProfiles();
         const { item, updateItemProfile } = useItems();
 
         return {

@@ -19,7 +19,7 @@ module.exports = {
         'camelcase': 'off',
         'quotes': ['error', 'single'],
         'semi': ['error', 'always'],
-        'no-trailing-spaces': ['error'],
+        'no-trailing-spaces': [process.env.NODE_ENV === 'production' ? 'error' : 'off'],
         'no-multi-spaces': ['error'],
         'keyword-spacing': ['error'],
 
