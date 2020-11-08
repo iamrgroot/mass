@@ -12,12 +12,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
-import TextField from '@/components/input/TextField.vue';
-import { Option } from '@/types/Inputs';
+import { defineComponent } from '@vue/composition-api';
 
-@Component
-export default class SelectMultiple extends TextField {
-    @Prop({ required: true }) protected options!: Option[];
-}
+import TextField from '@/components/input/TextField.vue';
+
+export default defineComponent({
+    extends: TextField,
+    props: {
+        options: {
+            type: Array,
+            required: true,
+        }
+    },
+});
 </script>
