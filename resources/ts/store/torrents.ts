@@ -1,66 +1,69 @@
-import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
+import { reactive, toRefs } from '@vue/composition-api';
+
 import axios from '@/plugins/axios';
+
 import { Torrent } from '@/types/Torrent';
 
-@Module({ namespaced: true })
-class Torrents extends VuexModule {
-    public torrents: Torrent[] = [];
-    public loading = false;
+const torrent_store = reactive({
+    torrents: [] as Torrent[],
+    torrents_loading: false,
+});
 
-    @Mutation
-    public setTorrents(torrents: Torrent[]): void {
-        this.torrents = torrents;
-    }
-    @Mutation
-    public setLoading(loading: boolean): void {
-        this.loading = loading;
-    }
-
-    @Action
-    public fetchTorrents(): Promise<Torrent[]> {
+// TODO correct type?
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
+export const useTorrents = () => {
+    const fetchTorrents = (): Promise<Torrent[]> => {
         return new Promise((resolve, reject) => {
+            torrent_store.torrents_loading = true;
+
             axios.get('/async/torrents').then(({ data }) => {
-                this.context.commit('setTorrents', data);
+                torrent_store.torrents = data;
                 resolve(data);
             }).catch(error => {
                 reject(error);
             }).finally(() => {
-                this.context.commit('setLoading', false);
+                torrent_store.torrents_loading = false;
             });
         });
-    }
-    @Action
-    public removeTorrent(torrent: Torrent): Promise<Torrent[]> {
+    };
+
+    const removeTorrent = (torrent: Torrent): Promise<Torrent[]> => {
         return new Promise((resolve, reject) => {
             axios.delete(`/async/torrents/${torrent.id}/delete`).then(({ data }) => {
-                this.context.commit('setTorrents', data);
+                torrent_store.torrents = data;
                 resolve(data);
             }).catch(error => {
                 reject(error);
             });
         });
-    }
-    @Action
-    public stopTorrent(torrent: Torrent): Promise<Torrent[]> {
+    };
+
+    const stopTorrent = (torrent: Torrent): Promise<Torrent[]> => {
         return new Promise((resolve, reject) => {
             axios.post(`/async/torrents/${torrent.id}/stop`).then(({ data }) => {
-                this.context.commit('setTorrents', data);
+                torrent_store.torrents = data;
                 resolve(data);
             }).catch(error => {
                 reject(error);
             });
         });
-    }
-    @Action
-    public startTorrent(torrent: Torrent): Promise<Torrent[]> {
+    };
+    const startTorrent = (torrent: Torrent): Promise<Torrent[]> => {
         return new Promise((resolve, reject) => {
             axios.post(`/async/torrents/${torrent.id}/start`).then(({ data }) => {
-                this.context.commit('setTorrents', data);
+                torrent_store.torrents = data;
                 resolve(data);
             }).catch(error => {
                 reject(error);
             });
         });
-    }
-}
-export default Torrents;
+    };
+
+    return {
+        ...toRefs(torrent_store),
+        fetchTorrents,
+        removeTorrent,
+        stopTorrent,
+        startTorrent,
+    };
+};

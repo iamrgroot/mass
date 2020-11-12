@@ -19,7 +19,7 @@ module.exports = {
         'camelcase': 'off',
         'quotes': ['error', 'single'],
         'semi': ['error', 'always'],
-        'no-trailing-spaces': ['error'],
+        'no-trailing-spaces': [process.env.NODE_ENV === 'production' ? 'error' : 'off'],
         'no-multi-spaces': ['error'],
         'keyword-spacing': ['error'],
 
@@ -44,6 +44,8 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': ['off'],
         '@typescript-eslint/member-delimiter-style': ['error'],
         '@typescript-eslint/prefer-for-of': ['error'],
+        // TODO check snake case rule?
+        '@typescript-eslint/camelcase': ['off'],
         // TODO Fix error
         // '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
         // '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['error'],

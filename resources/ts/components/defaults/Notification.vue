@@ -33,19 +33,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { Notification } from '@/types/Notification';
+import { defineComponent, ref, watch } from '@vue/composition-api';
 
-@Component
-export default class NotificationComponent extends Vue {
-    @Prop({ required: true }) private notification!: Notification;
-    @Prop({ required: true }) private total!: number;
+export default defineComponent({
+    props: {
+        notification: {
+            type: Object,
+            required: true,
+        },
+        total: {
+            required: true,
+            type: Number,
+        },
+    },
+    setup(props, vm) {
+        const snackbar = ref(true);
 
-    private snackbar = true;
+        watch(snackbar, () => {
+            if (! snackbar.value) vm.emit('closed');
+        });
 
-    @Watch('snackbar')
-    onSnackbarChanged(): void {
-        if (! this.snackbar) this.$emit('closed');
+        return {
+            snackbar,
+        };
     }
-}
+});
 </script>

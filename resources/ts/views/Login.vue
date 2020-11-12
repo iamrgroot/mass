@@ -72,24 +72,36 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api';
 
-@Component
-export default class Login extends Vue {
-    private username = '';
-    private password = '';
-    private login_error = '';
+import Main from '@/views/Main.vue';
+import Toolbar from '@/components/admin/AdminToolbar.vue';
 
-    get csrf_token(): string {
-        return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
-    }
+export default defineComponent({
+    components: {
+        Main,
+        Toolbar
+    },
+    setup() {
+        const store = reactive({
+            username: '',
+            password: '',
+            login_error: (window.blade_errors.length > 0) ? window.blade_errors[0] : '',
+        });
 
-    login(): void {
-        (this.$refs.form as HTMLFormElement).submit();
-    }
+        const csrf_token = computed((): string => {
+            return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
+        });
 
-    created(): void {
-        this.login_error = (window.blade_errors.length > 0) ? window.blade_errors[0] : '';
-    }
-}
+        return {
+            ...toRefs(store),
+            csrf_token,
+        };
+    },
+    methods: {
+        login(): void {
+            (this.$refs.form as HTMLFormElement).submit();
+        },
+    },
+});
 </script>

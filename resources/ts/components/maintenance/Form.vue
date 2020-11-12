@@ -2,11 +2,11 @@
     <v-dialog
         :value="value && value.id !== 0"
         width="800px"
-        @input="dialog => $emit('input', dialog ? value.id : 0)"
+        @input="dialog => $emit('input', dialog ? value : {id: 0})"
     >
         <v-card>
             <v-card-title>
-                {{ title | capitalize }}
+                {{ capitalize(title) }}
             </v-card-title>
             <v-card-text>
                 <v-row
@@ -16,7 +16,7 @@
                     <component
                         :is="config.component"
                         v-model="value[field]"
-                        :label="field | capitalize"
+                        :label="capitalize(field)"
                         :options="config.relation"
                         :errors="errors[field]"
                     />
@@ -37,58 +37,64 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { computed, defineComponent } from '@vue/composition-api';
+
 import { capitalize } from '@/filters/filters';
+
 import TextField from '@/components/input/TextField.vue';
 import Password from '@/components/input/Password.vue';
 import SelectMultiple from '@/components/input/SelectMultiple.vue';
-import { GeneralObject } from '../../types/Inputs';
-import { saveItem } from '@/api/maintenance';
 
-@Component({
+import { saveItem } from '@/api/maintenance';
+import { useMaintenance } from '@/store/maintenance';
+
+export default defineComponent({
     components: {
         TextField,
         Password,
         SelectMultiple
     },
-    filters: {
-        capitalize
+    props: {
+        value: {
+            type: Object,
+            validator: (): boolean => true,
+        },
+    },
+    setup(props, vm) {
+        const { errors, fields, table } = useMaintenance(vm);
+
+        const title = computed((): string => {
+            let string = 'Edit';
+
+            if (props.value && props.value.id !== null && props.value.id < 0) {
+                string = 'New';
+            }
+
+            return `${table.value} - ${string}`;
+        });
+
+        const save = async (): Promise<void> => {
+            if (! props.value || props.value.id === null) {
+                return;
+            }
+
+            try {
+                const event = props.value.id < 0 ? 'inserted' : 'updated';
+
+                vm.emit(event, await saveItem(table.value, props.value));
+                vm.emit('input', { id: 0 });
+            } catch (error) {
+                errors.value = error.response.data.errors || [];
+            }
+        };
+
+        return {
+            errors,
+            fields,
+            save,
+            title,
+            capitalize,
+        };
     }
-})
-export default class Form extends Vue {
-    @Prop({ required: true }) private value!: GeneralObject | null;
-
-    private errors = {};
-
-    get table(): string {
-        return this.$route.name as string;
-    }
-    get fields(): GeneralObject {
-        return window.injected[this.table] as GeneralObject;
-    }
-    get title(): string {
-        let string = 'Edit';
-
-        if (this.value !== null && this.value.id !== null && this.value.id < 0) {
-            string = 'New';
-        }
-
-        return `${this.table} - ${string}`;
-    }
-
-    async save(): Promise<void> {
-        if (this.value === null || this.value.id === null) {
-            return;
-        }
-
-        try {
-            const event = this.value.id < 0 ? 'inserted' : 'updated';
-
-            this.$emit(event, await saveItem(this.table, this.value));
-            this.$emit('input', { id: 0 });
-        } catch (error) {
-            this.errors = error.response.data.errors || [];
-        }
-    }
-}
+});
 </script>

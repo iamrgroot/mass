@@ -1,11 +1,10 @@
 import Vue from 'vue';
 
-import Login from '@/views/Login.vue';
-
-Vue.config.productionTip = false;
-
+import '@/plugins/composition-api';
 import vuetify from './plugins/vuetify';
 import { VNode } from 'vue/types/umd';
+
+import Login from '@/views/Login.vue';
 
 new Vue({
     vuetify,

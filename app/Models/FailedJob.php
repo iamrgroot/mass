@@ -3,15 +3,16 @@
 namespace App\Models;
 
 /**
- * App\Models\FailedJob
+ * App\Models\FailedJob.
  *
- * @property integer $id
+ * @property int         $id
  * @property string|null $uuid
- * @property string $connection
- * @property string $queue
- * @property string $payload
- * @property string $exception
- * @property string $failed_at
+ * @property string      $connection
+ * @property string      $queue
+ * @property string      $payload
+ * @property string      $exception
+ * @property string      $failed_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|FailedJob newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FailedJob newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FailedJob query()

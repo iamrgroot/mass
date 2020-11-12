@@ -5,7 +5,7 @@ declare module '*.vue' {
 
 // 1. Make sure to import 'vue' before declaring augmented types
 import Vue from 'vue';
-import { ConfirmOptions } from '@/types/ConfirmOptions';
+import { ConfirmType } from '@/types/ConfirmOptions';
 import { GeneralObject } from '@/types/Inputs';
 import { User } from '@/types/User';
 
@@ -14,7 +14,7 @@ import { User } from '@/types/User';
 declare module 'vue/types/vue' {
     // 3. Declare augmentation for Vue
     interface Vue {
-        $confirm: (title: string, message?: string, options?: ConfirmOptions) => Promise<boolean>;
+        $confirm: ConfirmType;
     }
 }
 

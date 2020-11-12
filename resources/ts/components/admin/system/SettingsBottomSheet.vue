@@ -43,52 +43,48 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { getSettings, updateSetting } from '@/api/system';
-import { system_store } from '@/store/system';
-import { Setting } from '@/types/System';
+import { defineComponent } from '@vue/composition-api';
 
 import Boolean from '@/components/input/Boolean.vue';
 import SelectMovieProfile from '@/components/input/SelectMovieProfile.vue';
 import SelectSerieProfile from '@/components/input/SelectSerieProfile.vue';
 
-@Component({
+import { getSettings, updateSetting } from '@/api/system';
+
+import { useSystem } from '@/store/system';
+import { Setting } from '@/types/System';
+
+export default defineComponent({
     components: {
         Boolean,
         SelectMovieProfile,
         SelectSerieProfile,
-    }
-})
-export default class SettingsBottomSheet extends Vue {
-    get settings(): Setting[] {
-        return system_store.settings;
-    }
-    set settings(settings: Setting[]) {
-        system_store.settings = settings;
-    }
-    get settings_dialog(): boolean {
-        return system_store.settings_dialog;
-    }
-    set settings_dialog(settings_dialog: boolean) {
-        system_store.settings_dialog = settings_dialog;
-    }
+    },
+    setup() {
+        const { settings, settings_dialog } = useSystem();
 
-    async created(): Promise<void> {
+        const settingChanged = async (setting: Setting): Promise<void> => {
+            setting.updating = true;
+
+            try {
+                await updateSetting(setting.name, setting.value);
+                setting.success = true;
+            } catch (error) {
+                setting.value = setting.previous_value;
+                setting.error = true;
+            }
+
+            setting.updating = false;
+        };
+
+        return {
+            settings,
+            settings_dialog,
+            settingChanged,
+        };
+    },
+    async created() {
         this.settings = await getSettings();
-    }
-
-    async settingChanged(setting: Setting): Promise<void> {
-        setting.updating = true;
-
-        try {
-            await updateSetting(setting.name, setting.value);
-            setting.success = true;
-        } catch (error) {
-            setting.value = setting.previous_value;
-            setting.error = true;
-        }
-
-        setting.updating = false;
-    }
-}
+    },
+});
 </script>

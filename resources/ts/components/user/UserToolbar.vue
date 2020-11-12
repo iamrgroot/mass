@@ -16,12 +16,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
 
-@Component
-export default class UserToolbar extends Vue {
-    logout(): void {
-        window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
+export default defineComponent({
+    created() {
+        const logout = (): void => {
+            window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
+        };
+
+        return {
+            logout,
+        };
     }
-}
+});
 </script>

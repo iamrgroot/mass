@@ -1,7 +1,7 @@
 <template>
     <v-select
         :value="value"
-        :items="profiles"
+        :items="serie_profiles"
         :error-messages="errors"
         :label="label"
         item-value="id"
@@ -13,15 +13,20 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import TextField from '@/components/input/TextField.vue';
-import { profile_store } from '@/store/profiles';
-import { Profile } from '@/types/Item';
+import { defineComponent } from '@vue/composition-api';
 
-@Component
-export default class SelectSerieProfile extends TextField {
-    get profiles(): Profile[] {
-        return profile_store.serie_profiles;
-    }
-}
+import { useProfiles } from '@/store/profiles';
+
+import TextField from '@/components/input/TextField.vue';
+
+export default defineComponent({
+    extends: TextField,
+    setup() {
+        const { serie_profiles } = useProfiles();
+
+        return {
+            serie_profiles,
+        };
+    },
+});
 </script>

@@ -10,7 +10,7 @@
                 :key="notifications[0].id"
                 :notification="notifications[0]"
                 :total="notifications.length"
-                @closed="remove(notifications[0].id)"
+                @closed="removeNotification(notifications[0].id)"
             />
         </v-fade-transition>
 
@@ -23,26 +23,30 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { defineComponent } from '@vue/composition-api';
+
 import Confirm from '@/components/defaults/Confirm.vue';
 import NotificationComponent from '@/components/defaults/Notification.vue';
-import { Notification } from '@/types/Notification';
 
-const Notifications = namespace('Notifications');
+import { ConfirmType } from '@/types/ConfirmOptions';
 
-@Component({
+import { useNotifications } from '@/store/notifications';
+
+export default defineComponent({
     components: {
         Confirm,
         NotificationComponent,
-    }
-})
-export default class Main extends Vue {
-    @Notifications.State private notifications!: Notification[];
-    @Notifications.Mutation private remove!: (notification_id: number) => void;
+    },
+    setup() {
+        const { notifications, removeNotification } = useNotifications();
 
-    mounted(): void {
-        this.$root.$confirm = (this.$refs.confirm as Confirm).open;
+        return {
+            notifications,
+            removeNotification,
+        };
+    },
+    mounted() {
+        this.$root.$confirm = (this.$refs.confirm as Vue & { open: ConfirmType}).open;
     }
-}
+});
 </script>

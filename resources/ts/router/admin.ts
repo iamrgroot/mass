@@ -7,18 +7,27 @@ import TorrentsPage from '@/components/admin/torrent/TorrentsPage.vue';
 import AdminRequestsPage from '@/components/admin/request/AdminRequestsPage.vue';
 import SystemPage from '@/components/admin/system/SystemPage.vue';
 
+import { useItems } from '@/store/items';
+import { ItemType } from '@/enums/ItemType';
+
 Vue.use(VueRouter);
+
+const { route_type } = useItems();
 
 const routes: RouteConfig[] = [
     {
         path: '/',
         name: 'home',
-        redirect: '/movies'
+        redirect: '/movies',
     },
     {
         path: '/movies/:id',
         name: 'movie',
         component: ItemPage,
+        beforeEnter: (to, from, next): void => {
+            route_type.value = ItemType.Movie;
+            next();
+        },
         // TODO maybe ?
         // component: () => import(/* webpackChunkName: "item" */ '@/components/item/ItemPage.vue'),
     },
@@ -26,16 +35,28 @@ const routes: RouteConfig[] = [
         path: '/movies',
         name: 'movies',
         component: ListPage,
+        beforeEnter: (to, from, next): void => {
+            route_type.value = ItemType.Movie;
+            next();
+        },
     },
     {
         path: '/series/:id',
         name: 'serie',
         component: ItemPage,
+        beforeEnter: (to, from, next): void => {
+            route_type.value = ItemType.Serie;
+            next();
+        },
     },
     {
         path: '/series',
         name: 'series',
         component: ListPage,
+        beforeEnter: (to, from, next): void => {
+            route_type.value = ItemType.Serie;
+            next();
+        },
     },
     {
         path: '/torrents',

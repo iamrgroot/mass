@@ -31,20 +31,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
+
 import ToolbarButton from '@/components/defaults/ToolbarButton.vue';
 
-@Component({
+export default defineComponent({
     components: {
         ToolbarButton
+    },
+    setup() {
+        const logout = (): void => {
+            window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
+        };
+        const maintenance = (): void => {
+            window.location.replace(window.location.protocol + '//' + window.location.host + '/maintenance/users');
+        };
+
+        return {
+            logout,
+            maintenance,
+        };
     }
-})
-export default class AdminToolbar extends Vue {
-    logout(): void {
-        window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
-    }
-    maintenance(): void {
-        window.location.replace(window.location.protocol + '//' + window.location.host + '/maintenance/users');
-    }
-}
+});
 </script>

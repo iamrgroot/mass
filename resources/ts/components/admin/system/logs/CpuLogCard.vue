@@ -27,14 +27,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { system_store } from '@/store/system';
-import { CpuLog } from '@/types/System';
+import { defineComponent } from '@vue/composition-api';
 
-@Component
-export default class CpuLogCard extends Vue {
-    get cpu_logs(): CpuLog[] {
-        return system_store.cpu_logs;
+import { useSystem } from '@/store/system';
+
+export default defineComponent({
+    setup() {
+        const { cpu_logs } = useSystem();
+
+        return {
+            cpu_logs
+        };
     }
-}
+});
 </script>

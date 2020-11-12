@@ -7,16 +7,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
+
 import Main from '@/views/Main.vue';
 import Toolbar from '@/components/admin/AdminToolbar.vue';
 
-@Component({
+export default defineComponent({
     components: {
         Main,
         Toolbar
     }
-})
-export default class Admin extends Vue {
-}
+});
 </script>

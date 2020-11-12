@@ -5,15 +5,16 @@ namespace App\Models\Sonarr;
 use App\Models\Shared\Indexer as SharedIndexer;
 
 /**
- * App\Models\Sonarr\Indexer
+ * App\Models\Sonarr\Indexer.
  *
- * @property integer $Id
- * @property string $Name
- * @property string $Implementation
+ * @property int         $Id
+ * @property string      $Name
+ * @property string      $Implementation
  * @property string|null $Settings
  * @property string|null $ConfigContract
- * @property integer|null $EnableRss
- * @property integer|null $EnableSearch
+ * @property int|null    $EnableRss
+ * @property int|null    $EnableSearch
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Indexer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Indexer newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Indexer query()

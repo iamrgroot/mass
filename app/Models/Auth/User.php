@@ -10,22 +10,23 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
- * App\Models\Auth\User
+ * App\Models\Auth\User.
  *
- * @property integer $id
- * @property string $username
- * @property string $password
- * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Auth\Permission[] $permissions
- * @property-read int|null $permissions_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Request[] $requests
- * @property-read int|null $requests_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Auth\Role[] $roles
- * @property-read int|null $roles_count
+ * @property int                                                                                                       $id
+ * @property string                                                                                                    $username
+ * @property string                                                                                                    $password
+ * @property string|null                                                                                               $remember_token
+ * @property \Illuminate\Support\Carbon|null                                                                           $created_at
+ * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
+ * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property int|null                                                                                                  $notifications_count
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Auth\Permission[]                                    $permissions
+ * @property int|null                                                                                                  $permissions_count
+ * @property \Illuminate\Database\Eloquent\Collection|Request[]                                                        $requests
+ * @property int|null                                                                                                  $requests_count
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Auth\Role[]                                          $roles
+ * @property int|null                                                                                                  $roles_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)

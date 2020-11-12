@@ -5,11 +5,12 @@ namespace App\Models\System;
 use App\Models\BaseModel;
 
 /**
- * App\Models\System\CpuLog
+ * App\Models\System\CpuLog.
  *
- * @property integer $id
- * @property float $cpu_usage
+ * @property int                        $id
+ * @property float                      $cpu_usage
  * @property \Illuminate\Support\Carbon $created_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CpuLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CpuLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CpuLog query()

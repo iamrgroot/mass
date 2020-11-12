@@ -5,13 +5,14 @@ namespace App\Models\System;
 use App\Models\BaseModel;
 
 /**
- * App\Models\System\DiskLog
+ * App\Models\System\DiskLog.
  *
- * @property integer $id
- * @property string $path
- * @property integer $used_space
- * @property integer $total_space
+ * @property int                        $id
+ * @property string                     $path
+ * @property int                        $used_space
+ * @property int                        $total_space
  * @property \Illuminate\Support\Carbon $created_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|DiskLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DiskLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DiskLog query()

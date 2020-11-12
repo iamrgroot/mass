@@ -6,19 +6,20 @@ use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\Request\Request
+ * App\Models\Request\Request.
  *
- * @property integer $id
- * @property integer $type
- * @property integer $item_id
- * @property string $text
- * @property string $image_url
- * @property integer $request_status_id
- * @property integer $created_by
- * @property integer $updated_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Request\RequestStatus $status
+ * @property int                               $id
+ * @property int                               $type
+ * @property int                               $item_id
+ * @property string                            $text
+ * @property string                            $image_url
+ * @property int                               $request_status_id
+ * @property int                               $created_by
+ * @property int                               $updated_by
+ * @property \Illuminate\Support\Carbon|null   $created_at
+ * @property \Illuminate\Support\Carbon|null   $updated_at
+ * @property \App\Models\Request\RequestStatus $status
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Request newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Request newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Request query()
