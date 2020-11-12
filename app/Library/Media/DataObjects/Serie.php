@@ -2,6 +2,7 @@
 
 namespace App\Library\Media\DataObjects;
 
+use App\Enums\ItemType;
 use App\Library\Http\Client;
 use App\Library\Media\Requests\Sonarr\EpisodesRequest;
 use App\Traits\AddRatingFeature;
@@ -19,6 +20,7 @@ class Serie extends MediaItem
         parent::__construct();
         $this->fromObject($object);
 
+        $this->type = ItemType::Serie;
         $this->addRating($object);
 
         $profiles = config('profiles.from_serie');

@@ -11,7 +11,7 @@
                         Search Jackett
                     </span>
                     <v-icon
-                        @click="searchIndexer(item.id, item.type)"
+                        @click="searchIndexers(item.id, item.type)"
                     >
                         $mdiRefresh
                     </v-icon>
@@ -29,7 +29,7 @@
                         {{ value }}d
                     </template>
                     <template #[`item.size`]="{ value }">
-                        {{ value | byte }}
+                        {{ byte(value) }}
                     </template>
                     <template #[`item.rejections`]="{ value }">
                         <v-tooltip
@@ -59,7 +59,7 @@
                     <template #[`item.actions`]="{ item }">
                         <v-icon
                             color="success"
-                            @click="addTorrentFromIndexer(item.guid, item.indexer_id, item.type)"
+                            @click="addTorrentFromIndexer(item.guid, item.indexer_id)"
                         >
                             $mdiCloudDownload
                         </v-icon>

@@ -2,7 +2,7 @@
     <v-dialog
         :value="value && value.id !== 0"
         width="800px"
-        @input="dialog => $emit('input', dialog ? value.id : 0)"
+        @input="dialog => $emit('input', dialog ? value : {id: 0})"
     >
         <v-card>
             <v-card-title>
@@ -16,7 +16,7 @@
                     <component
                         :is="config.component"
                         v-model="value[field]"
-                        :label="field | capitalize"
+                        :label="capitalize(field)"
                         :options="config.relation"
                         :errors="errors[field]"
                     />
@@ -38,6 +38,8 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
+
+import { capitalize } from '@/filters/filters';
 
 import TextField from '@/components/input/TextField.vue';
 import Password from '@/components/input/Password.vue';
@@ -91,6 +93,7 @@ export default defineComponent({
             fields,
             save,
             title,
+            capitalize,
         };
     }
 });

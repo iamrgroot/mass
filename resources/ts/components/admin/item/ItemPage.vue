@@ -94,7 +94,7 @@
                         {{ chip.text }}
                     </v-chip>
                     <v-spacer />
-                    <SeasonsButton v-if="! item_is_movie" />
+                    <seasons-button v-if="! item_is_movie" />
                     <v-btn
                         text
                         small
@@ -139,14 +139,20 @@
 
 <script lang="ts">
 import { computed, defineComponent, SetupContext } from '@vue/composition-api';
-import { useItems } from '@/store/items';
-import { useItemFeatures } from '@/helpers/item_features';
-import { useIndexers } from '@/store/indexers';
 import { Location } from 'vue-router';
+import { useItemFeatures } from '@/helpers/item_features';
+
+import { useItems } from '@/store/items';
+import { useIndexers } from '@/store/indexers';
 import { useProfiles } from '@/store/profiles';
+
+import SearchDialog from '@/components/admin/indexer/SearchDialog.vue';
+import ProfileDialog from '@/components/admin/item/ProfileDialog.vue';
+import SeasonsButton from '@/components/admin/item/SeasonsButton.vue' ;
 
 const useItemManagement = (vm: SetupContext) => {
     const {
+        route_type,
         item,
         item_is_movie,
         item_loading,
@@ -161,15 +167,13 @@ const useItemManagement = (vm: SetupContext) => {
     const { profile_dialog } = useProfiles();
 
     const redirect = computed((): Location => {
-        return { name: item_is_movie ? 'movies' : 'series'};
+        return { name: item_is_movie.value ? 'movies' : 'series'};
     });
 
     const fetch = (): void => {
-        if (! item.value) return;
-
         fetchItem(
             Number(vm.root.$route.params.id),
-            item.value.type
+            route_type.value
         ).catch(() => {
 
             vm.root.$router.push(redirect.value);
@@ -177,7 +181,7 @@ const useItemManagement = (vm: SetupContext) => {
     };
 
     const remove = (): void => {
-        const text = item_is_movie ? 'movie' : 'serie';
+        const text = item_is_movie.value ? 'movie' : 'serie';
 
         vm.root.$confirm(`Delete ${text}?`).then(confirmed => {
             if (! confirmed || ! item.value) {
@@ -206,6 +210,11 @@ const useItemManagement = (vm: SetupContext) => {
 
 // TODO fix returns in setup instead of useitemmanage
 export default defineComponent({
+    components: {
+        SearchDialog,
+        ProfileDialog,
+        SeasonsButton,
+    },
     setup(props, vm) {
         return useItemManagement(vm);
     },

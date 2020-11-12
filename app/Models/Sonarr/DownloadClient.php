@@ -5,14 +5,15 @@ namespace App\Models\Sonarr;
 use App\Models\Shared\DownloadClient as SharedDownloadClient;
 
 /**
- * App\Models\Sonarr\DownloadClient
+ * App\Models\Sonarr\DownloadClient.
  *
- * @property integer $Id
- * @property integer $Enable
+ * @property int    $Id
+ * @property int    $Enable
  * @property string $Name
  * @property string $Implementation
  * @property string $Settings
  * @property string $ConfigContract
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|DownloadClient newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DownloadClient newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DownloadClient query()

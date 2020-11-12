@@ -14,7 +14,6 @@ import { computed, defineComponent, watch } from '@vue/composition-api';
 export default defineComponent({
     props: {
         value: {
-            type: [String, Number, Boolean],
             required: true,
             validator: (): boolean => true,
         },

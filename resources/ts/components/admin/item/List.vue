@@ -4,7 +4,7 @@
         min-width="100%"
     >
         <v-card-title>
-            {{ item_is_movie ? 'Movies' : 'Series' }}
+            {{ route_type_is_movie ? 'Movies' : 'Series' }}
             <v-spacer />
             <v-select
                 v-model="no_columns"
@@ -61,7 +61,7 @@
                     icon="$mdiCloudAlert"
                     class="text-center"
                 >
-                    No {{ type_is_movie ? 'movies' : 'series' }}
+                    No {{ route_type_is_movie ? 'movies' : 'series' }}
                 </v-alert>
                 <v-progress-linear
                     v-else-if="items_loading"
@@ -128,16 +128,14 @@ export default defineComponent({
             items,
             items_loading,
             fetchItems,
-            item_is_movie,
-            type_is_movie,
+            route_type_is_movie,
         } = useItems();
 
         return {
             ...useItemList(),
             items,
             items_loading,
-            item_is_movie,
-            type_is_movie,
+            route_type_is_movie,
             fetchItems,
         };
     },

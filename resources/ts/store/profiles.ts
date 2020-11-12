@@ -4,7 +4,6 @@ import { computed, reactive, toRefs } from '@vue/composition-api';
 import { Profile } from '@/types/Item';
 
 import { getMovieProfiles, getSeriesProfiles } from '@/api/profiles';
-import { ItemType } from '@/enums/ItemType';
 import { useItems } from './items';
 
 const profile_store = reactive({
@@ -18,9 +17,9 @@ const profile_store = reactive({
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useProfiles = () => {
     const relevant_profiles = computed((): Profile[] => {     
-        const { item_type } = useItems();
+        const { item_is_movie } = useItems();
 
-        return item_type.value === ItemType.Movie ? profile_store.movie_profiles : profile_store.serie_profiles;
+        return item_is_movie.value ? profile_store.movie_profiles : profile_store.serie_profiles;
     });
 
     const fetchMovieProfiles = (): Promise<Profile[]> => {

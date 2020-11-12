@@ -5,7 +5,7 @@ namespace App\Models\Shared;
 use App\Models\BaseModel;
 
 /**
- * App\Models\Shared\Indexer
+ * App\Models\Shared\Indexer.
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Indexer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Indexer newQuery()

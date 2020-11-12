@@ -35,7 +35,7 @@
                     />
                 </v-col>
                 <v-col
-                    v-if="! type_is_movie && selected !== null"
+                    v-if="! route_type_is_movie && selected !== null"
                     cols="2"
                 >
                     <v-select
@@ -86,7 +86,7 @@ const useSearch = () => {
     });
 
     const { relevant_profiles } = useProfiles();
-    const { type_is_movie, item_add_errors, addItem, item_type } = useItems();
+    const { item_type, route_type_is_movie, item_add_errors, addItem } = useItems();
 
     watch(relevant_profiles, () => {
         if (relevant_profiles.value.length > 0) search_data.selected_profile = relevant_profiles.value[0].id;
@@ -124,7 +124,7 @@ const useSearch = () => {
         ...toRefs(search_data),
         add,
         item_add_errors,
-        type_is_movie,
+        route_type_is_movie,
         item_type,
         relevant_profiles,
     };

@@ -18,7 +18,7 @@
                     :items="relevant_profiles"
                     item-value="id"
                     item-text="name"
-                    @input="value => updateItemProfile(item.type, item.id, value)"
+                    @input="value => updateItemProfile(item.id, item.type, value)"
                 />
             </v-card-text>
             <v-card-actions>

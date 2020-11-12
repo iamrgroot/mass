@@ -6,12 +6,15 @@ import { useNotifications } from '@/store/notifications';
 
 import { IndexResult } from '@/types/Item';
 import { ItemType } from '@/enums/ItemType';
+import { useItems } from './items';
 
 const indexer_store = reactive({
     indexer_dialog: false,
     indexer_loading: false,
     indexer_results: [] as IndexResult[]
 });
+
+const { notify } = useNotifications();
 
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
@@ -25,15 +28,16 @@ export const useIndexers = () => {
             axios.post(
                 url
             ).then(() => {
-                const { notify } = useNotifications();
-
+                notify({
+                    color: 'success',
+                    title: 'Indexers are being searched automagically!',
+                });
+                resolve(true);
+            }).catch((error) => {
                 notify({
                     color: 'error',
                     title: 'Error adding indexer entry',
                 });
-
-                resolve(true);
-            }).catch((error) => {
                 reject(error);
             });
         });
@@ -59,9 +63,11 @@ export const useIndexers = () => {
         });
     }
 
-    function addTorrentFromIndexer(guid: string, indexer_id: number, type: ItemType): Promise<boolean> {
+    function addTorrentFromIndexer(guid: string, indexer_id: number): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            const url = type === ItemType.Movie ?
+            const { route_type_is_movie } = useItems();
+
+            const url = route_type_is_movie.value ?
                 `/async/movies/${indexer_id}/add-manual`:
                 `/async/series/${indexer_id}/add-manual`;
 
@@ -71,10 +77,13 @@ export const useIndexers = () => {
                 indexer_store.indexer_results = [];
                 indexer_store.indexer_dialog = false;
 
+                notify({
+                    color: 'success',
+                    title: 'Torrent added!',
+                });
+
                 resolve(true);
             }).catch(error => {
-                const { notify } = useNotifications();
-
                 notify({
                     color: 'error',
                     title: 'Error adding indexer entry',

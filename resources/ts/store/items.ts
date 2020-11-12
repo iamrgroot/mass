@@ -8,23 +8,27 @@ import { useProfiles } from './profiles';
 import { useNotifications } from './notifications';
 
 const item_store = reactive({
-    item_type: ItemType.Movie,
+    route_type: ItemType.Movie,
     item: null as Item| null,
     items: [] as Item[],
     items_loading: false,
     item_loading: true,
     item_adding: false,
     item_add_errors: [] as string[],
-    type_is_movie: computed((): boolean => item_store.item_type === ItemType.Movie),
-    item_is_movie: computed((): boolean => item_store.item?.type === ItemType.Movie),
+    route_item_type: ItemType.Movie,
 });
 
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useItems = () => {
+    const route_type_is_movie = computed((): boolean => item_store.route_type === ItemType.Movie);
+
+    const item_type = computed((): ItemType => item_store.item?.type ?? ItemType.Movie);
+    const item_is_movie = computed((): boolean => item_type.value === ItemType.Movie);
+
     const fetchItems = (): Promise<Item[]> => {
-        return new Promise((resolve, reject) => {
-            const url = item_store.item_type === ItemType.Movie ?
+        return new Promise((resolve, reject) => {            
+            const url = route_type_is_movie.value ?
                 '/async/movies' :
                 '/async/series';
 
@@ -85,7 +89,7 @@ export const useItems = () => {
         seasons: number[]|null
     ): Promise<Item> => {
         return new Promise((resolve, reject) => {
-            const url = item_store.item_type === ItemType.Movie ?
+            const url = route_type_is_movie.value ?
                 '/async/movies' :
                 '/async/series';
 
@@ -150,7 +154,7 @@ export const useItems = () => {
 
                 notify({
                     color: 'error',
-                    title: 'Error adding indexer entry',
+                    title: 'Error refreshing item',
                 });
 
                 resolve(true);
@@ -177,6 +181,9 @@ export const useItems = () => {
 
     return {
         ...toRefs(item_store),
+        route_type_is_movie,
+        item_is_movie,
+        item_type,
         fetchItems,
         fetchItem,
         deleteItem,

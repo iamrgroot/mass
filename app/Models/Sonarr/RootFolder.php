@@ -5,10 +5,11 @@ namespace App\Models\Sonarr;
 use App\Models\Shared\RootFolder as SharedRootFolder;
 
 /**
- * App\Models\Sonarr\RootFolder
+ * App\Models\Sonarr\RootFolder.
  *
- * @property integer $Id
+ * @property int    $Id
  * @property string $Path
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|RootFolder newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RootFolder newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RootFolder query()

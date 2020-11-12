@@ -7,15 +7,16 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * App\Models\System\Setting
+ * App\Models\System\Setting.
  *
- * @property integer $id
- * @property string $type
- * @property string $name
- * @property bool|int|mixed $value
- * @property string $component
+ * @property int                        $id
+ * @property string                     $type
+ * @property string                     $name
+ * @property bool|int|mixed             $value
+ * @property string                     $component
  * @property \Illuminate\Support\Carbon $updated_at
- * @property integer $updated_by
+ * @property int                        $updated_by
+ *
  * @method static Builder|Setting newModelQuery()
  * @method static Builder|Setting newQuery()
  * @method static Builder|Setting query()

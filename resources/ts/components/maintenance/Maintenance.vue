@@ -30,7 +30,7 @@
             </template>
         </v-data-table>
 
-        <Form
+        <maintenance-form
             v-model="selected_item"
             @updated="updateRecord"
             @inserted="records.push(item)"
@@ -43,7 +43,7 @@ import { computed, defineComponent, reactive, SetupContext, toRefs } from '@vue/
 
 import { capitalize } from '@/filters/filters';
 
-import Form from '@/components/maintenance/Form.vue';
+import MaintenanceForm from '@/components/maintenance/Form.vue';
 import { GeneralObject } from '@/types/Inputs';
 import { useMaintenance } from '@/store/maintenance';
 import { DataTableHeader } from 'vuetify';
@@ -79,14 +79,14 @@ const useMaintenanceTable = (vm: SetupContext) => {
             fields_copy[key] = null;
         }
 
-        updateObject(table_store.selected_item, {
-            ...fields,
+        table_store.selected_item = updateObject(table_store.selected_item, {
+            ...fields_copy,
             id: -1
         });
     };
 
     const update = (item: GeneralObject): void => {
-        updateObject(table_store.selected_item, item);
+        table_store.selected_item = updateObject(table_store.selected_item, item);        
     };
 
     const remove = async (item: GeneralObject): Promise<void> =>{
@@ -116,7 +116,7 @@ const useMaintenanceTable = (vm: SetupContext) => {
 
 export default defineComponent({
     components: {
-        Form,
+        MaintenanceForm,
     },
     setup(props, vm) {
         return {
