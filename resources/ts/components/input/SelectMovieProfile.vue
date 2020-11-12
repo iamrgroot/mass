@@ -1,7 +1,7 @@
 <template>
     <v-select
         :value="value"
-        :items="profiles"
+        :items="movie_profiles"
         :error-messages="errors"
         :label="label"
         item-value="id"

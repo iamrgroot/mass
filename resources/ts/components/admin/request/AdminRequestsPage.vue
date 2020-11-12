@@ -6,7 +6,7 @@
             <v-btn
                 icon
                 class="ma-2"
-                @click="fetch"
+                @click="fetchRequests"
             >
                 <v-icon>$mdiRefresh</v-icon>
             </v-btn>
@@ -17,7 +17,7 @@
                 <v-data-table
                     :headers="headers"
                     :items="requests"
-                    :loading="getImageURL"
+                    :loading="requests_loading"
                 >
                     <template #[`item.image_url`]="{ item }">
                         <image-preview
@@ -161,7 +161,6 @@ export default defineComponent({
         ImagePreview,
     },
     setup() {
-
         return {
             ...useRequests(),
             ...useRequestTable(),
