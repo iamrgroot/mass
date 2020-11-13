@@ -29,10 +29,6 @@ import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
     props: {
-        date: {
-            type: String,
-            required: true,
-        },
         src: {
             required: true,
             type: String,

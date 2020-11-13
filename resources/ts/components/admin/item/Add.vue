@@ -86,7 +86,7 @@ const useSearch = () => {
     });
 
     const { relevant_profiles } = useProfiles();
-    const { item_type, route_type_is_movie, item_add_errors, addItem } = useItems();
+    const { route_type, route_type_is_movie, item_add_errors, addItem } = useItems();
 
     watch(relevant_profiles, () => {
         if (relevant_profiles.value.length > 0) search_data.selected_profile = relevant_profiles.value[0].id;
@@ -102,8 +102,8 @@ const useSearch = () => {
         if (! search_data.search) return;
 
         search_data.search_loading = true;
-        try {
-            search_data.search_results = await searchItem(search_data.search, item_type.value);
+        try {            
+            search_data.search_results = await searchItem(search_data.search, route_type.value);
         } catch (error) {
             // Nothing
         }
@@ -125,7 +125,6 @@ const useSearch = () => {
         add,
         item_add_errors,
         route_type_is_movie,
-        item_type,
         relevant_profiles,
     };
 };

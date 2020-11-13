@@ -33,7 +33,7 @@
         <maintenance-form
             v-model="selected_item"
             @updated="updateRecord"
-            @inserted="records.push(item)"
+            @inserted="new_item => records.push(new_item)"
         />
     </v-container>
 </template>
