@@ -14,3 +14,4 @@ webpack-stats.json
 .composer
 /node_modules
 /vendor
+storage/framework/maintenance.php
