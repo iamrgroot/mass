@@ -92,6 +92,7 @@
             "@php artisan config:cache",
             "@php artisan migrate --no-interaction --force",
             "@php artisan view:clear",
+            "@php artisan queue:restart",
             "npm install",
             "npm run build-silent",
             "@php artisan up"
@@ -102,6 +103,7 @@
             "@php artisan config:cache",
             "@php artisan migrate --no-interaction --force",
             "@php artisan view:clear",
+            "@php artisan queue:restart",
             "npm install",
             "npm run dev-silent",
             "@php artisan up"
