@@ -19,7 +19,7 @@
                 {{ notification.content }}
             </v-col>
         </v-row>
-        <template v-slot:action="{ attrs }">
+        <template #action="{ attrs }">
             <v-btn
                 v-bind="attrs"
                 text

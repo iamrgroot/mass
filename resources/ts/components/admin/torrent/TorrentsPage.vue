@@ -34,7 +34,7 @@
                     :sort-by="['error_string', 'status', 'rate_download']"
                     :sort-desc="[true, false, true]"
                 >
-                    <template v-slot:body="{ items }">
+                    <template #body="{ items }">
                         <tbody>
                             <template v-for="item in items">
                                 <tr

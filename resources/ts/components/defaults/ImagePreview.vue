@@ -5,7 +5,7 @@
         :left="left"
         :top="top"
     >
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
             <v-img
                 contain
                 :src="src"

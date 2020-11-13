@@ -61,7 +61,7 @@
                                                 >
                                                     <span>Episode {{ episode.episode_number }}</span>
                                                     <v-tooltip bottom>
-                                                        <template v-slot:activator="{ on, attrs }">
+                                                        <template #activator="{ on, attrs }">
                                                             <v-btn
                                                                 icon
                                                                 class="ma-1"

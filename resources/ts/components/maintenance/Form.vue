@@ -15,10 +15,11 @@
                 >
                     <component
                         :is="config.component"
-                        v-model="value[field]"
+                        :value="value[field]"
                         :label="capitalize(field)"
                         :options="config.relation"
                         :errors="errors[field]"
+                        @input="new_value => $emit('input', {...value[field], field: new_value})"
                     />
                 </v-row>
             </v-card-text>
@@ -58,6 +59,7 @@ export default defineComponent({
         value: {
             type: Object,
             validator: (): boolean => true,
+            required: true,
         },
     },
     setup(props, vm) {

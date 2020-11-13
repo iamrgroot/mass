@@ -29,7 +29,7 @@ export const useItems = () => {
     const item_is_movie = computed((): boolean => item_type.value === ItemType.Movie);
 
     const fetchItems = (): Promise<Item[]> => {
-        return new Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {
             const url = route_type_is_movie.value ?
                 '/async/movies' :
                 '/async/series';

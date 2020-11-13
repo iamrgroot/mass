@@ -1,7 +1,7 @@
 <template>
     <v-card outlined>
         <v-simple-table height="300">
-            <template v-slot:default>
+            <template #default>
                 <thead>
                     <tr>
                         <th class="text-left">

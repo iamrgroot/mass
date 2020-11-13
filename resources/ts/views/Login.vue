@@ -74,14 +74,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api';
 
-import Main from '@/views/Main.vue';
-import Toolbar from '@/components/admin/AdminToolbar.vue';
-
 export default defineComponent({
-    components: {
-        Main,
-        Toolbar
-    },
     setup() {
         const store = reactive({
             username: '',

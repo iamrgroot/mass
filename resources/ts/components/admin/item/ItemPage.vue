@@ -8,7 +8,7 @@
                 {{ item.title }}
                 <v-spacer />
                 <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                         <v-btn
                             icon
                             class="ma-1"
@@ -22,7 +22,7 @@
                     <span>Change quality</span>
                 </v-tooltip>
                 <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                         <v-btn
                             icon
                             class="ma-1"
@@ -36,7 +36,7 @@
                     <span>Search automagically</span>
                 </v-tooltip>
                 <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                         <v-btn
                             v-if="item_is_movie"
                             icon
@@ -51,7 +51,7 @@
                     <span>Search manually</span>
                 </v-tooltip>
                 <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                         <v-btn
                             icon
                             class="ma-1"
@@ -65,7 +65,7 @@
                     <span>Refresh disk and info</span>
                 </v-tooltip>
                 <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                         <v-btn
                             icon
                             class="ma-1"
