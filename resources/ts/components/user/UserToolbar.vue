@@ -19,7 +19,7 @@
 import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
-    created() {
+    setup() {
         const logout = (): void => {
             window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
         };

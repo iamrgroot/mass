@@ -1,6 +1,6 @@
 <template>
     <v-badge
-        :content="date_object.toLocaleTimeString(locale, time_options)"
+        :content="date_object.toLocaleTimeString(locale, short_time_options)"
         bordered
         overlap
     >

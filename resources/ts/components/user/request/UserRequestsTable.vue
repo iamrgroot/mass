@@ -28,7 +28,7 @@
                 >
                     <template #[`item.image_url`]="{ item }">
                         <image-preview
-                            :src="getImageURL(item)"
+                            :src="getImageURL(item.type, item.image_url)"
                             right
                         />
                     </template>

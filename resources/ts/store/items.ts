@@ -18,6 +18,8 @@ const item_store = reactive({
     route_item_type: ItemType.Movie,
 });
 
+const { notify } = useNotifications();
+
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useItems = () => {
@@ -102,7 +104,6 @@ export const useItems = () => {
                 item_store.item_add_errors = [];
                 item_store.items.push(data);
 
-                const { notify } = useNotifications();
 
                 notify({
                     color: 'success',
@@ -150,11 +151,10 @@ export const useItems = () => {
             axios.post(
                 url
             ).then(() => {
-                const { notify } = useNotifications();
-
                 notify({
-                    color: 'error',
-                    title: 'Error refreshing item',
+                    color: 'success',
+                    title: 'Item refreshed!',
+                    content: 'Item is being updated in the background.',
                 });
 
                 resolve(true);
