@@ -31,6 +31,9 @@ module.exports = {
         'vue/require-default-prop': ['error'],
         'vue/prop-name-casing': ['error', 'snake_case'],
         'vue/order-in-components': ['error'],
+        'vue/component-tags-order': ['error', {
+            'order': [ 'template', 'style', 'script' ]
+        }],
 
         'no-empty-function': ['error'],
         'no-else-return': ['error'],

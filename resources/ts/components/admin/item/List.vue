@@ -72,15 +72,13 @@
                     align="center"
                     justify="center"
                 >
-                    <template>
-                        <v-col
-                            v-for="item in sorted_items"
-                            :key="item.id"
-                            :cols="12 / no_columns"
-                        >
-                            <ItemComponent :item="item" />
-                        </v-col>
-                    </template>
+                    <v-col
+                        v-for="item in sorted_items"
+                        :key="item.id"
+                        :cols="12 / no_columns"
+                    >
+                        <ItemComponent :item="item" />
+                    </v-col>
                 </v-row>
             </v-fade-transition>
         </v-card-text>

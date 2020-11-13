@@ -36,7 +36,7 @@
                             bottom
                             color="error"
                         >
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-icon
                                     v-if="value.length > 0"
                                     color="error"

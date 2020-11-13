@@ -102,7 +102,7 @@ const useSearch = () => {
         if (! search_data.search) return;
 
         search_data.search_loading = true;
-        try {            
+        try {
             search_data.search_results = await searchItem(search_data.search, route_type.value);
         } catch (error) {
             // Nothing

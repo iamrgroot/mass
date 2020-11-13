@@ -16,7 +16,7 @@ const profile_store = reactive({
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useProfiles = () => {
-    const relevant_profiles = computed((): Profile[] => {     
+    const relevant_profiles = computed((): Profile[] => {
         const { item_is_movie } = useItems();
 
         return item_is_movie.value ? profile_store.movie_profiles : profile_store.serie_profiles;

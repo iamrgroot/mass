@@ -86,7 +86,7 @@ const useMaintenanceTable = (vm: SetupContext) => {
     };
 
     const update = (item: GeneralObject): void => {
-        table_store.selected_item = updateObject(table_store.selected_item, item);        
+        table_store.selected_item = updateObject(table_store.selected_item, item);
     };
 
     const remove = async (item: GeneralObject): Promise<void> =>{
