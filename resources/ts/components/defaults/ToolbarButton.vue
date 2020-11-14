@@ -2,9 +2,15 @@
     <v-btn
         text
         small
+        :icon="!! icon"
         :to="`/${route}`"
     >
-        {{ capitalize(route) }}
+        <v-icon v-if="icon">
+            {{ icon }}
+        </v-icon>
+        <span v-else>
+            {{ capitalize(route) }}
+        </span>
     </v-btn>
 </template>
 
@@ -20,6 +26,10 @@ export default defineComponent({
             type: String,
             required: true,
         },
+        icon: {
+            type: String,
+            default: '',
+        }
     },
     setup() {
         return {

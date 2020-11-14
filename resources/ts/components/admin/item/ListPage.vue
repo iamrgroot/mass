@@ -1,10 +1,10 @@
 <template>
     <div>
         <v-row class="ma-3">
-            <ItemAdd />
+            <item-add />
         </v-row>
         <v-row class="ma-3">
-            <ItemList />
+            <item-list />
         </v-row>
     </div>
 </template>

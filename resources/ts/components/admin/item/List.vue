@@ -77,11 +77,20 @@
                         :key="item.id"
                         :cols="12 / no_columns"
                     >
-                        <ItemComponent :item="item" />
+                        <item-component :item="item" />
                     </v-col>
                 </v-row>
             </v-fade-transition>
         </v-card-text>
+
+        <v-dialog
+            :value="item !== null"
+            fullscreen
+            hide-overlay
+            transition="dialog-bottom-transition"
+        >
+            <item-page />
+        </v-dialog>
     </v-card>
 </template>
 
@@ -89,6 +98,7 @@
 import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api';
 
 import ItemComponent from '@/components/admin/item/Item.vue';
+import ItemPage from '@/components/admin/item/ItemPage.vue';
 
 import { useItems } from '@/store/items';
 import sortBy from 'lodash/sortBy';
@@ -120,10 +130,12 @@ const useItemList = () => {
 export default defineComponent({
     components: {
         ItemComponent,
+        ItemPage,
     },
     setup() {
         const {
             items,
+            item,
             items_loading,
             fetchItems,
             route_type_is_movie,
@@ -132,6 +144,7 @@ export default defineComponent({
         return {
             ...useItemList(),
             items,
+            item,
             items_loading,
             route_type_is_movie,
             fetchItems,

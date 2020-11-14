@@ -14,6 +14,7 @@ const item_store = reactive({
     items_loading: false,
     item_loading: true,
     item_adding: false,
+    item_dialog: false,
     item_add_errors: [] as string[],
     route_item_type: ItemType.Movie,
 });

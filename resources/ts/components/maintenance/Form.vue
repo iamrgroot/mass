@@ -19,7 +19,7 @@
                         :label="capitalize(field)"
                         :options="config.relation"
                         :errors="errors[field]"
-                        @input="new_value => $emit('input', {...value[field], field: new_value})"
+                        @input="new_value => updateProp(field, new_value)"
                     />
                 </v-row>
             </v-card-text>
@@ -83,6 +83,8 @@ export default defineComponent({
             try {
                 const event = props.value.id < 0 ? 'inserted' : 'updated';
 
+                console.log(table.value, props.value);
+
                 vm.emit(event, await saveItem(table.value, props.value));
                 vm.emit('input', { id: 0 });
             } catch (error) {
@@ -90,10 +92,19 @@ export default defineComponent({
             }
         };
 
+        const updateProp = (field: string, new_value: any) => {
+            const updated_value = {...props.value};
+
+            updated_value[field] = new_value;
+
+            vm.emit('input', updated_value);
+        };
+
         return {
             errors,
             fields,
             save,
+            updateProp,
             title,
             capitalize,
         };

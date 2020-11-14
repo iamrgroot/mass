@@ -18,6 +18,8 @@ class MediaItem
     public string $imdb_id;
     public int $year;
     public Collection $features;
+    public string $image_url;
+    public string $banner_url;
 
     public function __construct()
     {

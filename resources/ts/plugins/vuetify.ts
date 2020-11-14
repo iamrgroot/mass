@@ -32,7 +32,10 @@ import {
     mdiTelevision,
     mdiCog,
     mdiMessageAlert,
-    mdiQualityHigh
+    mdiQualityHigh,
+    mdiArrowLeft,
+    mdiDotsVertical,
+    mdiInboxArrowDown,
 } from '@mdi/js';
 
 Vue.use(Vuetify);
@@ -76,7 +79,10 @@ export default new Vuetify({
             mdiTelevision,
             mdiCog,
             mdiMessageAlert,
-            mdiQualityHigh
+            mdiQualityHigh,
+            mdiArrowLeft,
+            mdiDotsVertical,
+            mdiInboxArrowDown,
         }
     },
 });

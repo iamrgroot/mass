@@ -1,33 +1,76 @@
 <template>
-    <div>
-        <v-toolbar max-height="64">
-            <v-toolbar-items>
-                <v-btn
-                    text
-                    small
-                    @click="maintenance"
-                >
-                    Maintenance
-                </v-btn>
-            </v-toolbar-items>
+    <v-toolbar
+        v-if="! $vuetify.breakpoint.mobile"
+        max-height="64"
+    >
+        <v-toolbar-items>
+            <v-btn
+                text
+                small
+                @click="maintenance"
+            >
+                Maintenance
+            </v-btn>
+        </v-toolbar-items>
 
-            <v-spacer />
+        <v-spacer />
 
-            <v-toolbar-items>
-                <toolbar-button route="system" />
-                <toolbar-button route="requests" />
-                <toolbar-button route="torrents" />
-                <toolbar-button route="movies" />
-                <toolbar-button route="series" />
+        <v-toolbar-items>
+            <toolbar-button route="system" />
+            <toolbar-button route="requests" />
+            <toolbar-button route="torrents" />
+            <toolbar-button route="movies" />
+            <toolbar-button route="series" />
+            <v-btn
+                icon
+                @click="logout"
+            >
+                <v-icon>$mdiLogout</v-icon>
+            </v-btn>
+        </v-toolbar-items>
+    </v-toolbar>
+    <v-bottom-navigation
+        v-else
+        hide-on-scroll
+        fixed
+    >
+        <toolbar-button
+            route="requests"
+            icon="$mdiInboxArrowDown"
+        />
+        <toolbar-button
+            route="movies"
+            icon="$mdiMovie"
+        />
+        <toolbar-button
+            route="series"
+            icon="$mdiTelevision"
+        />
+        <v-spacer />
+        <v-menu
+            top
+            close-on-click
+        >
+            <template #activator="{ on, attrs }">
                 <v-btn
                     icon
-                    @click="logout"
+                    v-bind="attrs"
+                    v-on="on"
                 >
-                    <v-icon>$mdiLogout</v-icon>
+                    <v-icon>$mdiDotsVertical</v-icon>
                 </v-btn>
-            </v-toolbar-items>
-        </v-toolbar>
-    </div>
+            </template>
+
+            <v-list>
+                <v-list-item>
+                    <toolbar-button route="torrents" />
+                </v-list-item>
+                <v-list-item>
+                    <toolbar-button route="system" />
+                </v-list-item>
+            </v-list>
+        </v-menu>
+    </v-bottom-navigation>
 </template>
 
 <script lang="ts">
