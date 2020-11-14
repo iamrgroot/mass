@@ -20,8 +20,8 @@ class Serie extends MediaItem
         parent::__construct();
         $this->fromObject($object);
 
-        $timestamp       = now()->timestamp;
-        $this->image_url = "/async/series/{$this->id}/image?{$timestamp}";
+        $timestamp        = now()->timestamp;
+        $this->image_url  = "/async/series/{$this->id}/image?{$timestamp}";
         $this->banner_url = "/async/series/{$this->id}/banner?{$timestamp}";
 
         $this->type = ItemType::Serie;

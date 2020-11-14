@@ -31,7 +31,6 @@
     </v-toolbar>
     <v-bottom-navigation
         v-else
-        hide-on-scroll
         fixed
     >
         <toolbar-button
