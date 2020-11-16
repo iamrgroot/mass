@@ -83,14 +83,7 @@
             </v-fade-transition>
         </v-card-text>
 
-        <v-dialog
-            :value="item !== null"
-            fullscreen
-            hide-overlay
-            transition="dialog-bottom-transition"
-        >
-            <item-page />
-        </v-dialog>
+        <item-dialog />
     </v-card>
 </template>
 
@@ -98,20 +91,39 @@
 import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api';
 
 import ItemComponent from '@/components/admin/item/Item.vue';
-import ItemPage from '@/components/admin/item/ItemPage.vue';
+import ItemDialog from '@/components/admin/item/ItemDialog.vue';
 
 import { useItems } from '@/store/items';
 import sortBy from 'lodash/sortBy';
 import { Item } from '@/types/Item';
 
 const useItemList = () => {
-    const { items } = useItems();
+    const {
+        movies,
+        series,
+        movies_loading,
+        series_loading,
+        fetchMovies,
+        fetchSeries,
+        route_type_is_movie,
+    } = useItems();
 
     const item_list_data = reactive({
         no_columns: 1,
         sorted_on: '',
         descending: false,
     });
+
+    const items = computed(() => route_type_is_movie ? movies.value : series.value );
+    const items_loading = computed(() => route_type_is_movie ? movies_loading.value : series_loading.value );
+
+    const fetchItems = (): void => {
+        if (route_type_is_movie) {
+            fetchMovies();
+        } else {
+            fetchSeries();
+        }
+    };
 
     const sorted_items = computed((): Item[] => {
         if (item_list_data.sorted_on === '') return items.value;
@@ -123,35 +135,29 @@ const useItemList = () => {
 
     return {
         ...toRefs(item_list_data),
+        items,
+        items_loading,
         sorted_items,
+        fetchItems,
     };
 };
 
 export default defineComponent({
     components: {
         ItemComponent,
-        ItemPage,
+        ItemDialog,
     },
     setup() {
         const {
-            items,
             item,
-            items_loading,
-            fetchItems,
             route_type_is_movie,
         } = useItems();
 
         return {
             ...useItemList(),
-            items,
             item,
-            items_loading,
             route_type_is_movie,
-            fetchItems,
         };
     },
-    created() {
-        this.fetchItems();
-    }
 });
 </script>

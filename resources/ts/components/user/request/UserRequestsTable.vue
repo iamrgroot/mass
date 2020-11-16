@@ -84,7 +84,7 @@ export default defineComponent({
         IconTooltip,
         ImagePreview,
     },
-    setup() {
+    setup(props, vm) {
         const {
             requests,
             requests_loading,
@@ -94,7 +94,7 @@ export default defineComponent({
         } = useRequests();
 
         return {
-            ...useRequestTable(),
+            ...useRequestTable(vm),
             requests,
             requests_loading,
             processing_request_id,

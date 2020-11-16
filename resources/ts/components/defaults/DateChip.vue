@@ -1,13 +1,15 @@
 <template>
-    <v-badge
-        :content="date_object.toLocaleTimeString(locale, short_time_options)"
-        bordered
-        overlap
-    >
-        <v-chip label>
-            <span class="pr-1">{{ date_object.toLocaleDateString(locale) }}</span>
-        </v-chip>
-    </v-badge>
+    <div class="pr-6">
+        <v-badge
+            :content="date_object.toLocaleTimeString(locale, short_time_options)"
+            bordered
+            overlap
+        >
+            <v-chip label>
+                <span class="pr-1">{{ date_object.toLocaleDateString(locale) }}</span>
+            </v-chip>
+        </v-badge>
+    </div>
 </template>
 
 

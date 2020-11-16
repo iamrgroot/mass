@@ -1,5 +1,5 @@
 <template>
-    <v-card class="ma-3">
+    <v-card :class="{ 'ma-3': ! $vuetify.breakpoint.mobile }">
         <v-card-title>
             <span>Requests</span>
             <v-spacer />
@@ -45,14 +45,14 @@
                         <template v-if="item.status.value === RequestStatus.Request">
                             <v-icon
                                 color="green"
-                                class="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Approved)"
                             >
                                 {{ RequestStatusIcon.Approved }}
                             </v-icon>
                             <v-icon
                                 color="red"
-                                class="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Denied)"
                             >
                                 {{ RequestStatusIcon.Denied }}
@@ -63,21 +63,21 @@
                                 :icon="item.status.icon"
                                 text="See system log for error. Click to try again."
                                 :color="item.status.color"
-                                classes="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Approved)"
                             />
                         </template>
                         <template v-else-if="item.status.value === RequestStatus.Download">
                             <v-icon
                                 color="success"
-                                class="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Done)"
                             >
                                 {{ RequestStatusIcon.Done }}
                             </v-icon>
                             <v-icon
                                 color="error"
-                                class="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Error)"
                             >
                                 {{ RequestStatusIcon.Error }}
@@ -88,13 +88,13 @@
                                 :icon="RequestStatusIcon.Request"
                                 text="Reset"
                                 color="primary"
-                                classes="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Request)"
                             />
                         </template>
                         <v-icon
                             color="error"
-                            class="ml-3"
+                            :class="icon_padding"
                             @click="removeRequest(item)"
                         >
                             $mdiDelete
@@ -109,7 +109,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from '@vue/composition-api';
+import { computed, defineComponent, reactive, SetupContext, toRefs } from '@vue/composition-api';
 import { DataTableHeader } from 'vuetify';
 
 import RequestAddDialog from '@/components/user/request/RequestAddDialog.vue';
@@ -127,18 +127,35 @@ import { RequestStatus, RequestStatusIcon, RequestStatusName } from '@/enums/Req
 
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
-export const useRequestTable = () => {
+export const useRequestTable = (vm: SetupContext) => {
     const table_data = reactive({
         add_dialog: false,
-        headers: [
-            { text: '', value: 'image_url' },
+    });
+
+    const headers = computed((): DataTableHeader[] => {
+        if (! vm.root.$vuetify.breakpoint.mobile) {
+            return [
+                { text: '', value: 'image_url' },
+                { text: 'Type', value: 'type' },
+                { text: 'Name', value: 'text' },
+                { text: 'Created at', value: 'created_at' },
+                { text: 'Updated at', value: 'updated_at' },
+                { text: 'Status', value: 'status' },
+                { text: 'Actions', value: 'actions', width: '200px', sortable: false, align: 'end' },
+            ] as DataTableHeader[];
+        }
+
+        return [
             { text: 'Type', value: 'type' },
             { text: 'Name', value: 'text' },
-            { text: 'Created at', value: 'created_at' },
-            { text: 'Updated at', value: 'updated_at' },
             { text: 'Status', value: 'status' },
             { text: 'Actions', value: 'actions', width: '200px', sortable: false, align: 'end' },
-        ] as DataTableHeader[],
+        ] as DataTableHeader[];
+    });
+
+    const icon_padding = computed((): string => {
+        return vm.root.$vuetify.breakpoint.mobile ?
+            'ml-10' : 'ml-3';
     });
 
     const { item_type } = useItems();
@@ -147,6 +164,8 @@ export const useRequestTable = () => {
 
     return {
         ...toRefs(table_data),
+        headers,
+        icon_padding,
         item_type,
         itemString,
         getImageURL,
@@ -160,10 +179,10 @@ export default defineComponent({
         IconTooltip,
         ImagePreview,
     },
-    setup() {
+    setup(props, vm) {
         return {
             ...useRequests(),
-            ...useRequestTable(),
+            ...useRequestTable(vm),
             RequestStatus,
             RequestStatusIcon,
             RequestStatusName

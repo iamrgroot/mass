@@ -74,9 +74,7 @@
 </style>
 
 <style lang="scss">
-    div.blurred-image > div.v-image__image--cover {
-        filter: blur(20px);
-    }
+    @import '~@style/item';
 </style>
 
 <script lang="ts">

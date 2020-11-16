@@ -42,6 +42,13 @@ module.exports = {
         ],
     },
     chainWebpack: config => {
+        config.module
+            .rule('eslint')
+            .use('eslint-loader')
+            .options({
+                fix: true,
+            });
+
         config.plugins.delete('pwa');
         config.plugins.delete('copy');
         config.plugins.delete('html');
@@ -61,6 +68,7 @@ module.exports = {
         config.resolve
             .alias
             .set('@', path.resolve(__dirname, 'resources/ts'))
+            .set('@style', path.resolve(__dirname, 'resources/styles'))
             .set('@module', path.resolve(__dirname, 'node_modules'));
 
         config.performance

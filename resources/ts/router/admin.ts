@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import ListPage from '@/components/admin/item/ListPage.vue';
-import ItemPage from '@/components/admin/item/ItemPage.vue';
 import TorrentsPage from '@/components/admin/torrent/TorrentsPage.vue';
 import AdminRequestsPage from '@/components/admin/request/AdminRequestsPage.vue';
 import SystemPage from '@/components/admin/system/SystemPage.vue';
@@ -21,31 +20,11 @@ const routes: RouteConfig[] = [
         redirect: '/movies',
     },
     {
-        path: '/movies/:id',
-        name: 'movie',
-        component: ItemPage,
-        beforeEnter: (to, from, next): void => {
-            route_type.value = ItemType.Movie;
-            next();
-        },
-        // TODO maybe ?
-        // component: () => import(/* webpackChunkName: "item" */ '@/components/item/ItemPage.vue'),
-    },
-    {
         path: '/movies',
         name: 'movies',
         component: ListPage,
         beforeEnter: (to, from, next): void => {
             route_type.value = ItemType.Movie;
-            next();
-        },
-    },
-    {
-        path: '/series/:id',
-        name: 'serie',
-        component: ItemPage,
-        beforeEnter: (to, from, next): void => {
-            route_type.value = ItemType.Serie;
             next();
         },
     },
