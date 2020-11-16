@@ -28,7 +28,7 @@ const routes: RouteConfig[] = [
             route_type.value = ItemType.Movie;
 
             item.value = movies.value.find(item => item.id === Number(to.params.id)) ?? null;
-            
+
             if (item.value === null) {
                 next('/movies');
             }
@@ -55,7 +55,7 @@ const routes: RouteConfig[] = [
             route_type.value = ItemType.Serie;
 
             item.value = series.value.find(item => item.id === Number(to.params.id)) ?? null;
-            
+
             if (item.value === null) {
                 next('/series');
             }
