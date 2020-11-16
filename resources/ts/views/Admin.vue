@@ -2,19 +2,19 @@
     <v-app>
         <toolbar />
 
-        <Main />
+        <container />
     </v-app>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
 
-import Main from '@/views/Main.vue';
+import Container from '@/views/Main.vue';
 import Toolbar from '@/components/admin/AdminToolbar.vue';
 
 export default defineComponent({
     components: {
-        Main,
+        Container,
         Toolbar
     }
 });

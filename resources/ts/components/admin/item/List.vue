@@ -82,8 +82,6 @@
                 </v-row>
             </v-fade-transition>
         </v-card-text>
-
-        <item-dialog />
     </v-card>
 </template>
 
@@ -91,7 +89,6 @@
 import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api';
 
 import ItemComponent from '@/components/admin/item/Item.vue';
-import ItemDialog from '@/components/admin/item/ItemDialog.vue';
 
 import { useItems } from '@/store/items';
 import sortBy from 'lodash/sortBy';
@@ -145,7 +142,6 @@ const useItemList = () => {
 export default defineComponent({
     components: {
         ItemComponent,
-        ItemDialog,
     },
     setup() {
         const {

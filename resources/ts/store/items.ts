@@ -1,4 +1,4 @@
-import { computed, reactive, toRefs, watch, nextTick } from '@vue/composition-api';
+import { computed, reactive, toRefs } from '@vue/composition-api';
 import axios from '@/plugins/axios';
 
 import { ItemType } from '@/enums/ItemType';
@@ -16,24 +16,9 @@ const item_store = reactive({
     series_loading: false,
     item_loading: true,
     item_adding: false,
-    item_dialog: false,
     seasons_dialog: false,
     item_add_errors: [] as string[],
     route_item_type: ItemType.Movie,
-});
-
-watch(() => item_store.item_dialog, () => {
-    if (item_store.item_dialog === false) {
-        nextTick(() => {
-            item_store.item = null;
-        });
-    }
-});
-
-watch(() => item_store.item,() => {
-    if (item_store.item !== null) {
-        item_store.item_dialog = true;
-    }
 });
 
 const { notify } = useNotifications();
@@ -45,7 +30,6 @@ export const useItems = () => {
 
     const item_type = computed((): ItemType => item_store.item?.type ?? ItemType.Movie);
     const item_is_movie = computed((): boolean => item_type.value === ItemType.Movie);
-
 
     const fetchSeries = (): Promise<Item[]> => {
         return new Promise((resolve, reject) => {

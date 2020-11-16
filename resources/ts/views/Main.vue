@@ -1,11 +1,11 @@
 <template>
     <v-main>
-        <v-fade-transition mode="out-in">
+        <v-fade-transition>
             <router-view :key="$route.path" />
         </v-fade-transition>
 
         <v-fade-transition>
-            <NotificationComponent
+            <notification
                 v-if="notifications.length > 0"
                 :key="notifications[0].id"
                 :notification="notifications[0]"
@@ -26,7 +26,7 @@
 import { defineComponent } from '@vue/composition-api';
 
 import Confirm from '@/components/defaults/Confirm.vue';
-import NotificationComponent from '@/components/defaults/Notification.vue';
+import Notification from '@/components/defaults/Notification.vue';
 
 import { ConfirmType } from '@/types/ConfirmOptions';
 
@@ -35,7 +35,7 @@ import { useNotifications } from '@/store/notifications';
 export default defineComponent({
     components: {
         Confirm,
-        NotificationComponent,
+        Notification,
     },
     setup() {
         const { notifications, removeNotification } = useNotifications();

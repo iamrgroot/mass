@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import ListPage from '@/components/admin/item/ListPage.vue';
+import ItemPage from '@/components/admin/item/ItemPage.vue';
 import TorrentsPage from '@/components/admin/torrent/TorrentsPage.vue';
 import AdminRequestsPage from '@/components/admin/request/AdminRequestsPage.vue';
 import SystemPage from '@/components/admin/system/SystemPage.vue';
@@ -11,7 +12,7 @@ import { ItemType } from '@/enums/ItemType';
 
 Vue.use(VueRouter);
 
-const { route_type } = useItems();
+const { route_type, item, movies, series } = useItems();
 
 const routes: RouteConfig[] = [
     {
@@ -20,12 +21,44 @@ const routes: RouteConfig[] = [
         redirect: '/movies',
     },
     {
+        path: '/movies/:id',
+        name: 'movie',
+        component: ItemPage,
+        beforeEnter: (to, from, next): void => {
+            route_type.value = ItemType.Movie;
+
+            item.value = movies.value.find(item => item.id === Number(to.params.id)) ?? null;
+            
+            if (item.value === null) {
+                next('/movies');
+            }
+
+            next();
+        },
+        // TODO maybe ?
+        // component: () => import(/* webpackChunkName: "item" */ '@/components/item/ItemPage.vue'),
+    },
+    {
         path: '/movies',
         name: 'movies',
         component: ListPage,
         beforeEnter: (to, from, next): void => {
             route_type.value = ItemType.Movie;
             next();
+        },
+    },
+    {
+        path: '/series/:id',
+        name: 'serie',
+        component: ItemPage,
+        beforeEnter: (to, from, next): void => {
+            route_type.value = ItemType.Serie;
+
+            item.value = series.value.find(item => item.id === Number(to.params.id)) ?? null;
+            
+            if (item.value === null) {
+                next('/series');
+            }
         },
     },
     {
@@ -56,7 +89,14 @@ const routes: RouteConfig[] = [
 
 const router = new VueRouter({
     mode: 'history',
-    routes
+    routes,
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    scrollBehavior(to, from, saved_position) {
+        if (saved_position) {
+            return saved_position;
+        }
+        return {x: 0, y: 0};
+    }
 });
 
 export default router;

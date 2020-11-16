@@ -5,7 +5,7 @@
             'cursor': 'pointer',
         }"
         outlined
-        @click="store_item = item"
+        @click="goTo(item)"
     >
         <v-img
             eager
@@ -82,6 +82,7 @@ import { defineComponent } from '@vue/composition-api';
 
 import { useItemFeatures } from '@/helpers/item_features';
 import { useItems } from '@/store/items';
+import { Item } from '@/types/Item';
 
 export default defineComponent({
     props: {
@@ -90,13 +91,20 @@ export default defineComponent({
             required: true,
         }
     },
-    setup() {
+    setup(props, vm) {
         const item_features = useItemFeatures();
-        const { item } = useItems();
+        const { item, route_type_is_movie } = useItems();
+
+        const goTo = (item: Item): void => {
+            const route = route_type_is_movie ? '/movies/' : '/series/';
+
+            vm.root.$router.push(route + item.id);
+        };
 
         return {
             store_item: item,
             ...item_features,
+            goTo,
         };
     }
 });
