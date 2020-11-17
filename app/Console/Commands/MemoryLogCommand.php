@@ -18,7 +18,7 @@ class MemoryLogCommand extends Command
     {
         Log::debug('Running MemoryLogCommand...');
 
-        $setting = Setting::whereDiskLog()->firstOrFail();
+        $setting = Setting::whereMemoryLog()->firstOrFail();
 
         if (true !== $setting->value) {
             Log::debug('Memory log disabled in settings');
