@@ -25,6 +25,14 @@
                 <v-spacer />
                 <template v-if="! $vuetify.breakpoint.mobile">
                     <icon-tooltip
+                        v-if="! item_is_movie"
+                        text="Seasons"
+                        icon="$mdiTelevision"
+                        color="white"
+                        classes="mr-6"
+                        @click="seasons_dialog = true"
+                    />
+                    <icon-tooltip
                         text="Change quality"
                         icon="$mdiQualityHigh"
                         color="white"
@@ -39,6 +47,7 @@
                         @click="searchIndexersAutomatically(item.id, item.type)"
                     />
                     <icon-tooltip
+                        v-if="item_is_movie"
                         text="Search manually"
                         icon="$mdiSearchWeb"
                         color="white"
@@ -206,6 +215,7 @@ const useItemManagement = (vm: SetupContext) => {
         item,
         item_is_movie,
         item_loading,
+        seasons_dialog,
         deleteItem,
         refreshItem,
     } = useItems();
@@ -244,6 +254,7 @@ const useItemManagement = (vm: SetupContext) => {
         item_is_movie,
         item_loading,
         profile_dialog,
+        seasons_dialog,
         remove,
         refreshItem,
         searchIndexers,

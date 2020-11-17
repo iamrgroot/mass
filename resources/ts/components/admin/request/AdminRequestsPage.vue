@@ -120,7 +120,6 @@ import ImagePreview from '@/components/defaults/ImagePreview.vue';
 import { ItemType } from '@/enums/ItemType';
 
 import { useRequests } from '@/store/requests';
-import { useItems } from '@/store/items';
 
 import { getImageURL } from '@/helpers/images';
 import { RequestStatus, RequestStatusIcon, RequestStatusName } from '@/enums/RequestStatus';
@@ -158,15 +157,12 @@ export const useRequestTable = (vm: SetupContext) => {
             'ml-10' : 'ml-3';
     });
 
-    const { item_type } = useItems();
-
     const itemString = (type: ItemType): string => type === ItemType.Movie ? 'Movie' : 'Serie';
 
     return {
         ...toRefs(table_data),
         headers,
         icon_padding,
-        item_type,
         itemString,
         getImageURL,
     };

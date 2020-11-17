@@ -28,8 +28,7 @@ const { notify } = useNotifications();
 export const useItems = () => {
     const route_type_is_movie = computed((): boolean => item_store.route_type === ItemType.Movie);
 
-    const item_type = computed((): ItemType => item_store.item?.type ?? ItemType.Movie);
-    const item_is_movie = computed((): boolean => item_type.value === ItemType.Movie);
+    const item_is_movie = computed((): boolean => item_store.item?.type === ItemType.Movie);
 
     const fetchSeries = (): Promise<Item[]> => {
         return new Promise((resolve, reject) => {
@@ -182,7 +181,6 @@ export const useItems = () => {
         ...toRefs(item_store),
         route_type_is_movie,
         item_is_movie,
-        item_type,
         fetchMovies,
         fetchSeries,
         deleteItem,
