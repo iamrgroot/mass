@@ -1,8 +1,8 @@
 <template>
     <v-main>
-        <v-fade-transition>
+        <keep-alive>
             <router-view :key="$route.path" />
-        </v-fade-transition>
+        </keep-alive>
 
         <v-fade-transition>
             <notification

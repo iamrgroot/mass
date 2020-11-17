@@ -133,7 +133,7 @@ export const useRequestTable = (vm: SetupContext) => {
     });
 
     const headers = computed((): DataTableHeader[] => {
-        if (! vm.root.$vuetify.breakpoint.mobile) {
+        if (! vm.root.$vuetify.breakpoint.xs) {
             return [
                 { text: '', value: 'image_url' },
                 { text: 'Type', value: 'type' },
@@ -154,7 +154,7 @@ export const useRequestTable = (vm: SetupContext) => {
     });
 
     const icon_padding = computed((): string => {
-        return vm.root.$vuetify.breakpoint.mobile ?
+        return vm.root.$vuetify.breakpoint.xs ?
             'ml-10' : 'ml-3';
     });
 

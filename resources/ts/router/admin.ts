@@ -9,10 +9,12 @@ import SystemPage from '@/components/admin/system/SystemPage.vue';
 
 import { useItems } from '@/store/items';
 import { ItemType } from '@/enums/ItemType';
+import { useToolbar } from '@/store/toolbar';
 
 Vue.use(VueRouter);
 
 const { route_type, item, movies, series } = useItems();
+const { show_toolbar } = useToolbar();
 
 const routes: RouteConfig[] = [
     {
@@ -26,6 +28,7 @@ const routes: RouteConfig[] = [
         component: ItemPage,
         beforeEnter: (to, from, next): void => {
             route_type.value = ItemType.Movie;
+            show_toolbar.value = false;
 
             item.value = movies.value.find(item => item.id === Number(to.params.id)) ?? null;
 
@@ -44,6 +47,7 @@ const routes: RouteConfig[] = [
         component: ListPage,
         beforeEnter: (to, from, next): void => {
             route_type.value = ItemType.Movie;
+            show_toolbar.value = true;
             next();
         },
     },
@@ -53,12 +57,15 @@ const routes: RouteConfig[] = [
         component: ItemPage,
         beforeEnter: (to, from, next): void => {
             route_type.value = ItemType.Serie;
+            show_toolbar.value = false;
 
             item.value = series.value.find(item => item.id === Number(to.params.id)) ?? null;
 
             if (item.value === null) {
                 next('/series');
             }
+
+            next();
         },
     },
     {
@@ -67,6 +74,7 @@ const routes: RouteConfig[] = [
         component: ListPage,
         beforeEnter: (to, from, next): void => {
             route_type.value = ItemType.Serie;
+            show_toolbar.value = true;
             next();
         },
     },

@@ -4,9 +4,9 @@
         min-width="100%"
     >
         <v-card-title>
-            {{ route_type_is_movie ? 'Movies' : 'Series' }}
+            <span class="ml-6">{{ route_type_is_movie ? 'Movies' : 'Series' }}</span>
             <v-spacer />
-            <v-select
+            <!-- <v-select
                 v-model="no_columns"
                 label="# columns"
                 :items="[1, 2, 3, 4]"
@@ -41,7 +41,7 @@
                 <v-icon>
                     {{ descending ? '$mdiSortDescending' : '$mdiSortAscending' }}
                 </v-icon>
-            </v-btn>
+            </v-btn> -->
             <v-btn
                 icon
                 @click="fetchItems()"
@@ -49,11 +49,13 @@
                 <v-icon>$mdiRefresh</v-icon>
             </v-btn>
         </v-card-title>
-        <v-divider />
         <v-card-text>
             <v-fade-transition mode="out-in">
+                <div
+                    v-if="items_loading"
+                />
                 <v-alert
-                    v-if="items.length === 0"
+                    v-else-if="items.length === 0"
                     text
                     dense
                     min-width="99%"
@@ -63,10 +65,6 @@
                 >
                     No {{ route_type_is_movie ? 'movies' : 'series' }}
                 </v-alert>
-                <v-progress-linear
-                    v-else-if="items_loading"
-                    indeterminate
-                />
                 <v-row
                     v-else
                     align="center"
@@ -111,11 +109,11 @@ const useItemList = () => {
         descending: false,
     });
 
-    const items = computed(() => route_type_is_movie ? movies.value : series.value );
-    const items_loading = computed(() => route_type_is_movie ? movies_loading.value : series_loading.value );
+    const items = computed(() => route_type_is_movie.value ? movies.value : series.value );
+    const items_loading = computed(() => route_type_is_movie.value ? movies_loading.value : series_loading.value );
 
     const fetchItems = (): void => {
-        if (route_type_is_movie) {
+        if (route_type_is_movie.value) {
             fetchMovies();
         } else {
             fetchSeries();

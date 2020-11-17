@@ -12,7 +12,7 @@
             class="blurred-image"
             width="100%"
             max-height="200px"
-            :src="item.banner_url"
+            :src="item.image_url"
             gradient="rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)"
             @error="() => { /** Ignore image load error */}"
         >
@@ -96,7 +96,7 @@ export default defineComponent({
         const { item, route_type_is_movie } = useItems();
 
         const goTo = (item: Item): void => {
-            const route = route_type_is_movie ? '/movies/' : '/series/';
+            const route = route_type_is_movie.value ? '/movies/' : '/series/';
 
             vm.root.$router.push(route + item.id);
         };

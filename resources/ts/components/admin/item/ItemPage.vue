@@ -1,14 +1,13 @@
 <template>
-    <div style="min-height: 100vh">
+    <div style="min-height: 100vh; min-width: 100vw; background-color: black;">
         <v-img
             v-if="item"
             eager
             contain
-            class="blurred-image"
+            class="blurred-image blurred-image-top"
             width="100%"
             :src="item.image_url"
-            style="background-color: black;"
-            gradient="rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)"
+            gradient="rgba(0,0,0,0.5), rgba(0,0,0,0.5) 60%, black"
             @error="() => { /** Ignore image load error */}"
         >
             <v-row
@@ -68,7 +67,7 @@
                 >
                     <template #activator="{ on, attrs }">
                         <v-btn
-                            class="mr-6"
+                            class="mr-12"
                             icon
                             dark
                             v-bind="attrs"
