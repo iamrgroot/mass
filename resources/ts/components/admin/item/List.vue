@@ -5,7 +5,7 @@
             min-width="100%"
         >
             <v-card-title>
-                <span class="ml-6">{{ route_type_is_movie ? 'Movies' : 'Series' }}</span>
+                <span>{{ route_type_is_movie ? 'Movies' : 'Series' }}</span>
                 <v-spacer />
                 <v-btn
                     text
