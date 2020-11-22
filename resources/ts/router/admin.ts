@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
-import ListPage from '@/components/admin/item/ListPage.vue';
+import ItemList from '@/components/admin/item/List.vue';
 import ItemPage from '@/components/admin/item/ItemPage.vue';
 import TorrentsPage from '@/components/admin/torrent/TorrentsPage.vue';
 import AdminRequestsPage from '@/components/admin/request/AdminRequestsPage.vue';
@@ -44,7 +44,7 @@ const routes: RouteConfig[] = [
     {
         path: '/movies',
         name: 'movies',
-        component: ListPage,
+        component: ItemList,
         beforeEnter: (to, from, next): void => {
             route_type.value = ItemType.Movie;
             show_toolbar.value = true;
@@ -71,7 +71,7 @@ const routes: RouteConfig[] = [
     {
         path: '/series',
         name: 'series',
-        component: ListPage,
+        component: ItemList,
         beforeEnter: (to, from, next): void => {
             route_type.value = ItemType.Serie;
             show_toolbar.value = true;

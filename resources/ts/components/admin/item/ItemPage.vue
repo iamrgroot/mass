@@ -3,9 +3,9 @@
         <v-img
             v-if="item"
             eager
-            contain
             class="blurred-image blurred-image-top"
             width="100%"
+            max-height="100vh"
             :src="item.image_url"
             gradient="rgba(0,0,0,0.5), rgba(0,0,0,0.5) 60%, black"
             @error="() => { /** Ignore image load error */}"
@@ -66,7 +66,7 @@
                         icon="$mdiDelete"
                         color="error"
                         classes="mr-12"
-                        @click="refreshItem(item.id, item.type)"
+                        @click="remove"
                     />
                 </template>
                 <v-menu
@@ -118,16 +118,17 @@
                 justify="center"
                 no-gutters
             >
-                <v-col cols="4">
-                    <v-img
-                        :src="item.image_url"
-                        class="elevation-5"
-                        style="border-radius: 24px;"
-                        eager
-                        contain
-                        @error="() => {}"
-                    />
-                </v-col>
+                <v-spacer />
+                <v-img
+                    :src="item.image_url"
+                    class="elevation-5"
+                    style="border-radius: 24px;"
+                    max-width="min(400px, 90vw)"
+                    eager
+                    contain
+                    @error="() => {}"
+                />
+                <v-spacer />
             </v-row>
             <v-row
                 justify="center"
@@ -174,9 +175,9 @@
                 justify="center"
                 class="white--text text-center ma-6"
             >
-                <v-col cols="12">
-                    {{ item.overview }}
-                </v-col>
+                <v-spacer />
+                <span style="max-width: 1000px;">{{ item.overview }}</span>
+                <v-spacer />
             </v-row>
 
             <search-dialog />

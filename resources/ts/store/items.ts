@@ -82,12 +82,15 @@ export const useItems = () => {
     };
 
     const addItem = (
+        type: ItemType,
         item: SearchResult,
         profile: number,
         seasons: number[]|null
     ): Promise<Item> => {
         return new Promise((resolve, reject) => {
-            const url = route_type_is_movie.value ?
+            const is_movie = type === ItemType.Movie;
+
+            const url = is_movie ?
                 '/async/movies' :
                 '/async/series';
 
@@ -99,7 +102,7 @@ export const useItems = () => {
             ).then(({ data }) => {
                 item_store.item_add_errors = [];
 
-                route_type_is_movie.value ?
+                is_movie ?
                     item_store.movies.push(data) :
                     item_store.series.push(data);
 

@@ -1,5 +1,10 @@
 <template>
-    <v-main>
+    <v-main
+        :class="{
+            'pa-3': show_toolbar && ! $vuetify.breakpoint.mobile,
+            'mb-12': show_toolbar && $vuetify.breakpoint.mobile,
+        }"
+    >
         <keep-alive>
             <router-view :key="$route.path" />
         </keep-alive>
@@ -31,6 +36,7 @@ import Notification from '@/components/defaults/Notification.vue';
 import { ConfirmType } from '@/types/ConfirmOptions';
 
 import { useNotifications } from '@/store/notifications';
+import { useToolbar } from '@/store/toolbar';
 
 export default defineComponent({
     components: {
@@ -40,7 +46,10 @@ export default defineComponent({
     setup() {
         const { notifications, removeNotification } = useNotifications();
 
+        const { show_toolbar } = useToolbar();
+
         return {
+            show_toolbar,
             notifications,
             removeNotification,
         };

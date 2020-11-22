@@ -1,8 +1,15 @@
 <template>
-    <v-card :class="{ 'ma-3': ! $vuetify.breakpoint.mobile }">
+    <v-card :loading="requests_loading">
         <v-card-title>
             <span>Requests</span>
             <v-spacer />
+            <v-btn
+                text
+                class="ma-2"
+                @click="add_dialog = true"
+            >
+                New
+            </v-btn>
             <v-btn
                 icon
                 class="ma-2"
@@ -17,7 +24,9 @@
                 <v-data-table
                     :headers="headers"
                     :items="requests"
-                    :loading="requests_loading"
+                    :items-per-page="-1"
+                    mobile-breakpoint="0"
+                    :hide-default-header="is_mobile"
                 >
                     <template #[`item.image_url`]="{ item }">
                         <image-preview
@@ -104,7 +113,10 @@
             </v-fade-transition>
         </v-card-text>
 
-        <request-add-dialog v-model="add_dialog" />
+        <add-dialog
+            v-model="add_dialog"
+            request
+        />
     </v-card>
 </template>
 
@@ -112,7 +124,7 @@
 import { computed, defineComponent, reactive, SetupContext, toRefs } from '@vue/composition-api';
 import { DataTableHeader } from 'vuetify';
 
-import RequestAddDialog from '@/components/user/request/RequestAddDialog.vue';
+import AddDialog from '@/components/user/AddDialog.vue';
 import IconTooltip from '@/components/defaults/IconTooltip.vue';
 import DateChip from '@/components/defaults/DateChip.vue';
 import ImagePreview from '@/components/defaults/ImagePreview.vue';
@@ -131,8 +143,12 @@ export const useRequestTable = (vm: SetupContext) => {
         add_dialog: false,
     });
 
+    const is_mobile = computed((): boolean => {
+        return vm.root.$vuetify.breakpoint.xs;
+    });
+
     const headers = computed((): DataTableHeader[] => {
-        if (! vm.root.$vuetify.breakpoint.xs) {
+        if (! is_mobile.value) {
             return [
                 { text: '', value: 'image_url' },
                 { text: 'Type', value: 'type' },
@@ -148,19 +164,19 @@ export const useRequestTable = (vm: SetupContext) => {
             { text: 'Type', value: 'type' },
             { text: 'Name', value: 'text' },
             { text: 'Status', value: 'status' },
-            { text: 'Actions', value: 'actions', width: '200px', sortable: false, align: 'end' },
+            { text: 'Actions', value: 'actions', sortable: false, align: 'end' },
         ] as DataTableHeader[];
     });
 
     const icon_padding = computed((): string => {
-        return vm.root.$vuetify.breakpoint.xs ?
-            'ml-10' : 'ml-3';
+        return is_mobile.value ? 'my-2' : 'ml-3';
     });
 
     const itemString = (type: ItemType): string => type === ItemType.Movie ? 'Movie' : 'Serie';
 
     return {
         ...toRefs(table_data),
+        is_mobile,
         headers,
         icon_padding,
         itemString,
@@ -170,7 +186,7 @@ export const useRequestTable = (vm: SetupContext) => {
 
 export default defineComponent({
     components: {
-        RequestAddDialog,
+        AddDialog,
         DateChip,
         IconTooltip,
         ImagePreview,
