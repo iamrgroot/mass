@@ -5,7 +5,7 @@
             eager
             class="blurred-image blurred-image-top"
             width="100%"
-            max-height="100vh"
+            max-height="min(100vh, 100%)"
             :src="item.image_url"
             gradient="rgba(0,0,0,0.5), rgba(0,0,0,0.5) 60%, black"
             @error="() => { /** Ignore image load error */}"
@@ -76,7 +76,7 @@
                 >
                     <template #activator="{ on, attrs }">
                         <v-btn
-                            class="mr-12"
+                            class="mr-6"
                             icon
                             dark
                             v-bind="attrs"
@@ -123,7 +123,7 @@
                     :src="item.image_url"
                     class="elevation-5"
                     style="border-radius: 24px;"
-                    max-width="min(400px, 90vw)"
+                    max-width="min(400px, 60vw)"
                     eager
                     contain
                     @error="() => {}"
