@@ -13,7 +13,7 @@
             <v-btn
                 icon
                 class="ma-2"
-                @click="fetch"
+                @click="fetchRequests"
             >
                 <v-icon>$mdiRefresh</v-icon>
             </v-btn>
@@ -24,11 +24,11 @@
                 <v-data-table
                     :headers="headers"
                     :items="requests"
-                    :loading="loading"
+                    :loading="requests_loading"
                 >
                     <template #[`item.image_url`]="{ item }">
                         <image-preview
-                            :src="getImageURL(item)"
+                            :src="getImageURL(item.type, item.image_url)"
                             right
                         />
                     </template>
@@ -53,7 +53,7 @@
                             v-if="item.created_by_current_user"
                             color="error"
                             class="ml-3"
-                            @click="remove(item)"
+                            @click="removeRequest(item)"
                         >
                             $mdiDelete
                         </v-icon>
@@ -67,75 +67,43 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { request_store } from '@/store/request';
-import { getRequests, deleteRequest } from '@/api/request';
-import { Request } from '@/types/Requests';
-import { DataTableHeader } from 'vuetify';
+import { defineComponent } from '@vue/composition-api';
+
 import RequestAddDialog from '@/components/user/request/RequestAddDialog.vue';
 import IconTooltip from '@/components/defaults/IconTooltip.vue';
 import DateChip from '@/components/defaults/DateChip.vue';
 import ImagePreview from '@/components/defaults/ImagePreview.vue';
-import { ItemType } from '@/enums/ItemType';
-import { getImageURL } from '@/helpers/images';
 
-@Component({
+import { useRequestTable } from '@/components/admin/request/AdminRequestsPage.vue';
+import { useRequests } from '@/store/requests';
+
+export default defineComponent({
     components: {
         RequestAddDialog,
         DateChip,
         IconTooltip,
         ImagePreview,
-    }
-})
-export default class UserRequestsTable extends Vue {
-    private loading = false;
-    private add_dialog = false;
-    private request_processing = -1;
-    private headers: DataTableHeader[] = [
-        { text: '', value: 'image_url' },
-        { text: 'Type', value: 'type' },
-        { text: 'Name', value: 'text' },
-        { text: 'Created at', value: 'created_at' },
-        { text: 'Updated at', value: 'updated_at' },
-        { text: 'Status', value: 'status' },
-        { text: '', value: 'actions', width: '100px', sortable: false, align: 'end' },
-    ];
+    },
+    setup() {
+        const {
+            requests,
+            requests_loading,
+            processing_request_id,
+            fetchRequests,
+            removeRequest,
+        } = useRequests();
 
-    get requests(): Request[] {
-        return request_store.requests;
+        return {
+            ...useRequestTable(),
+            requests,
+            requests_loading,
+            processing_request_id,
+            fetchRequests,
+            removeRequest,
+        };
+    },
+    created() {
+        this.fetchRequests();
     }
-    set requests(requests: Request[]) {
-        request_store.requests = requests;
-    }
-
-    created(): void {
-        this.fetch();
-    }
-
-    async fetch(): Promise<void> {
-        this.loading = true;
-        this.requests = await getRequests();
-        this.loading = false;
-    }
-    async remove(request: Request): Promise<void> {
-        this.request_processing = request.id;
-
-        await deleteRequest(request.id);
-
-        this.requests.splice(
-            this.requests.findIndex(old_item => {
-                return request.id === old_item.id;
-            }),
-            1
-        );
-
-        this.request_processing = -1;
-    }
-    itemString(type: ItemType): string {
-        return type === ItemType.Movie ? 'Movie' : 'Serie';
-    }
-    getImageURL(item: Request): string {
-        return getImageURL(item.type, item.image_url);
-    }
-}
+});
 </script>

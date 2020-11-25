@@ -1,6 +1,6 @@
 <template>
     <v-badge
-        :content="date_object.toLocaleTimeString(locale, time_options)"
+        :content="date_object.toLocaleTimeString(locale, short_time_options)"
         bordered
         overlap
     >
@@ -12,25 +12,29 @@
 
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { locale_store, short_time_options } from '@/store/locale';
+import { useLocale } from '@/store/locale';
+import { computed, defineComponent } from '@vue/composition-api';
 
-@Component
-export default class DateChip extends Vue {
-    @Prop({required: true}) private date!: string;
+export default defineComponent({
+    props: {
+        date: {
+            type: String,
+            required: true,
+        },
+    },
+    setup(props) {
+        const date_object = computed((): Date | null => {
+            try {
+                return new Date(props.date);
+            } catch (error) {
+                return null;
+            }
+        });
 
-    get time_options(): Intl.DateTimeFormatOptions {
-        return short_time_options;
+        return {
+            ...useLocale(),
+            date_object,
+        };
     }
-    get locale(): string {
-        return locale_store.locale;
-    }
-    get date_object(): Date | null {
-        try {
-            return new Date(this.date);
-        } catch (error) {
-            return null;
-        }
-    }
-}
+});
 </script>

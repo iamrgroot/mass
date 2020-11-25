@@ -19,7 +19,7 @@ module.exports = {
         'camelcase': 'off',
         'quotes': ['error', 'single'],
         'semi': ['error', 'always'],
-        'no-trailing-spaces': ['error'],
+        'no-trailing-spaces': [process.env.NODE_ENV === 'production' ? 'error' : 'off'],
         'no-multi-spaces': ['error'],
         'keyword-spacing': ['error'],
 
@@ -31,6 +31,9 @@ module.exports = {
         'vue/require-default-prop': ['error'],
         'vue/prop-name-casing': ['error', 'snake_case'],
         'vue/order-in-components': ['error'],
+        'vue/component-tags-order': ['error', {
+            'order': [ 'template', 'style', 'script' ]
+        }],
 
         'no-empty-function': ['error'],
         'no-else-return': ['error'],
@@ -43,9 +46,11 @@ module.exports = {
         '@typescript-eslint/array-type': ['error', {default: 'array'}],
         '@typescript-eslint/explicit-function-return-type': ['off'],
         '@typescript-eslint/member-delimiter-style': ['error'],
-        '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
         '@typescript-eslint/prefer-for-of': ['error'],
+        // TODO check snake case rule?
+        '@typescript-eslint/camelcase': ['off'],
         // TODO Fix error
+        // '@typescript-eslint/no-confusing-non-null-assertion': ['error'],
         // '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['error'],
         // '@typescript-eslint/prefer-nullish-coalescing': ['error'],
         // '@typescript-eslint/prefer-string-starts-ends-with': ['error'],

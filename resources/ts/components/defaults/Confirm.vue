@@ -42,41 +42,51 @@
     </v-dialog>
 </template>
 
-
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent, reactive, toRefs } from '@vue/composition-api';
+
 import { ConfirmOptions } from '@/types/ConfirmOptions';
 
-@Component
-export default class Confirm extends Vue {
-    private dialog = false;
-    private resolve?: (argument: boolean) => void;
-    private message = '';
-    private title = '';
-    private options = {
-        color: 'white',
-        width: 290,
-        zIndex: 200
-    } as ConfirmOptions;
-
-    open(title: string, message?: string, options?: ConfirmOptions): Promise<boolean> {
-        this.dialog = true;
-        this.title = title;
-
-        this.message = message || '';
-        this.options = Object.assign(this.options, options);
-
-        return new Promise((resolve) => {
-            this.resolve = resolve;
+export default defineComponent({
+    setup() {
+        const confirm_store = reactive({
+            dialog: false,
+            resolve: undefined as undefined | ((argument: boolean) => void),
+            message: '',
+            title: '',
+            options: {
+                color: 'white',
+                width: 290,
+                zIndex: 200
+            } as ConfirmOptions
         });
+
+        const open = (title: string, message?: string, options?: ConfirmOptions): Promise<boolean> => {
+            confirm_store.dialog = true;
+            confirm_store.title = title;
+
+            confirm_store.message = message || '';
+            confirm_store.options = Object.assign(confirm_store.options, options);
+
+            return new Promise((resolve) => {
+                confirm_store.resolve = resolve;
+            });
+        };
+        const agree = (): void => {
+            if (confirm_store.resolve !== undefined) confirm_store.resolve(true);
+            confirm_store.dialog = false;
+        };
+        const cancel = (): void => {
+            if (confirm_store.resolve !== undefined) confirm_store.resolve(false);
+            confirm_store.dialog = false;
+        };
+
+        return {
+            ...toRefs(confirm_store),
+            open,
+            agree,
+            cancel,
+        };
     }
-    agree(): void {
-        if (this.resolve !== undefined) this.resolve(true);
-        this.dialog = false;
-    }
-    cancel(): void {
-        if (this.resolve !== undefined) this.resolve(false);
-        this.dialog = false;
-    }
-}
+});
 </script>

@@ -4,6 +4,29 @@ namespace App\Models\Sonarr;
 
 use App\Models\Shared\Indexer as SharedIndexer;
 
+/**
+ * App\Models\Sonarr\Indexer.
+ *
+ * @property int         $Id
+ * @property string      $Name
+ * @property string      $Implementation
+ * @property string|null $Settings
+ * @property string|null $ConfigContract
+ * @property int|null    $EnableRss
+ * @property int|null    $EnableSearch
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer whereConfigContract($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer whereEnableRss($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer whereEnableSearch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer whereImplementation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Indexer whereSettings($value)
+ * @mixin \Eloquent
+ */
 class Indexer extends SharedIndexer
 {
     protected $connection = 'sonarr_sqlite';

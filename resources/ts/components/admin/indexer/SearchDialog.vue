@@ -1,20 +1,17 @@
 <template>
     <v-dialog
-        :value="dialog"
+        :value="indexer_dialog"
         width="800px"
-        @input="value => setDialog(value)"
+        @input="value => indexer_dialog = value"
     >
-        <v-card :loading="loading">
+        <v-card :loading="indexer_loading">
             <v-card-title>
                 <v-row justify="space-between">
                     <span class="headline">
                         Search Jackett
                     </span>
                     <v-icon
-                        @click="manualSearch({
-                            item_id: item.id,
-                            type: item.type
-                        })"
+                        @click="searchIndexers(item.id, item.type)"
                     >
                         $mdiRefresh
                     </v-icon>
@@ -32,14 +29,14 @@
                         {{ value }}d
                     </template>
                     <template #[`item.size`]="{ value }">
-                        {{ value | byte }}
+                        {{ byte(value) }}
                     </template>
                     <template #[`item.rejections`]="{ value }">
                         <v-tooltip
                             bottom
                             color="error"
                         >
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-icon
                                     v-if="value.length > 0"
                                     color="error"
@@ -62,11 +59,7 @@
                     <template #[`item.actions`]="{ item }">
                         <v-icon
                             color="success"
-                            @click="addManual({
-                                guid: item.guid,
-                                indexer_id: item.indexer_id,
-                                type: store_item.type
-                            })"
+                            @click="addTorrentFromIndexer(item.guid, item.indexer_id)"
                         >
                             $mdiCloudDownload
                         </v-icon>
@@ -77,7 +70,7 @@
                 <v-spacer />
                 <v-btn
                     text
-                    @click="setDialog(false)"
+                    @click="indexer_dialog = false"
                 >
                     Close
                 </v-btn>
@@ -87,22 +80,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { ItemTypeArgument, ManualAddArgument } from '@/types/Args';
-import { IndexResult, Item } from '@/types/Item';
+import { defineComponent } from '@vue/composition-api';
+import { DataTableHeader } from 'vuetify';
+
 import { byte } from '@/filters/filters';
 
-const Indexers = namespace('Indexers');
-const Items = namespace('Items');
+import { useIndexers } from '@/store/indexers';
+import { useItems } from '@/store/items';
 
-@Component({
-    filters: {
-        byte: byte,
-    }
-})
-export default class SearchDialog extends Vue {
-    private headers = [
+function useIndexerTable() {
+    const headers = [
         { text: 'quality', value: 'quality' },
         { text: 'age', value: 'age' },
         { text: 'seeders', value: 'seeders' },
@@ -110,21 +97,37 @@ export default class SearchDialog extends Vue {
         { text: 'size', value: 'size' },
         { text: 'rejections', value: 'rejections', align: 'center' },
         { text: '', value: 'actions', align: 'right', sortable: false },
-    ];
+    ] as DataTableHeader[];
 
-    @Items.State private item!: Item | null;
-
-    @Indexers.State private dialog!: boolean;
-    @Indexers.State private loading!: boolean;
-    @Indexers.State private indexer_results!: IndexResult[];
-
-    @Indexers.Mutation private setDialog!: (dialog: boolean) => void;
-
-    @Indexers.Action private manualSearch!: (args: ItemTypeArgument) => Promise<boolean>;
-    @Indexers.Action private addManual!: (args: ManualAddArgument) => Promise<boolean>;
-
-    private get store_item(): Item | null {
-        return this.item;
-    }
+    return {
+        headers,
+    };
 }
+
+export default defineComponent({
+    setup() {
+        const {
+            indexer_dialog,
+            indexer_loading,
+            indexer_results,
+            searchIndexers,
+            addTorrentFromIndexer,
+        } = useIndexers();
+
+        const { headers } = useIndexerTable();
+
+        const { item } = useItems();
+
+        return {
+            indexer_dialog,
+            indexer_loading,
+            indexer_results,
+            searchIndexers,
+            addTorrentFromIndexer,
+            headers,
+            item,
+            byte,
+        };
+    }
+});
 </script>

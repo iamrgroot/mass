@@ -15,13 +15,13 @@
                     class="ml-5"
                     @change="changeType()"
                 >
-                    <v-btn :value="movie_type">
+                    <v-btn :value="ItemType.Movie">
                         <span class="hidden-sm-and-down">Movie</span>
                         <v-icon right>
                             $mdiMovie
                         </v-icon>
                     </v-btn>
-                    <v-btn :value="serie_type">
+                    <v-btn :value="ItemType.Serie">
                         <span class="hidden-sm-and-down">Series</span>
                         <v-icon right>
                             $mdiTelevision
@@ -82,81 +82,93 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { request_store } from '@/store/request';
-import { Request } from '@/types/Requests';
-import { ItemType } from '@/enums/ItemType';
-import { SearchResult } from '@/types/Item';
-import { searchItem } from '@/api/items';
-import { getImageURL } from '@/helpers/images';
-import { putRequest } from '@/api/request';
+import { computed, defineComponent, reactive, toRefs, watch } from '@vue/composition-api';
 import find from 'lodash/find';
 
-@Component
-export default class RequestAddDialog extends Vue {
-    @Prop({ required: true }) private value!: boolean;
+import { SearchResult } from '@/types/Item';
 
-    private type = 0;
-    private searching = false;
-    private search = '';
-    private results: SearchResult[] = [];
-    private selected: SearchResult | null = null;
+import { ItemType } from '@/enums/ItemType';
+import { searchItem } from '@/api/items';
+import { putRequest } from '@/api/request';
+import { getImageURL } from '@/helpers/images';
+import { useRequests } from '@/store/requests';
 
-    get movie_type(): ItemType {
-        return ItemType.Movie;
-    }
-    get serie_type(): ItemType {
-        return ItemType.Serie;
-    }
-    get requests(): Request[] {
-        return request_store.requests;
-    }
-    get image_url(): string {
-        const shiba = '/images/shiba_poster.jpg';
-
-        if (! this.selected) {
-            return shiba;
+export default defineComponent({
+    props: {
+        value: {
+            type: Boolean,
+            required: true,
         }
+    },
+    setup(props, vm) {
+        const store = reactive({
+            type: ItemType.Movie,
+            searching: false,
+            search: '',
+            results: [] as SearchResult[],
+            selected: null as SearchResult | null,
+        });
 
-        const image = this.selected.images.find(image => image.coverType === 'poster');
+        const { requests } = useRequests();
 
-        if (! image) {
-            return shiba;
-        }
+        const image_url = computed((): string => {
+            const shiba = '/images/shiba_poster.jpg';
 
-        return getImageURL(this.type, image.url);
-    }
+            if (! store.selected) {
+                return shiba;
+            }
 
-    @Watch('search')
-    onSearchChanged(): void {
-        this.searchItem();
-    }
+            const image = store.selected.images.find(image => image.coverType === 'poster');
 
-    async put(): Promise<void> {
-        if (this.selected) {
-            this.requests.push(await putRequest(this.selected));
-            this.$emit('input', false);
-        }
-    }
-    async searchItem(): Promise<void> {
-        if (! this.search) return;
+            if (! image) {
+                return shiba;
+            }
 
-        this.searching = true;
-        try {
-            const results = await searchItem(this.search, this.type);
+            return getImageURL(store.type, image.url);
+        });
 
-            const search = this.type === ItemType.Movie ? 'tmdb_id' : 'tvdb_id';
+        const doSearch = async (): Promise<void> => {
+            if (! store.search) return;
 
-            this.results = results.filter(result => ! find(this.requests, {type: this.type, item_id: result[search]}));
-        } catch (error) {
-            // Nothing
-        }
-        this.searching = false;
-    }
-    changeType(): void {
-        this.search = '';
-        this.selected = null;
-        this.results = [];
-    }
-}
+            store.searching = true;
+            try {
+                const results = await searchItem(store.search, store.type);
+
+                const search = store.type === ItemType.Movie ? 'tmdb_id' : 'tvdb_id';
+
+                store.results = results.filter(result => ! find(requests.value, {type: store.type, item_id: result[search]}));
+            } catch (error) {
+                // Nothing
+            }
+            store.searching = false;
+        };
+
+        const put = async (): Promise<void> => {
+            if (store.selected) {
+                requests.value.push(await putRequest(store.selected));
+                vm.emit('input', false);
+            }
+        };
+
+        const changeType = (): void => {
+            store.search = '';
+            store.selected = null;
+            store.results = [];
+        };
+
+        watch(() => store.search, (): void => {
+            doSearch();
+        });
+
+        return {
+            ...toRefs(store),
+            ItemType,
+            requests,
+            image_url,
+            doSearch,
+            put,
+            changeType,
+        };
+    },
+});
 </script>

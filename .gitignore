@@ -11,3 +11,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 webpack-stats.json
+.composer
+/node_modules
+/vendor
+storage/framework/maintenance.php

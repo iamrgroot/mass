@@ -12,9 +12,11 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
+
 import TextField from '@/components/input/TextField.vue';
 
-@Component
-export default class Boolean extends TextField {}
+export default defineComponent({
+    extends: TextField
+});
 </script>

@@ -63,20 +63,34 @@
     }
 </style>
 
-
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
-import ItemBase from './ItemBase.vue';
-import { Item } from '@/types/Item';
+import { defineComponent } from '@vue/composition-api';
 
-@Component
-export default class ItemComponent extends ItemBase {
-    @Prop({ required: true }) protected item!: Item;
+import { useItemFeatures } from '@/helpers/item_features';
+import { ItemType } from '@/enums/ItemType';
 
-    goTo(): void {
-        const route = this.isMovie(this.item) ? 'movie' : 'serie';
+export default defineComponent({
+    props: {
+        item: {
+            type: Object,
+            required: true,
+        }
+    },
+    setup(props, vm) {
+        const item_features = useItemFeatures();
 
-        this.$router.push({ name: route, params: { id: String(this.item.id) }});
+        const goTo = (): void => {
+            if (! props.item) return;
+
+            const route = props.item.type === ItemType.Movie ? 'movie' : 'serie';
+
+            vm.root.$router.push({ name: route, params: { id: String(props.item.id) }});
+        };
+
+        return {
+            goTo,
+            ...item_features,
+        };
     }
-}
+});
 </script>

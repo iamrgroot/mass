@@ -5,7 +5,7 @@
         :left="left"
         :top="top"
     >
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
             <v-img
                 contain
                 :src="src"
@@ -25,16 +25,38 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
 
-@Component
-export default class ImagePreview extends Vue {
-    @Prop({required: true}) private src!: string;
-    @Prop({default: 50}) private height!: string | number;
-    @Prop({default: 50}) private width!: string | number;
-    @Prop({default: false}) private bottom!: boolean;
-    @Prop({default: false}) private right!: boolean;
-    @Prop({default: false}) private left!: boolean;
-    @Prop({default: false}) private top!: boolean;
-}
+export default defineComponent({
+    props: {
+        src: {
+            required: true,
+            type: String,
+        },
+        height: {
+            default: 50,
+            type: [String, Number],
+        },
+        width: {
+            default: 50,
+            type: [String, Number],
+        },
+        bottom: {
+            default: false,
+            type: Boolean,
+        },
+        right: {
+            default: false,
+            type: Boolean,
+        },
+        left: {
+            default: false,
+            type: Boolean,
+        },
+        top: {
+            default: false,
+            type: Boolean,
+        },
+    },
+});
 </script>

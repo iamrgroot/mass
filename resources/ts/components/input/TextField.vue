@@ -9,51 +9,70 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { Input, GeneralObject } from '@/types/Inputs';
+import { computed, defineComponent, watch } from '@vue/composition-api';
 
-@Component
-export default class TextField extends Vue {
-    @Prop({ required: true }) protected value!: Input;
-    @Prop({ default: '' }) protected label!: string;
-    @Prop({ default: () => { /** Empty function */} }) protected bind_parameters!: GeneralObject;
-    @Prop({ default: () => [] }) protected errors!: string[] | null | undefined;
+export default defineComponent({
+    props: {
+        value: {
+            required: true,
+            validator: (): boolean => true,
+        },
+        label: {
+            type: String,
+            default: '',
+        },
+        bind_parameters: {
+            type: Object,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            default: (): Record<string, any> => ({}),
+        },
+        errors: {
+            type: Array,
+            default: (): string[] => [],
+        },
+        success: {
+            type: Boolean,
+            default: false,
+        },
+        error: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    setup(props, vm) {
+        const append_icon = computed((): string => {
+            if (props.success) {
+                return '$mdiCheck';
+            }
 
-    @Prop({default: false}) protected success!: boolean;
-    @Prop({default: false}) protected error!: boolean;
+            if (props.error) {
+                return '$mdiClose';
+            }
 
-    @Watch('success')
-    onSuccessChange(): void {
-        if (! this.success) {
-            return;
-        }
+            return '';
+        });
 
-        setTimeout(() => {
-            this.$emit('update:success', false);
-        }, 3000);
-    }
+        watch(() => props.success, () => {
+            if (! props.success) {
+                return;
+            }
 
-    @Watch('error')
-    onErrorChange(): void {
-        if (! this.error) {
-            return;
-        }
+            setTimeout(() => {
+                vm.emit('update:success', false);
+            }, 3000);
+        });
 
-        setTimeout(() => {
-            this.$emit('update:error', false);
-        }, 3000);
-    }
+        watch(() => props.error, () => {
+            if (! props.error) {
+                return;
+            }
 
-    get append_icon(): string {
-        if (this.success) {
-            return '$mdiCheck';
-        }
+            setTimeout(() => {
+                vm.emit('update:error', false);
+            }, 3000);
+        });
 
-        if (this.error) {
-            return '$mdiClose';
-        }
-
-        return '';
-    }
-}
+        return { append_icon };
+    },
+});
 </script>

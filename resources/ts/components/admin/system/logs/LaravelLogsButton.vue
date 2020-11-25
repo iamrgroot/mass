@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="dialog">
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
             <v-btn
                 text
                 v-bind="attrs"
@@ -43,32 +43,42 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { defineComponent, reactive, toRefs, watch } from '@vue/composition-api';
+
 import { getLaravelLog, getLaravelLogs } from '@/api/system';
 
-@Component
-export default class LaravelLogsButton extends Vue {
-    private logs = [] as string[];
-    private dialog = false;
-    private loading_options = false;
-    private loading = false;
-    private selected = '';
-    private log = '';
+const useLogs = () => {
+    const log_store = reactive({
+        logs: [] as string[],
+        dialog: false,
+        loading_options: false,
+        loading: false,
+        selected: '',
+        log: '',
+    });
 
-    @Watch('dialog')
-    async onChanged(): Promise<void> {
-        if (this.dialog && ! this.loading) {
-            this.loading_options = true;
-            this.logs = await getLaravelLogs();
-            this.loading_options = false;
-        }
-    }
+    watch(() => log_store.dialog, async () => {
+        log_store.loading_options = true;
+        log_store.logs = await getLaravelLogs();
+        log_store.loading_options = false;
+    });
 
-    @Watch('selected')
-    async onSelectedChange(): Promise<void> {
-        this.loading = true;
-        this.log = await getLaravelLog(this.logs.indexOf(this.selected));
-        this.loading = false;
+    watch(() => log_store.selected, async () => {
+        log_store.loading = true;
+        log_store.log = await getLaravelLog(log_store.logs.indexOf(log_store.selected));
+        log_store.loading = false;
+    });
+
+    return {
+        ...toRefs(log_store),
+    };
+};
+
+export default defineComponent({
+    setup() {
+        return {
+            ...useLogs(),
+        };
     }
-}
+});
 </script>

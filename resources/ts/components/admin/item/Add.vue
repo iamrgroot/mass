@@ -10,8 +10,8 @@
                 <v-col cols="6">
                     <v-autocomplete
                         v-model="selected"
-                        :items="results"
-                        :loading="loading"
+                        :items="search_results"
+                        :loading="search_loading"
                         :search-input.sync="search"
                         item-text="text"
                         item-value="tmdb_id"
@@ -20,14 +20,14 @@
                         prepend-icon="$mdiDatabaseSearch"
                         return-object
                         cache-items
-                        :error-messages="add_errors"
+                        :error-messages="item_add_errors"
                         class="pr-2"
                     />
                 </v-col>
                 <v-col cols="2">
                     <v-select
                         v-model="selected_profile"
-                        :items="profiles"
+                        :items="relevant_profiles"
                         item-text="name"
                         item-value="id"
                         label="Profile"
@@ -35,7 +35,7 @@
                     />
                 </v-col>
                 <v-col
-                    v-if="! is_movie && selected !== null"
+                    v-if="! route_type_is_movie && selected !== null"
                     cols="2"
                 >
                     <v-select
@@ -66,71 +66,74 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { defineComponent, reactive, toRefs, watch } from '@vue/composition-api';
+
 import { searchItem } from '@/api/items';
-import { profile_store } from '@/store/profiles';
-import { Item, Profile, SearchResult } from '@/types/Item';
-import { ItemAddArgument } from '@/types/Args';
-import { ItemType } from '@/enums/ItemType';
 
-const Items = namespace('Items');
+import { useItems } from '@/store/items';
+import { useProfiles } from '@/store/profiles';
 
-@Component
-export default class Add extends Vue {
-    private results: SearchResult[] = [];
-    private search = '';
-    private selected: SearchResult | null = null;
-    private selected_profile: number | null = null;
-    private selected_seasons: number[] = [];
-    private loading = false;
+import { SearchResult } from '@/types/Item';
 
-    get is_movie(): boolean { return this.type === ItemType.Movie; }
+const useSearch = () => {
+    const search_data = reactive({
+        search_results: [] as SearchResult[],
+        search: '',
+        selected: null as SearchResult | null,
+        selected_profile: null as number | null,
+        selected_seasons: [] as number[],
+        search_loading: false,
+    });
 
-    get profiles(): Profile[] {
-        return this.is_movie ? profile_store.movie_profiles : profile_store.serie_profiles;
-    }
+    const { relevant_profiles } = useProfiles();
+    const { route_type, route_type_is_movie, item_add_errors, addItem } = useItems();
 
-    @Items.State private type!: ItemType;
-    @Items.State private add_errors!: string[];
-    @Items.State private adding!: boolean;
-    @Items.Action private addItem!: (args: ItemAddArgument) => Promise<Item>
+    watch(relevant_profiles, () => {
+        if (relevant_profiles.value.length > 0) search_data.selected_profile = relevant_profiles.value[0].id;
+    });
 
-    @Watch('selected.seasons')
-    onSeasonsChanged(): void {
-        if (this.selected?.seasons) {
-            this.selected_seasons = this.selected.seasons.map(item => item.season_number);
+    watch(() => search_data.selected?.seasons, () => {
+        if (search_data.selected?.seasons) {
+            search_data.selected_seasons = search_data.selected.seasons.map(item => item.season_number);
         }
-    }
-    @Watch('search')
-    onSearchChange(): void {
-        this.doSearch();
-    }
+    });
 
-    async created(): Promise<void> {
-        if (this.profiles.length > 0) this.selected_profile = this.profiles[0].id;
-    }
+    watch(() => search_data.search, async () => {
+        if (! search_data.search) return;
 
-    async doSearch(): Promise<void> {
-        if (! this.search) return;
-
-        this.loading = true;
+        search_data.search_loading = true;
         try {
-            this.results = await searchItem(this.search, this.type);
+            search_data.search_results = await searchItem(search_data.search, route_type.value);
         } catch (error) {
             // Nothing
         }
-        this.loading = false;
-    }
-    add(): void {
-        if (this.selected === null || this.selected_profile === null) return;
+        search_data.search_loading = false;
+    });
 
-        this.addItem({
-            item: this.selected,
-            profile: this.selected_profile,
-            seasons: this.selected_seasons,
-            type: this.type
-        });
-    }
-}
+    const add = (): void => {
+        if (! search_data.selected || ! search_data.selected_profile) return;
+
+        addItem(
+            search_data.selected,
+            search_data.selected_profile,
+            search_data.selected_seasons
+        );
+    };
+
+    return {
+        ...toRefs(search_data),
+        add,
+        item_add_errors,
+        route_type_is_movie,
+        relevant_profiles,
+    };
+};
+
+export default defineComponent({
+    setup() {
+        return {
+            ...useSearch(),
+        };
+    },
+});
 </script>

@@ -3,16 +3,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
 
 import UserRequestsTable from '@/components/user/request/UserRequestsTable.vue';
 
-@Component({
+export default defineComponent({
     components: {
         UserRequestsTable
     }
-})
-export default class MainPage extends Vue {
-
-}
+});
 </script>

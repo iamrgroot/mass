@@ -35,9 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { fetchLogs, system_store } from '@/store/system';
-import { Setting } from '@/types/System';
+import { defineComponent, ref } from '@vue/composition-api';
 
 import SettingsBottomSheet from '@/components/admin/system/SettingsBottomSheet.vue';
 import CpuLogCard from '@/components/admin/system/logs/CpuLogCard.vue';
@@ -45,33 +43,30 @@ import DiskLogCard from '@/components/admin/system/logs/DiskLogCard.vue';
 import MemoryLogCard from '@/components/admin/system/logs/MemoryLogCard.vue';
 import LaravelLogsButton from '@/components/admin/system/logs/LaravelLogsButton.vue';
 
-@Component({
+import { useSystem } from '@/store/system';
+
+export default defineComponent({
     components: {
         SettingsBottomSheet,
         CpuLogCard,
         DiskLogCard,
         MemoryLogCard,
         LaravelLogsButton,
-    }
-})
-export default class SystemPage extends Vue {
-    private loading = false;
+    },
+    setup() {
+        const { settings, settings_dialog, fetchLogs } = useSystem();
 
-    get settings(): Setting[] {
-        return system_store.settings;
-    }
-    set settings(settings: Setting[]) {
-        system_store.settings = settings;
-    }
-    get settings_dialog(): boolean {
-        return system_store.settings_dialog;
-    }
-    set settings_dialog(settings_dialog: boolean) {
-        system_store.settings_dialog = settings_dialog;
-    }
+        const loading = ref(false);
 
-    created(): void {
-        fetchLogs();
-    }
-}
+        return {
+            loading,
+            settings,
+            settings_dialog,
+            fetchLogs,
+        };
+    },
+    created() {
+        this.fetchLogs();
+    },
+});
 </script>

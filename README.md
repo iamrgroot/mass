@@ -41,3 +41,4 @@ docker-compose restart
 ### Credits
 
 Placeholder image in the app was created and provided by [petegrev](https://www.petegrev.co.uk)
+

@@ -4,13 +4,13 @@
             text
             small
             class="mx-1"
-            @click="dialog = true"
+            @click="seasons_dialog = true"
         >
             Seasons
         </v-btn>
 
         <v-dialog
-            v-model="dialog"
+            v-model="seasons_dialog"
             max-width="600"
         >
             <v-card>
@@ -37,7 +37,7 @@
                                         :input-value="season.monitored"
                                         class="ma-0 pa-0"
                                         hide-details
-                                        @change="toggleMonitor(season.season_number, ! season.monitored)"
+                                        @change="toggleSeason(item.id, season.season_number, ! season.monitored)"
                                         @click.native.stop
                                     />
                                     <span>
@@ -61,16 +61,13 @@
                                                 >
                                                     <span>Episode {{ episode.episode_number }}</span>
                                                     <v-tooltip bottom>
-                                                        <template v-slot:activator="{ on, attrs }">
+                                                        <template #activator="{ on, attrs }">
                                                             <v-btn
                                                                 icon
                                                                 class="ma-1"
                                                                 v-bind="attrs"
                                                                 v-on="on"
-                                                                @click="manualSearch({
-                                                                    item_id: episode.id,
-                                                                    type: item.type
-                                                                })"
+                                                                @click="searchIndexers(episode.id, item.type)"
                                                             >
                                                                 <v-icon>$mdiSearchWeb</v-icon>
                                                             </v-btn>
@@ -92,30 +89,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { Item, IndexResult } from '@/types/Item';
-import { SerieUpdateArgument, ItemTypeArgument } from '@/types/Args';
+import { defineComponent, ref } from '@vue/composition-api';
+import { useItems } from '@/store/items';
+import { useIndexers } from '@/store/indexers';
 
-const Items = namespace('Items');
-const Indexers = namespace('Indexers');
+export default defineComponent({
+    setup() {
+        const seasons_dialog = ref(false);
+        const { item, toggleSeason } = useItems();
+        const { searchIndexers } = useIndexers();
 
-@Component
-export default class SeasonsButtom extends Vue {
-    private dialog = false;
-
-    @Items.State item!: Item;
-
-    @Items.Action private toggleSeason!: (args: SerieUpdateArgument) => Promise<Item>;
-
-    @Indexers.Action private manualSearch!: (args: ItemTypeArgument) => Promise<IndexResult[]>;
-
-    toggleMonitor(season: number, motitor: boolean): Promise<Item> {
-        return this.toggleSeason({
-            item_id: this.item.id,
-            season: season,
-            monitor: motitor
-        });
+        return {
+            seasons_dialog,
+            item,
+            toggleSeason,
+            searchIndexers,
+        };
     }
-}
+});
 </script>

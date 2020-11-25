@@ -1,9 +1,9 @@
 <template>
     <v-dialog
-        v-model="dialog"
+        v-model="profile_dialog"
         width="800px"
     >
-        <v-card :loading="loading">
+        <v-card :loading="profiles_loading">
             <v-card-title>
                 <v-row justify="space-between">
                     <span class="headline">
@@ -15,17 +15,17 @@
                 <v-select
                     v-if="item"
                     :value="item.profile_id"
-                    :items="profiles"
+                    :items="relevant_profiles"
                     item-value="id"
                     item-text="name"
-                    @input="value => updateProfile({item_type: item.type, item_id: item.id, profile_id: value})"
+                    @input="value => updateItemProfile(item.id, item.type, value)"
                 />
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
                 <v-btn
                     text
-                    @click="dialog = false"
+                    @click="profile_dialog = false"
                 >
                     Close
                 </v-btn>
@@ -35,38 +35,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { Item, Profile } from '@/types/Item';
-import { ChangeProfileArgument } from '@/types/Args';
-import { profile_store } from '@/store/profiles';
-import { ItemType } from '@/enums/ItemType';
+import { defineComponent } from '@vue/composition-api';
+import { useProfiles } from '@/store/profiles';
+import { useItems } from '@/store/items';
 
-const Items = namespace('Items');
+export default defineComponent({
+    setup() {
+        const { profiles_loading, profile_dialog, relevant_profiles } = useProfiles();
+        const { item, updateItemProfile } = useItems();
 
-@Component
-export default class ProfileDialog extends Vue {
-    get profiles(): Profile[] {
-        if (! this.item) return [];
-
-        return this.item.type === ItemType.Movie ?
-            profile_store.movie_profiles :
-            profile_store.serie_profiles;
+        return {
+            profiles_loading,
+            profile_dialog,
+            relevant_profiles,
+            item,
+            updateItemProfile,
+        };
     }
-
-    get dialog(): boolean {
-        return profile_store.dialog;
-    }
-    set dialog(dialog: boolean) {
-        profile_store.dialog = dialog;
-    }
-
-    get loading(): boolean {
-        return profile_store.loading;
-    }
-
-    @Items.State private item!: Item | null;
-
-    @Items.Action private updateProfile!: (args: ChangeProfileArgument) => void;
-}
+});
 </script>

@@ -4,21 +4,27 @@
         small
         :to="`/${route}`"
     >
-        {{ route | capitalize }}
+        {{ capitalize(route) }}
     </v-btn>
 </template>
 
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
+
 import { capitalize } from '@/filters/filters';
 
-@Component({
-    filters: {
-        capitalize
+export default defineComponent({
+    props: {
+        route: {
+            type: String,
+            required: true,
+        },
+    },
+    setup() {
+        return {
+            capitalize,
+        };
     }
-})
-export default class ToolbarButton extends Vue {
-    @Prop({required: true}) private route!: string;
-}
+});
 </script>

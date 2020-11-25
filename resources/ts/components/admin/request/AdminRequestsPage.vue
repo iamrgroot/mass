@@ -6,7 +6,7 @@
             <v-btn
                 icon
                 class="ma-2"
-                @click="fetch"
+                @click="fetchRequests"
             >
                 <v-icon>$mdiRefresh</v-icon>
             </v-btn>
@@ -17,11 +17,11 @@
                 <v-data-table
                     :headers="headers"
                     :items="requests"
-                    :loading="loading"
+                    :loading="requests_loading"
                 >
                     <template #[`item.image_url`]="{ item }">
                         <image-preview
-                            :src="getImageURL(item)"
+                            :src="getImageURL(item.type, item.image_url)"
                             right
                         />
                     </template>
@@ -46,14 +46,14 @@
                             <v-icon
                                 color="green"
                                 class="ml-3"
-                                @click="update(item, RequestStatus.Approved)"
+                                @click="updateRequest(item, RequestStatus.Approved)"
                             >
                                 {{ RequestStatusIcon.Approved }}
                             </v-icon>
                             <v-icon
                                 color="red"
                                 class="ml-3"
-                                @click="update(item, RequestStatus.Denied)"
+                                @click="updateRequest(item, RequestStatus.Denied)"
                             >
                                 {{ RequestStatusIcon.Denied }}
                             </v-icon>
@@ -64,21 +64,21 @@
                                 text="See system log for error. Click to try again."
                                 :color="item.status.color"
                                 classes="ml-3"
-                                @click="update(item, RequestStatus.Approved)"
+                                @click="updateRequest(item, RequestStatus.Approved)"
                             />
                         </template>
                         <template v-else-if="item.status.value === RequestStatus.Download">
                             <v-icon
                                 color="success"
                                 class="ml-3"
-                                @click="update(item, RequestStatus.Done)"
+                                @click="updateRequest(item, RequestStatus.Done)"
                             >
                                 {{ RequestStatusIcon.Done }}
                             </v-icon>
                             <v-icon
                                 color="error"
                                 class="ml-3"
-                                @click="update(item, RequestStatus.Error)"
+                                @click="updateRequest(item, RequestStatus.Error)"
                             >
                                 {{ RequestStatusIcon.Error }}
                             </v-icon>
@@ -89,13 +89,13 @@
                                 text="Reset"
                                 color="primary"
                                 classes="ml-3"
-                                @click="update(item, RequestStatus.Request)"
+                                @click="updateRequest(item, RequestStatus.Request)"
                             />
                         </template>
                         <v-icon
                             color="error"
                             class="ml-3"
-                            @click="remove(item)"
+                            @click="removeRequest(item)"
                         >
                             $mdiDelete
                         </v-icon>
@@ -109,93 +109,68 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { request_store } from '@/store/request';
-import { getRequests, deleteRequest, postRequestStatus } from '@/api/request';
-import { Request } from '@/types/Requests';
+import { defineComponent, reactive, toRefs } from '@vue/composition-api';
 import { DataTableHeader } from 'vuetify';
+
 import RequestAddDialog from '@/components/user/request/RequestAddDialog.vue';
 import IconTooltip from '@/components/defaults/IconTooltip.vue';
 import DateChip from '@/components/defaults/DateChip.vue';
 import ImagePreview from '@/components/defaults/ImagePreview.vue';
+
 import { ItemType } from '@/enums/ItemType';
+
+import { useRequests } from '@/store/requests';
+import { useItems } from '@/store/items';
+
 import { getImageURL } from '@/helpers/images';
 import { RequestStatus, RequestStatusIcon, RequestStatusName } from '@/enums/RequestStatus';
 
-@Component({
+// TODO correct type?
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
+export const useRequestTable = () => {
+    const table_data = reactive({
+        add_dialog: false,
+        headers: [
+            { text: '', value: 'image_url' },
+            { text: 'Type', value: 'type' },
+            { text: 'Name', value: 'text' },
+            { text: 'Created at', value: 'created_at' },
+            { text: 'Updated at', value: 'updated_at' },
+            { text: 'Status', value: 'status' },
+            { text: 'Actions', value: 'actions', width: '200px', sortable: false, align: 'end' },
+        ] as DataTableHeader[],
+    });
+
+    const { item_type } = useItems();
+
+    const itemString = (type: ItemType): string => type === ItemType.Movie ? 'Movie' : 'Serie';
+
+    return {
+        ...toRefs(table_data),
+        item_type,
+        itemString,
+        getImageURL,
+    };
+};
+
+export default defineComponent({
     components: {
         RequestAddDialog,
         DateChip,
         IconTooltip,
         ImagePreview,
     },
-})
-export default class UserRequestsTable extends Vue {
-    private loading = false;
-    private add_dialog = false;
-    private request_processing = -1;
-    private headers: DataTableHeader[] = [
-        { text: '', value: 'image_url' },
-        { text: 'Type', value: 'type' },
-        { text: 'Name', value: 'text' },
-        { text: 'Created at', value: 'created_at' },
-        { text: 'Updated at', value: 'updated_at' },
-        { text: 'Status', value: 'status' },
-        { text: 'Actions', value: 'actions', width: '200px', sortable: false, align: 'end' },
-    ];
-    private RequestStatus = RequestStatus;
-    private RequestStatusIcon = RequestStatusIcon;
-    private RequestStatusName = RequestStatusName;
-
-    get requests(): Request[] {
-        return request_store.requests;
-    }
-    set requests(requests: Request[]) {
-        request_store.requests = requests;
-    }
-
-    created(): void {
-        this.fetch();
-    }
-
-    async fetch(): Promise<void> {
-        this.loading = true;
-        this.requests = await getRequests();
-        this.loading = false;
-    }
-    async remove(request: Request): Promise<void> {
-        this.request_processing = request.id;
-
-        await deleteRequest(request.id);
-
-        this.requests.splice(
-            this.requests.findIndex(old_item => {
-                return request.id === old_item.id;
-            }),
-            1
-        );
-
-        this.request_processing = -1;
-    }
-    async update(request: Request, status: RequestStatus): Promise<void> {
-        this.request_processing = request.id;
-
-        const updated_request = await postRequestStatus(request.id, status);
-
-        this.requests.splice(
-            this.requests.findIndex(old_item => {
-                return request.id === old_item.id;
-            }),
-            1,
-            updated_request
-        );
-    }
-
-    itemString(type: ItemType): string {
-        return type === ItemType.Movie ? 'Movie' : 'Serie';
-    }
-    getImageURL(item: Request): string {
-        return getImageURL(item.type, item.image_url);
-    }
-}
+    setup() {
+        return {
+            ...useRequests(),
+            ...useRequestTable(),
+            RequestStatus,
+            RequestStatusIcon,
+            RequestStatusName
+        };
+    },
+    created() {
+        this.fetchRequests();
+    },
+});
 </script>

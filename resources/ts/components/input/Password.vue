@@ -10,11 +10,16 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
+
 import TextField from '@/components/input/TextField.vue';
 
-@Component
-export default class Password extends TextField {
-    protected show = false;
-}
+export default defineComponent({
+    extends: TextField,
+    data() {
+        return {
+            show: false,
+        };
+    },
+});
 </script>

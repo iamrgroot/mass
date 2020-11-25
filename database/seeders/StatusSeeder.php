@@ -1,9 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Request\RequestStatus;
 use Illuminate\Database\Seeder;
 
-class RequestStatusSeeder extends Seeder
+class StatusSeeder extends Seeder
 {
     public function run(): void
     {

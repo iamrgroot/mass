@@ -23,7 +23,7 @@
                     small
                     :to="`/maintenance/${route}`"
                 >
-                    {{ route | capitalize }}
+                    {{ capitalize(route) }}
                 </v-btn>
                 <v-btn
                     icon
@@ -37,23 +37,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from '@vue/composition-api';
+
 import { capitalize } from '@/filters/filters';
 
-@Component({
-    filters: {
-        capitalize
-    }
-})
-export default class Toolbar extends Vue {
-    get routes(): string[] {
-        return Object.keys(window.injected);
-    }
-    logout(): void {
-        window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
-    }
-    home(): void {
-        window.location.replace(window.location.protocol + '//' + window.location.host);
-    }
-}
+export default defineComponent({
+    setup() {
+        const routes = Object.keys(window.injected);
+
+        const logout = (): void => {
+            window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');
+        };
+        const home = (): void => {
+            window.location.replace(window.location.protocol + '//' + window.location.host);
+        };
+
+        return {
+            routes,
+            logout,
+            home,
+            capitalize,
+        };
+    },
+});
 </script>

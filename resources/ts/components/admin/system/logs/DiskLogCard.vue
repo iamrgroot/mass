@@ -1,7 +1,7 @@
 <template>
     <v-card outlined>
         <v-simple-table height="300">
-            <template v-slot:default>
+            <template #default>
                 <thead>
                     <tr>
                         <th class="text-left">
@@ -24,8 +24,8 @@
                         :key="log.id"
                     >
                         <td>{{ log.path }}</td>
-                        <td>{{ log.used_space | byte }}</td>
-                        <td>{{ log.total_space | byte }}</td>
+                        <td>{{ byte(log.used_space) }}</td>
+                        <td>{{ byte(log.total_space) }}</td>
                         <td>{{ log.created_at }}</td>
                     </tr>
                 </tbody>
@@ -35,19 +35,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { system_store } from '@/store/system';
-import { DiskLog } from '@/types/System';
+import { defineComponent } from '@vue/composition-api';
+
+import { useSystem } from '@/store/system';
 import { byte } from '@/filters/filters';
 
-@Component({
-    filters: {
-        byte,
+export default defineComponent({
+    setup() {
+        const { disk_logs } = useSystem();
+
+        return {
+            disk_logs,
+            byte
+        };
     }
-})
-export default class DiskLogCard extends Vue {
-    get disk_logs(): DiskLog[] {
-        return system_store.disk_logs;
-    }
-}
+});
 </script>
