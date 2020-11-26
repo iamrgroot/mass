@@ -24,6 +24,6 @@ defaultEntryPoints = ["https","http"]
   watch = true
 
 [certificatesResolvers.basic.acme]
-  storage = "acme/certs.json"
+  storage = "/acme/certs.json"
   [certificatesResolvers.basic.acme.httpChallenge]
     entryPoint = "http"
