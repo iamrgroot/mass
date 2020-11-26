@@ -229,7 +229,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./docker-compose/traefik/traefik.toml:/traefik.toml
-      - ./docker-compose/traefik/traefik:/acme 
+      - ./docker-compose/traefik/traefik:/acme
     restart: unless-stopped
 
   plex:
