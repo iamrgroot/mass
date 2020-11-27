@@ -1,7 +1,5 @@
 <template>
-    <v-card
-        class="ma-3"
-    >
+    <v-card>
         <v-card-title>
             <span>Torrents</span>
             <v-spacer />
@@ -30,7 +28,7 @@
                     v-else
                     :headers="headers"
                     :items="torrents"
-                    :items-per-page="15"
+                    :items-per-page="-1"
                     :sort-by="['error_string', 'status', 'rate_download']"
                     :sort-desc="[true, false, true]"
                 >

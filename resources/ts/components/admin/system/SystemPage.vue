@@ -1,37 +1,34 @@
 <template>
-    <div>
-        <v-card
-            :loading="loading"
-            class="ma-3"
-        >
-            <v-card-title>
-                <span>System</span>
-                <v-spacer />
-                <laravel-logs-button />
-                <v-icon
-                    @click="settings_dialog = true"
-                >
-                    $mdiCog
-                </v-icon>
-            </v-card-title>
-            <v-divider class="mx-3" />
-            <v-card-text>
-                <v-row>
-                    <v-col cols="6">
-                        <cpu-log-card />
-                    </v-col>
-                    <v-col cols="6">
-                        <disk-log-card />
-                    </v-col>
-                    <v-col cols="6">
-                        <memory-log-card />
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </v-card>
+    <v-card
+        :loading="loading"
+    >
+        <v-card-title>
+            <span>System</span>
+            <v-spacer />
+            <laravel-logs-button />
+            <v-icon
+                @click="settings_dialog = true"
+            >
+                $mdiCog
+            </v-icon>
+        </v-card-title>
+        <v-divider class="mx-3" />
+        <v-card-text>
+            <v-row>
+                <v-col cols="6">
+                    <cpu-log-card />
+                </v-col>
+                <v-col cols="6">
+                    <disk-log-card />
+                </v-col>
+                <v-col cols="6">
+                    <memory-log-card />
+                </v-col>
+            </v-row>
+        </v-card-text>
 
         <settings-bottom-sheet />
-    </div>
+    </v-card>
 </template>
 
 <script lang="ts">

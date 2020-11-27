@@ -8,6 +8,7 @@ use App\Library\Media\Requests\Radarr\AddManualRequest;
 use App\Library\Media\Requests\Radarr\AddMovieRequest;
 use App\Library\Media\Requests\Radarr\DeleteMovieRequest;
 use App\Library\Media\Requests\Radarr\ManualSearchRequest;
+use App\Library\Media\Requests\Radarr\MovieBannerImageRequest;
 use App\Library\Media\Requests\Radarr\MovieImageRequest;
 use App\Library\Media\Requests\Radarr\MovieRequest;
 use App\Library\Media\Requests\Radarr\MoviesRequest;
@@ -94,6 +95,13 @@ class MovieController extends Controller
     public function image(int $id, Client $client): Response
     {
         $response = $client->doRequest(new MovieImageRequest($id))->getData();
+
+        return $this->resizeResponse($response, 400);
+    }
+
+    public function banner(int $id, Client $client): Response
+    {
+        $response = $client->doRequest(new MovieBannerImageRequest($id))->getData();
 
         return $this->resizeResponse($response, 400);
     }

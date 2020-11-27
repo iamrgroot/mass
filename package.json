@@ -8,7 +8,8 @@
         "dev-silent": "vue-cli-service build --mode development --silent",
         "watch": "vue-cli-service build --mode development --watch",
         "lint": "vue-cli-service lint --mode production -c ./.eslintrc.js --ext .js,.ts,.vue ./resources/ts ./.eslintrc.js ./babel.config.js ./vue.config.js",
-        "lint-dry": "vue-cli-service lint --no-fix --mode production -c ./.eslintrc.js --ext .js,.ts,.vue ./resources/ts ./.eslintrc.js ./babel.config.js ./vue.config.js"
+        "lint-dry": "vue-cli-service lint --no-fix --mode production -c ./.eslintrc.js --ext .js,.ts,.vue ./resources/ts ./.eslintrc.js ./babel.config.js ./vue.config.js",
+        "hot": "vue-cli-service serve"
     },
     "dependencies": {
         "@types/lodash": "^4.14.157",

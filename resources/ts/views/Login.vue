@@ -14,7 +14,10 @@
                         action="/login"
                         method="POST"
                     >
-                        <v-card min-width="420">
+                        <v-card
+                            width="420"
+                            max-width="90vw"
+                        >
                             <v-card-text>
                                 <v-row>
                                     <input

@@ -1,4 +1,3 @@
-import { ItemType } from '@/enums/ItemType';
 import { Item } from '@/types/Item';
 
 // TODO correct type?
@@ -16,12 +15,6 @@ export const useItemFeatures = () => {
         return 'error';
     };
 
-    const imageLink = (item: Item): string => {
-        return item.type === ItemType.Movie ?
-            `/async/movies/${item.id}/image?${Date.now()}` :
-            `/async/series/${item.id}/image?${Date.now()}`;
-    };
-
     const imdbLink = (item: Item): string => {
         return `https://www.imdb.com/title/${item.imdb_id}`;
     };
@@ -29,7 +22,6 @@ export const useItemFeatures = () => {
     return {
         static_image_location,
         ratingColor,
-        imageLink,
         imdbLink,
     };
 };

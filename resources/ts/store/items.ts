@@ -10,10 +10,13 @@ import { useNotifications } from './notifications';
 const item_store = reactive({
     route_type: ItemType.Movie,
     item: null as Item| null,
-    items: [] as Item[],
-    items_loading: false,
+    movies: [] as Item[],
+    series: [] as Item[],
+    movies_loading: false,
+    series_loading: false,
     item_loading: true,
     item_adding: false,
+    seasons_dialog: false,
     item_add_errors: [] as string[],
     route_item_type: ItemType.Movie,
 });
@@ -25,45 +28,33 @@ const { notify } = useNotifications();
 export const useItems = () => {
     const route_type_is_movie = computed((): boolean => item_store.route_type === ItemType.Movie);
 
-    const item_type = computed((): ItemType => item_store.item?.type ?? ItemType.Movie);
-    const item_is_movie = computed((): boolean => item_type.value === ItemType.Movie);
+    const item_is_movie = computed((): boolean => item_store.item?.type === ItemType.Movie);
 
-    const fetchItems = (): Promise<Item[]> => {
+    const fetchSeries = (): Promise<Item[]> => {
         return new Promise((resolve, reject) => {
-            const url = route_type_is_movie.value ?
-                '/async/movies' :
-                '/async/series';
+            item_store.series_loading = true;
 
-            item_store.items_loading = true;
-
-            axios.get(url).then(({ data }) => {
-                item_store.items = data;
+            axios.get('/async/series').then(({ data }) => {
+                item_store.series = data;
                 resolve(data);
             }).catch(error => {
                 reject(error);
             }).finally(() => {
-                item_store.items_loading = false;
+                item_store.series_loading = false;
             });
         });
     };
-
-    const fetchItem = (item_id: number, type: ItemType): Promise<Item> => {
+    const fetchMovies = (): Promise<Item[]> => {
         return new Promise((resolve, reject) => {
-            item_store.item_loading = true;
-            item_store.item = null;
+            item_store.movies_loading = true;
 
-            const url = type === ItemType.Movie ?
-                `/async/movies/${item_id}` :
-                `/async/series/${item_id}`;
-
-            axios.get(url).then(({ data }) => {
-                item_store.item = data;
-
+            axios.get('/async/movies').then(({ data }) => {
+                item_store.movies = data;
                 resolve(data);
             }).catch(error => {
                 reject(error);
             }).finally(() => {
-                item_store.item_loading = false;
+                item_store.movies_loading = false;
             });
         });
     };
@@ -77,7 +68,12 @@ export const useItems = () => {
             axios.delete(
                 url
             ).then(() => {
-                item_store.items = item_store.items.filter(item => item.id !== item_id);
+                if (type === ItemType.Movie) {
+                    item_store.movies = item_store.movies.filter(item => item.id !== item_id);
+                } else {
+                    item_store.series = item_store.series.filter(item => item.id !== item_id);
+                }
+
                 resolve(true);
             }).catch((error) => {
                 reject(error);
@@ -86,12 +82,15 @@ export const useItems = () => {
     };
 
     const addItem = (
+        type: ItemType,
         item: SearchResult,
         profile: number,
         seasons: number[]|null
     ): Promise<Item> => {
         return new Promise((resolve, reject) => {
-            const url = route_type_is_movie.value ?
+            const is_movie = type === ItemType.Movie;
+
+            const url = is_movie ?
                 '/async/movies' :
                 '/async/series';
 
@@ -102,13 +101,15 @@ export const useItems = () => {
                 {item, profile, seasons}
             ).then(({ data }) => {
                 item_store.item_add_errors = [];
-                item_store.items.push(data);
 
+                is_movie ?
+                    item_store.movies.push(data) :
+                    item_store.series.push(data);
 
                 notify({
                     color: 'success',
                     title: 'Item added!',
-                    content: 'Refresh movies in a second to load new data.',
+                    content: 'Refresh in a second to load new data.',
                 });
 
                 resolve(data);
@@ -183,9 +184,8 @@ export const useItems = () => {
         ...toRefs(item_store),
         route_type_is_movie,
         item_is_movie,
-        item_type,
-        fetchItems,
-        fetchItem,
+        fetchMovies,
+        fetchSeries,
         deleteItem,
         addItem,
         toggleSeason,

@@ -27,6 +27,7 @@ export type Item = {
     id: number;
     rating: number;
     image_url: string;
+    banner_url: string;
     imdb_id: string;
     profile_id: number;
     features: Feature[];

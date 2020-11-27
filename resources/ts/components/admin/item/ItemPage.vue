@@ -1,140 +1,200 @@
 <template>
-    <v-card
-        :loading="item_loading"
-        class="ma-3"
-    >
-        <template v-if="! item_loading">
-            <v-card-title>
-                {{ item.title }}
+    <div style="min-height: 100vh; min-width: 100vw; background-color: black;">
+        <v-img
+            v-if="item"
+            eager
+            class="blurred-image blurred-image-top"
+            width="100%"
+            max-height="min(100vh, 100%)"
+            :src="item.image_url"
+            gradient="rgba(0,0,0,0.5), rgba(0,0,0,0.5) 60%, black"
+            @error="() => { /** Ignore image load error */}"
+        >
+            <v-row
+                class="mt-3"
+                align="center"
+            >
+                <v-btn
+                    icon
+                    color="white"
+                    class="ml-6"
+                    @click="$router.go(-1)"
+                >
+                    <v-icon>$mdiArrowLeft</v-icon>
+                </v-btn>
                 <v-spacer />
-                <v-tooltip bottom>
+                <template v-if="! $vuetify.breakpoint.mobile">
+                    <icon-tooltip
+                        v-if="! item_is_movie"
+                        text="Seasons"
+                        icon="$mdiTelevision"
+                        color="white"
+                        classes="mr-6"
+                        @click="seasons_dialog = true"
+                    />
+                    <icon-tooltip
+                        text="Change quality"
+                        icon="$mdiQualityHigh"
+                        color="white"
+                        classes="mr-6"
+                        @click="profile_dialog = true"
+                    />
+                    <icon-tooltip
+                        text="Search automagically"
+                        icon="$mdiMagnify"
+                        color="white"
+                        classes="mr-6"
+                        @click="searchIndexersAutomatically(item.id, item.type)"
+                    />
+                    <icon-tooltip
+                        v-if="item_is_movie"
+                        text="Search manually"
+                        icon="$mdiSearchWeb"
+                        color="white"
+                        classes="mr-6"
+                        @click="searchIndexers(item.id, item.type)"
+                    />
+                    <icon-tooltip
+                        text="Refresh disk and info"
+                        icon="$mdiRefresh"
+                        color="white"
+                        classes="mr-6"
+                        @click="refreshItem(item.id, item.type)"
+                    />
+                    <icon-tooltip
+                        text="Delete"
+                        icon="$mdiDelete"
+                        color="error"
+                        classes="mr-12"
+                        @click="remove"
+                    />
+                </template>
+                <v-menu
+                    v-else
+                    bottom
+                    close-on-click
+                >
                     <template #activator="{ on, attrs }">
                         <v-btn
+                            class="mr-6"
                             icon
-                            class="ma-1"
+                            dark
                             v-bind="attrs"
                             v-on="on"
-                            @click="profile_dialog = true"
                         >
-                            <v-icon>$mdiQualityHigh</v-icon>
+                            <v-icon>$mdiDotsVertical</v-icon>
                         </v-btn>
                     </template>
-                    <span>Change quality</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                        <v-btn
-                            icon
-                            class="ma-1"
-                            v-bind="attrs"
-                            v-on="on"
-                            @click="searchIndexersAutomatically(item.id, item.type)"
+
+                    <v-list>
+                        <v-list-item
+                            v-if="! item_is_movie"
+                            @click="seasons_dialog = true"
                         >
-                            <v-icon>$mdiMagnify</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>Search automagically</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                        <v-btn
+                            Seasons
+                        </v-list-item>
+                        <v-list-item @click="profile_dialog = true">
+                            Change quality
+                        </v-list-item>
+                        <v-list-item @click="searchIndexersAutomatically(item.id, item.type)">
+                            Search automagically
+                        </v-list-item>
+                        <v-list-item
                             v-if="item_is_movie"
-                            icon
-                            class="ma-1"
-                            v-bind="attrs"
-                            v-on="on"
                             @click="searchIndexers(item.id, item.type)"
                         >
-                            <v-icon>$mdiSearchWeb</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>Search manually</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                        <v-btn
-                            icon
-                            class="ma-1"
-                            v-bind="attrs"
-                            v-on="on"
-                            @click="refreshItem(item.id, item.type)"
-                        >
-                            <v-icon>$mdiRefresh</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>Refresh disk and info</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                        <v-btn
-                            icon
-                            class="ma-1"
-                            color="error"
-                            v-bind="attrs"
-                            v-on="on"
-                            @click="remove"
-                        >
-                            <v-icon>$mdiDelete</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>Delete</span>
-                </v-tooltip>
-            </v-card-title>
-            <v-divider class="mx-3" />
-            <v-card-text>
-                <v-row class="ml-1">
-                    <v-chip
-                        v-for="(chip, index) in item.features"
-                        :key="`chip_${index}`"
-                        class="ma-1"
-                        :color="chip.color"
-                        label
-                        small
-                    >
-                        {{ chip.text }}
-                    </v-chip>
-                    <v-spacer />
-                    <seasons-button v-if="! item_is_movie" />
-                    <v-btn
-                        text
-                        small
-                        target="_blank"
-                        :href="imdbLink(item)"
-                        class="mx-1"
-                    >
-                        IMDb
-                    </v-btn>
-                </v-row>
-                <v-row>
-                    <v-col cols="10">
-                        <v-row>
-                            <v-col>
-                                {{ item.overview }}
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col cols="2">
-                        <v-img
-                            :src="imageLink(item)"
-                            :lazy-src="static_image_location"
-                            eager
-                            contain
-                            @error="() => {}"
-                        />
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </template>
+                            Search manually
+                        </v-list-item>
+                        <v-list-item @click="refreshItem(item.id, item.type)">
+                            Refresh disk and info
+                        </v-list-item>
+                        <v-list-item @click="remove">
+                            <span class="red--text">Delete</span>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-row>
+            <v-row
+                justify="center"
+                no-gutters
+            >
+                <v-spacer />
+                <v-img
+                    :src="item.image_url"
+                    class="elevation-5"
+                    style="border-radius: 24px;"
+                    max-width="min(400px, 60vw)"
+                    eager
+                    contain
+                    @error="() => {}"
+                />
+                <v-spacer />
+            </v-row>
+            <v-row
+                justify="center"
+                class="mt-6"
+            >
+                <v-chip
+                    v-for="(chip, index) in item.features"
+                    :key="`chip_${index}`"
+                    class="ma-1"
+                    color="white"
+                    label
+                    outlined
+                    small
+                    style="background-color: rgba(60,60,60,0.8)"
+                >
+                    {{ chip.text }}
+                </v-chip>
+            </v-row>
+            <v-row
+                justify="center"
+                class="pa-3"
+            >
+                <v-btn
+                    text
+                    small
+                    class="white--text"
+                    @click.stop="openPage(imdbLink(item))"
+                >
+                    IMDb
+                </v-btn>
+            </v-row>
+            <v-row
+                justify="center"
+                class="pa-3"
+            >
+                <v-col
+                    cols="12"
+                    class="text-h3 white--text font-weight-bold text-center"
+                >
+                    {{ item.title }}
+                </v-col>
+            </v-row>
+            <v-row
+                justify="center"
+                class="white--text text-center ma-6"
+            >
+                <v-spacer />
+                <span style="max-width: 1000px;">{{ item.overview }}</span>
+                <v-spacer />
+            </v-row>
 
-        <search-dialog />
-        <profile-dialog />
-    </v-card>
+            <search-dialog />
+            <profile-dialog />
+            <seasons-dialog />
+        </v-img>
+    </div>
 </template>
 
 <style lang="scss" scoped>
     a {
         color: black !important;
     }
+</style>
+
+<style lang="scss">
+    @import '~@style/item';
 </style>
 
 <script lang="ts">
@@ -148,15 +208,15 @@ import { useProfiles } from '@/store/profiles';
 
 import SearchDialog from '@/components/admin/indexer/SearchDialog.vue';
 import ProfileDialog from '@/components/admin/item/ProfileDialog.vue';
-import SeasonsButton from '@/components/admin/item/SeasonsButton.vue' ;
+import SeasonsDialog from '@/components/admin/item/SeasonsDialog.vue' ;
+import IconTooltip from '@/components/defaults/IconTooltip.vue';
 
 const useItemManagement = (vm: SetupContext) => {
     const {
-        route_type,
         item,
         item_is_movie,
         item_loading,
-        fetchItem,
+        seasons_dialog,
         deleteItem,
         refreshItem,
     } = useItems();
@@ -169,16 +229,6 @@ const useItemManagement = (vm: SetupContext) => {
     const redirect = computed((): Location => {
         return { name: item_is_movie.value ? 'movies' : 'series'};
     });
-
-    const fetch = (): void => {
-        fetchItem(
-            Number(vm.root.$route.params.id),
-            route_type.value
-        ).catch(() => {
-
-            vm.root.$router.push(redirect.value);
-        });
-    };
 
     const remove = (): void => {
         const text = item_is_movie.value ? 'movie' : 'serie';
@@ -194,16 +244,23 @@ const useItemManagement = (vm: SetupContext) => {
                 });
         });
     };
+
+    const openPage = (url: string): void => {
+        window.open(url, '_blank');
+    };
+
+
     return {
         item,
         item_is_movie,
         item_loading,
-        fetch,
+        profile_dialog,
+        seasons_dialog,
         remove,
         refreshItem,
-        profile_dialog,
         searchIndexers,
         searchIndexersAutomatically,
+        openPage,
         ...useItemFeatures(),
     };
 };
@@ -213,13 +270,11 @@ export default defineComponent({
     components: {
         SearchDialog,
         ProfileDialog,
-        SeasonsButton,
+        SeasonsDialog,
+        IconTooltip,
     },
     setup(props, vm) {
         return useItemManagement(vm);
     },
-    created() {
-        this.fetch();
-    }
 });
 </script>

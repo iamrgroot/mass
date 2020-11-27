@@ -13,6 +13,7 @@ use App\Library\Media\Requests\Sonarr\RefreshRequest;
 use App\Library\Media\Requests\Sonarr\SearchCommandRequest;
 use App\Library\Media\Requests\Sonarr\SearchMissingRequest;
 use App\Library\Media\Requests\Sonarr\SearchRequest;
+use App\Library\Media\Requests\Sonarr\SerieBannerImageRequest;
 use App\Library\Media\Requests\Sonarr\SerieImageRequest;
 use App\Library\Media\Requests\Sonarr\SerieRequest;
 use App\Library\Media\Requests\Sonarr\SeriesRequest;
@@ -107,6 +108,13 @@ class SerieController extends Controller
     public function image(int $id, Client $client): Response
     {
         $response = $client->doRequest(new SerieImageRequest($id))->getData();
+
+        return $this->resizeResponse($response, 400);
+    }
+
+    public function banner(int $id, Client $client): Response
+    {
+        $response = $client->doRequest(new SerieBannerImageRequest($id))->getData();
 
         return $this->resizeResponse($response, 400);
     }

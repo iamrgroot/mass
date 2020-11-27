@@ -17,7 +17,7 @@ class CpuLogCommand extends Command
     {
         Log::debug('Running CpuLogCommand...');
 
-        $setting = Setting::whereDiskLog()->firstOrFail();
+        $setting = Setting::whereCpuULog()->firstOrFail();
 
         if (true !== $setting->value) {
             Log::debug('Memory log disabled in settings');

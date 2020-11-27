@@ -1,8 +1,15 @@
 <template>
-    <v-card class="ma-3">
+    <v-card :loading="requests_loading">
         <v-card-title>
             <span>Requests</span>
             <v-spacer />
+            <v-btn
+                text
+                class="ma-2"
+                @click="add_dialog = true"
+            >
+                New
+            </v-btn>
             <v-btn
                 icon
                 class="ma-2"
@@ -17,7 +24,9 @@
                 <v-data-table
                     :headers="headers"
                     :items="requests"
-                    :loading="requests_loading"
+                    :items-per-page="-1"
+                    mobile-breakpoint="0"
+                    :hide-default-header="is_mobile"
                 >
                     <template #[`item.image_url`]="{ item }">
                         <image-preview
@@ -45,14 +54,14 @@
                         <template v-if="item.status.value === RequestStatus.Request">
                             <v-icon
                                 color="green"
-                                class="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Approved)"
                             >
                                 {{ RequestStatusIcon.Approved }}
                             </v-icon>
                             <v-icon
                                 color="red"
-                                class="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Denied)"
                             >
                                 {{ RequestStatusIcon.Denied }}
@@ -63,21 +72,21 @@
                                 :icon="item.status.icon"
                                 text="See system log for error. Click to try again."
                                 :color="item.status.color"
-                                classes="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Approved)"
                             />
                         </template>
                         <template v-else-if="item.status.value === RequestStatus.Download">
                             <v-icon
                                 color="success"
-                                class="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Done)"
                             >
                                 {{ RequestStatusIcon.Done }}
                             </v-icon>
                             <v-icon
                                 color="error"
-                                class="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Error)"
                             >
                                 {{ RequestStatusIcon.Error }}
@@ -88,13 +97,13 @@
                                 :icon="RequestStatusIcon.Request"
                                 text="Reset"
                                 color="primary"
-                                classes="ml-3"
+                                :class="icon_padding"
                                 @click="updateRequest(item, RequestStatus.Request)"
                             />
                         </template>
                         <v-icon
                             color="error"
-                            class="ml-3"
+                            :class="icon_padding"
                             @click="removeRequest(item)"
                         >
                             $mdiDelete
@@ -104,15 +113,18 @@
             </v-fade-transition>
         </v-card-text>
 
-        <request-add-dialog v-model="add_dialog" />
+        <add-dialog
+            v-model="add_dialog"
+            request
+        />
     </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from '@vue/composition-api';
+import { computed, defineComponent, reactive, SetupContext, toRefs } from '@vue/composition-api';
 import { DataTableHeader } from 'vuetify';
 
-import RequestAddDialog from '@/components/user/request/RequestAddDialog.vue';
+import AddDialog from '@/components/user/AddDialog.vue';
 import IconTooltip from '@/components/defaults/IconTooltip.vue';
 import DateChip from '@/components/defaults/DateChip.vue';
 import ImagePreview from '@/components/defaults/ImagePreview.vue';
@@ -120,34 +132,53 @@ import ImagePreview from '@/components/defaults/ImagePreview.vue';
 import { ItemType } from '@/enums/ItemType';
 
 import { useRequests } from '@/store/requests';
-import { useItems } from '@/store/items';
 
 import { getImageURL } from '@/helpers/images';
 import { RequestStatus, RequestStatusIcon, RequestStatusName } from '@/enums/RequestStatus';
 
 // TODO correct type?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
-export const useRequestTable = () => {
+export const useRequestTable = (vm: SetupContext) => {
     const table_data = reactive({
         add_dialog: false,
-        headers: [
-            { text: '', value: 'image_url' },
-            { text: 'Type', value: 'type' },
-            { text: 'Name', value: 'text' },
-            { text: 'Created at', value: 'created_at' },
-            { text: 'Updated at', value: 'updated_at' },
-            { text: 'Status', value: 'status' },
-            { text: 'Actions', value: 'actions', width: '200px', sortable: false, align: 'end' },
-        ] as DataTableHeader[],
     });
 
-    const { item_type } = useItems();
+    const is_mobile = computed((): boolean => {
+        return vm.root.$vuetify.breakpoint.xs;
+    });
+
+    const headers = computed((): DataTableHeader[] => {
+        if (! is_mobile.value) {
+            return [
+                { text: '', value: 'image_url' },
+                { text: 'Type', value: 'type' },
+                { text: 'Name', value: 'text' },
+                { text: 'Created at', value: 'created_at' },
+                { text: 'Updated at', value: 'updated_at' },
+                { text: 'Status', value: 'status' },
+                { text: 'Actions', value: 'actions', width: '200px', sortable: false, align: 'end' },
+            ] as DataTableHeader[];
+        }
+
+        return [
+            { text: 'Type', value: 'type' },
+            { text: 'Name', value: 'text' },
+            { text: 'Status', value: 'status' },
+            { text: 'Actions', value: 'actions', sortable: false, align: 'end' },
+        ] as DataTableHeader[];
+    });
+
+    const icon_padding = computed((): string => {
+        return is_mobile.value ? 'my-2' : 'ml-3';
+    });
 
     const itemString = (type: ItemType): string => type === ItemType.Movie ? 'Movie' : 'Serie';
 
     return {
         ...toRefs(table_data),
-        item_type,
+        is_mobile,
+        headers,
+        icon_padding,
         itemString,
         getImageURL,
     };
@@ -155,15 +186,15 @@ export const useRequestTable = () => {
 
 export default defineComponent({
     components: {
-        RequestAddDialog,
+        AddDialog,
         DateChip,
         IconTooltip,
         ImagePreview,
     },
-    setup() {
+    setup(props, vm) {
         return {
             ...useRequests(),
-            ...useRequestTable(),
+            ...useRequestTable(vm),
             RequestStatus,
             RequestStatusIcon,
             RequestStatusName

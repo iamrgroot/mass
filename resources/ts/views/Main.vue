@@ -1,11 +1,16 @@
 <template>
-    <v-main>
-        <v-fade-transition mode="out-in">
+    <v-main
+        :class="{
+            'pa-3': show_toolbar && ! $vuetify.breakpoint.mobile,
+            'mb-12': show_toolbar && $vuetify.breakpoint.mobile,
+        }"
+    >
+        <keep-alive>
             <router-view :key="$route.path" />
-        </v-fade-transition>
+        </keep-alive>
 
         <v-fade-transition>
-            <NotificationComponent
+            <notification
                 v-if="notifications.length > 0"
                 :key="notifications[0].id"
                 :notification="notifications[0]"
@@ -26,21 +31,25 @@
 import { defineComponent } from '@vue/composition-api';
 
 import Confirm from '@/components/defaults/Confirm.vue';
-import NotificationComponent from '@/components/defaults/Notification.vue';
+import Notification from '@/components/defaults/Notification.vue';
 
 import { ConfirmType } from '@/types/ConfirmOptions';
 
 import { useNotifications } from '@/store/notifications';
+import { useToolbar } from '@/store/toolbar';
 
 export default defineComponent({
     components: {
         Confirm,
-        NotificationComponent,
+        Notification,
     },
     setup() {
         const { notifications, removeNotification } = useNotifications();
 
+        const { show_toolbar } = useToolbar();
+
         return {
+            show_toolbar,
             notifications,
             removeNotification,
         };

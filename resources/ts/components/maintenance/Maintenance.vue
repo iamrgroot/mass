@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid>
+    <div>
         <v-data-table
             :headers="headers"
             :items="records"
@@ -29,13 +29,12 @@
                 </v-icon>
             </template>
         </v-data-table>
-
         <maintenance-form
             v-model="selected_item"
             @updated="updateRecord"
             @inserted="new_item => records.push(new_item)"
         />
-    </v-container>
+    </div>
 </template>
 
 <script lang="ts">

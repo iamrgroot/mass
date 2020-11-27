@@ -9,10 +9,14 @@ trait ResizedImageResponse
 {
     private function resizeResponse(string $image, ?int $width = null, ?int $height = null)
     {
-        return Image::make($image)
-            ->resize($width, $height, function (Constraint $constraint) {
+        $image = Image::make($image);
+
+        if (null !== $height || null !== $width) {
+            $image = $image->resize($width, $height, function (Constraint $constraint) {
                 $constraint->aspectRatio();
-            })
-            ->response();
+            });
+        }
+
+        return $image->response();
     }
 }

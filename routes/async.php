@@ -28,6 +28,7 @@ Route::domain(config('app.host'))->group(static function () {
                 Route::get('', [MovieController::class, 'movies']);
                 Route::get('{id}', [MovieController::class, 'movie']);
                 Route::get('{id}/image', [MovieController::class, 'image']);
+                Route::get('{id}/banner', [MovieController::class, 'banner']);
                 Route::get('{id}/manual-search', [MovieController::class, 'manualSearch']);
 
                 Route::post('search-missing', [MovieController::class, 'searchMissing']);
@@ -46,6 +47,7 @@ Route::domain(config('app.host'))->group(static function () {
                 Route::get('', [SerieController::class, 'series']);
                 Route::get('{id}', [SerieController::class, 'serie']);
                 Route::get('{id}/image', [SerieController::class, 'image']);
+                Route::get('{id}/banner', [SerieController::class, 'banner']);
                 Route::get('{id}/manual-search', [SerieController::class, 'manualSearch']);
 
                 Route::post('search-missing', [SerieController::class, 'searchMissing']);

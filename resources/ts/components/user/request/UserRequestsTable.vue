@@ -1,5 +1,7 @@
 <template>
-    <v-card class="ma-3">
+    <v-card
+        :loading="requests_loading"
+    >
         <v-card-title>
             <span>Requests</span>
             <v-spacer />
@@ -24,7 +26,9 @@
                 <v-data-table
                     :headers="headers"
                     :items="requests"
-                    :loading="requests_loading"
+                    :items-per-page="-1"
+                    mobile-breakpoint="0"
+                    :hide-default-header="is_mobile"
                 >
                     <template #[`item.image_url`]="{ item }">
                         <image-preview
@@ -62,14 +66,17 @@
             </v-fade-transition>
         </v-card-text>
 
-        <request-add-dialog v-model="add_dialog" />
+        <add-dialog
+            v-model="add_dialog"
+            request
+        />
     </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
 
-import RequestAddDialog from '@/components/user/request/RequestAddDialog.vue';
+import AddDialog from '@/components/user/AddDialog.vue';
 import IconTooltip from '@/components/defaults/IconTooltip.vue';
 import DateChip from '@/components/defaults/DateChip.vue';
 import ImagePreview from '@/components/defaults/ImagePreview.vue';
@@ -79,12 +86,12 @@ import { useRequests } from '@/store/requests';
 
 export default defineComponent({
     components: {
-        RequestAddDialog,
+        AddDialog,
         DateChip,
         IconTooltip,
         ImagePreview,
     },
-    setup() {
+    setup(props, vm) {
         const {
             requests,
             requests_loading,
@@ -94,7 +101,7 @@ export default defineComponent({
         } = useRequests();
 
         return {
-            ...useRequestTable(),
+            ...useRequestTable(vm),
             requests,
             requests_loading,
             processing_request_id,
