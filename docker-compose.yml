@@ -3,7 +3,7 @@ services:
   mass:
     image: iamrgroot/laravel:${DOCKER_TAG}
     container_name: mass
-    user: ${UID}
+    user: "${UID}:${GID}"
     environment:
       TZ: ${TZ}
       CONTAINER_ROLE: app
@@ -20,7 +20,7 @@ services:
   mass-queue:
     image: iamrgroot/laravel:${DOCKER_TAG}
     container_name: mass-queue
-    user: ${UID}
+    user: "${UID}:${GID}"
     depends_on:
       - mass
     environment:
@@ -36,7 +36,7 @@ services:
   mass-scheduler:
     image: iamrgroot/laravel:${DOCKER_TAG}
     container_name: mass-scheduler
-    user: ${UID}
+    user: "${UID}:${GID}"
     depends_on:
       - mass
     environment:

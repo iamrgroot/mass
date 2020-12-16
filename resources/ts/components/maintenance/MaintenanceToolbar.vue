@@ -43,7 +43,7 @@ import { capitalize } from '@/filters/filters';
 
 export default defineComponent({
     setup() {
-        const routes = Object.keys(window.injected);
+        const routes = [] as string[]; // TODO Object.keys(window.injected);
 
         const logout = (): void => {
             window.location.replace(window.location.protocol + '//' + window.location.host + '/logout');

@@ -6,20 +6,24 @@ const path = require('path'); // eslint-disable-line
 
 const pages = {
     login: {
+        title: '😀',
         entry: './resources/ts/login.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-login-vendors', 'vuetify', 'login']
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-login-vendors', 'chunk-vuetify', 'login']
     },
     admin: {
+        title: '😀',
         entry: './resources/ts/admin.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-admin-vendors','vuetify', 'admin']
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-admin-vendors','chunk-vuetify', 'admin']
     },
     maintenance: {
+        title: '😀',
         entry: './resources/ts/maintenance.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-maintenance-vendors','vuetify', 'maintenance']
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-maintenance-vendors','chunk-vuetify', 'maintenance']
     },
     user: {
+        title: '😀',
         entry: './resources/ts/user.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-user-vendors','vuetify', 'user']
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-user-vendors','chunk-vuetify', 'user']
     },
 };
 
@@ -41,6 +45,13 @@ module.exports = {
         // new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
         ],
     },
+    pwa: {
+        workboxPluginMode: 'InjectManifest',
+        workboxOptions: {
+            swSrc: 'resources/register-service-worker.ts',
+            swDest: 'service-worker.js',
+        }
+    },
     chainWebpack: config => {
         config.module
             .rule('eslint')
@@ -49,21 +60,9 @@ module.exports = {
                 fix: process.env.NODE_ENV !== 'production',
             });
 
-        config.plugins.delete('pwa');
-        config.plugins.delete('copy');
-        config.plugins.delete('html');
-        config.plugins.delete('preload');
-        config.plugins.delete('prefetch');
-
         const options = module.exports;
         const pages = options.pages;
         const pageKeys = Object.keys(pages);
-
-        pageKeys.forEach((key) => {
-            config.plugins.delete('html-' + key);
-            config.plugins.delete('preload-' + key);
-            config.plugins.delete('prefetch-' + key);
-        });
 
         config.resolve
             .alias

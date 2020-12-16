@@ -7,7 +7,7 @@ const errors = ref({});
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const useMaintenance = (vm: SetupContext) => {
     const table = computed((): string => vm.root.$route.name as string);
-    const fields = computed((): GeneralObject => window.injected[table.value] as GeneralObject);
+    const fields = computed((): GeneralObject => { return {} as GeneralObject; } ); // TODO window.injected[table.value] as GeneralObject);
 
     return {
         errors,

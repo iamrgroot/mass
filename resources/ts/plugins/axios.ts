@@ -1,11 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-axios.defaults.headers.common = {
-    'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest',
-    'X-CSRF-TOKEN': (document.getElementsByName('csrf-token')[0] as HTMLMetaElement)?.content || ''
-};
+const instance = axios.create();
 
-axios.interceptors.request.use(function (request: AxiosRequestConfig): AxiosRequestConfig | Promise<AxiosRequestConfig> {
+instance.interceptors.request.use(function (request: AxiosRequestConfig): AxiosRequestConfig | Promise<AxiosRequestConfig> {
     if (request.method === 'patch' || request.method === 'put') {
         request.headers = {
             ...request.headers,
@@ -16,7 +13,7 @@ axios.interceptors.request.use(function (request: AxiosRequestConfig): AxiosRequ
     return request;
 });
 
-axios.interceptors.response.use(function (response: AxiosResponse): AxiosResponse<unknown> | Promise<AxiosResponse<unknown>> {
+instance.interceptors.response.use(function (response: AxiosResponse): AxiosResponse<unknown> | Promise<AxiosResponse<unknown>> {
     return response;
 }, function (error) {
     if (error.response.status === 401) {
@@ -26,4 +23,4 @@ axios.interceptors.response.use(function (response: AxiosResponse): AxiosRespons
     return Promise.reject(error);
 });
 
-export default axios;
+export default instance;

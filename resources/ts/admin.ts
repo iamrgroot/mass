@@ -9,9 +9,11 @@ import Admin from '@/views/Admin.vue';
 
 import { useProfiles } from './store/profiles';
 import { useItems } from './store/items';
+import { useUser } from './store/user';
 
 Vue.config.productionTip = false;
 
+const { fetchCrsfToken, fetchUser } = useUser();
 const { initializeProfiles } = useProfiles();
 const { fetchMovies, fetchSeries } = useItems();
 
@@ -19,6 +21,8 @@ new Vue({
     router,
     vuetify,
     created(): void {
+        fetchCrsfToken();
+        fetchUser();
         initializeProfiles();
         fetchMovies();
         fetchSeries();

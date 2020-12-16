@@ -13,9 +13,9 @@ class LoginController extends Controller
 
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    public function page(): View
+    public function page(): string
     {
-        return view('login');
+        return file_get_contents(public_path("vue/login.html"));
     }
 
     public function username()

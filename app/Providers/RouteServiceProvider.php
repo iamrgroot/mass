@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\CsrfTokenController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
         $this->mapWebRoutes();
         $this->mapAsyncRoutes();
+        
+        Route::middleware('csrf')->get('csrf-token', [SessionController::class, 'csrfToken']);
     }
 
     /**
@@ -40,7 +44,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes(): void
     {
         Route::middleware('web')
-            ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
     }
 
@@ -53,7 +56,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('async')
             ->middleware('async')
-            ->namespace($this->namespace)
             ->group(base_path('routes/async.php'));
     }
 
@@ -66,7 +68,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
             ->middleware('api')
-            ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
 }

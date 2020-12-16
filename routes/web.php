@@ -15,6 +15,7 @@ Route::domain(config('app.host'))->group(function () {
     Route::get('/logout', [LoginController::class, 'logout']);
 
     Route::middleware('auth')->group(static function () {
+
         Route::get('image', [ImageController::class, 'image']);
 
         Route::middleware('role:user|admin')->group(static function () {

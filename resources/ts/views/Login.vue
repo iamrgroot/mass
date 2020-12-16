@@ -75,19 +75,18 @@
 </style>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api';
+import { useUser } from '@/store/user';
+import { defineComponent, reactive, toRefs } from '@vue/composition-api';
 
 export default defineComponent({
     setup() {
         const store = reactive({
             username: '',
             password: '',
-            login_error: (window.blade_errors.length > 0) ? window.blade_errors[0] : '',
+            login_error: '',
         });
 
-        const csrf_token = computed((): string => {
-            return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
-        });
+        const { csrf_token } = useUser(); 
 
         return {
             ...toRefs(store),
