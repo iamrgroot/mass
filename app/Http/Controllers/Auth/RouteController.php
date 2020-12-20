@@ -11,7 +11,7 @@ use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class RouteController extends Controller
 {
-    public function view(): View
+    public function view(): string
     {
         /** @var User $user */
         $user = Auth::user();
@@ -37,12 +37,12 @@ class RouteController extends Controller
         throw UnauthorizedException::forRoles(['admin', 'user']);
     }
 
-    private function getView(array $routes, string $view): View
+    private function getView(array $routes, string $view): string
     {
         $route = Route::current()->parameter('route');
 
         if (preg_match($this->toString($routes), $route)) {
-            return view($view);
+            return file_get_contents(public_path("vue/{$view}.html"));
         }
 
         abort(Response::HTTP_NOT_FOUND);

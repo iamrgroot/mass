@@ -1,4 +1,5 @@
 import axios from '@/plugins/axios';
+import axios_default from 'axios';
 import { CancelTokenSource } from 'axios';
 import { ItemType } from '@/enums/ItemType';
 import { Item, SearchResult } from '@/types/Item';
@@ -8,7 +9,7 @@ let search_axios: CancelTokenSource | null = null;
 export async function searchItem(search: string, type: ItemType): Promise<SearchResult[]> {
     if (search_axios !== null) search_axios.cancel();
 
-    search_axios = axios.CancelToken.source();
+    search_axios = axios_default.CancelToken.source();
 
     const url = type === ItemType.Movie ?
         'movies' :

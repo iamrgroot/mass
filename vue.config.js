@@ -2,24 +2,26 @@ const BundleTracker = require("webpack-bundle-tracker"); // eslint-disable-line
 const CompressionPlugin = require('compression-webpack-plugin'); // eslint-disable-line
 const path = require('path'); // eslint-disable-line
 
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
 const pages = {
     login: {
+        title: '😀',
         entry: './resources/ts/login.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-login-vendors', 'vuetify', 'login']
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-login-vendors', 'chunk-vuetify', 'login']
     },
     admin: {
+        title: '😀',
         entry: './resources/ts/admin.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-admin-vendors','vuetify', 'admin']
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-admin-vendors','chunk-vuetify', 'admin']
     },
     maintenance: {
+        title: '😀',
         entry: './resources/ts/maintenance.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-maintenance-vendors','vuetify', 'maintenance']
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-maintenance-vendors','chunk-vuetify', 'maintenance']
     },
     user: {
+        title: '😀',
         entry: './resources/ts/user.ts',
-        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-user-vendors','vuetify', 'user']
+        chunks: [ 'chunk-vendors', 'chunk-common', 'chunk-user-vendors','chunk-vuetify', 'user']
     },
 };
 
@@ -27,7 +29,6 @@ module.exports = {
     pages: pages,
     publicPath: '/vue',
     outputDir: './public/vue',
-    filenameHashing: false,
     css: {
         extract: { ignoreOrder: true }
     },
@@ -38,8 +39,19 @@ module.exports = {
         plugins: [
             new BundleTracker({ filename: 'webpack-stats.json' }),
             new CompressionPlugin(),
-        // new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+            // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({ analyzerMode: 'static' }),
         ],
+    },
+    pwa: {
+        workboxPluginMode: 'GenerateSW',
+        manifestOptions: {
+            start_url: '/',
+        },
+        name: 'Mass',
+        themeColor: '#4DBA87',
+        msTileColor: '#000000',
+        appleMobileWebAppCapable: true,
+        appleMobileWebAppStatusBarStyle: 'default',
     },
     chainWebpack: config => {
         config.module
@@ -49,21 +61,9 @@ module.exports = {
                 fix: process.env.NODE_ENV !== 'production',
             });
 
-        config.plugins.delete('pwa');
-        config.plugins.delete('copy');
-        config.plugins.delete('html');
-        config.plugins.delete('preload');
-        config.plugins.delete('prefetch');
-
         const options = module.exports;
         const pages = options.pages;
         const pageKeys = Object.keys(pages);
-
-        pageKeys.forEach((key) => {
-            config.plugins.delete('html-' + key);
-            config.plugins.delete('preload-' + key);
-            config.plugins.delete('prefetch-' + key);
-        });
 
         config.resolve
             .alias

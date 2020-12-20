@@ -5,7 +5,7 @@ import Maintenance from '@/components/maintenance/Maintenance.vue';
 
 Vue.use(VueRouter);
 
-const routes: RouteConfig[] = Object.keys(window.injected).map(key =>{
+const routes: RouteConfig[] = [].map(key =>{ // TODO Object.keys(window.injected).map(key =>{
     return {
         path: `/maintenance/${key}`,
         name: `${key}`,

@@ -1,24 +1,31 @@
 import Vue from 'vue';
+import { VNode } from 'vue/types/umd';
 
 import '@/plugins/composition-api';
+
 import vuetify from '@/plugins/vuetify';
 import router from '@/router/admin';
-import { VNode } from 'vue/types/umd';
+
+require('@/plugins/service-worker');
 
 import Admin from '@/views/Admin.vue';
 
 import { useProfiles } from './store/profiles';
 import { useItems } from './store/items';
+import { useUser } from './store/user';
 
 Vue.config.productionTip = false;
 
+const { fetchCrsfToken, fetchUser } = useUser();
 const { initializeProfiles } = useProfiles();
 const { fetchMovies, fetchSeries } = useItems();
 
 new Vue({
     router,
     vuetify,
-    created(): void {
+    async created(): Promise<void> {
+        await fetchCrsfToken();
+        fetchUser();
         initializeProfiles();
         fetchMovies();
         fetchSeries();
