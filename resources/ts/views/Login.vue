@@ -86,7 +86,7 @@ export default defineComponent({
             login_error: '',
         });
 
-        const { csrf_token } = useUser(); 
+        const { csrf_token } = useUser();
 
         return {
             ...toRefs(store),

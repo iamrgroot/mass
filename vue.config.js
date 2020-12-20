@@ -39,18 +39,19 @@ module.exports = {
         plugins: [
             new BundleTracker({ filename: 'webpack-stats.json' }),
             new CompressionPlugin(),
-        // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({ analyzerMode: 'static' }),
+            // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({ analyzerMode: 'static' }),
         ],
     },
     pwa: {
-        workboxPluginMode: 'InjectManifest',
-        workboxOptions: {
-            swSrc: 'resources/ts/register-service-worker.ts',
-            swDest: 'service-worker.js',
-        },
+        workboxPluginMode: 'GenerateSW',
         manifestOptions: {
             start_url: '/',
         },
+        name: 'Mass',
+        themeColor: '#4DBA87',
+        msTileColor: '#000000',
+        appleMobileWebAppCapable: true,
+        appleMobileWebAppStatusBarStyle: 'default',
     },
     chainWebpack: config => {
         config.module

@@ -1,9 +1,12 @@
 import Vue from 'vue';
+import { VNode } from 'vue/types/umd';
 
 import '@/plugins/composition-api';
+
+require('@/plugins/service-worker');
+
 import router from '@/router/maintenance';
 import vuetify from '@/plugins/vuetify';
-import { VNode } from 'vue/types/umd';
 
 import Maintenance from '@/views/Maintenance.vue';
 
