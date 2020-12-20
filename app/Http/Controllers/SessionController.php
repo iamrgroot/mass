@@ -16,7 +16,7 @@ class SessionController extends Controller
         $user = Auth::user();
 
         return [
-            'id' => $user->id,
+            'id'   => $user->id,
             'name' => $user->name,
         ];
     }
