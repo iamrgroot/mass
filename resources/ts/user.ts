@@ -7,10 +7,18 @@ import { VNode } from 'vue/types/umd';
 
 import User from '@/views/User.vue';
 
+import { useUser } from '@/store/user';
+
+const { fetchCrsfToken, fetchUser } = useUser();
+
 Vue.config.productionTip = false;
 
 new Vue({
     router,
     vuetify,
-    render: (h): VNode => h(User)
+    async created(): Promise<void> {
+        await fetchCrsfToken();
+        fetchUser;
+    },
+    render: (h): VNode => h(User),
 }).$mount('#app');

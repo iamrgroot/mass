@@ -7,6 +7,7 @@ use App\Http\Controllers\Media\SerieController;
 use App\Http\Controllers\Media\TorrentController;
 use App\Http\Controllers\Requests\AdminRequestController;
 use App\Http\Controllers\Requests\UserRequestController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\System\LogController;
 use App\Http\Controllers\System\SystemController;
 use Illuminate\Support\Facades\Route;

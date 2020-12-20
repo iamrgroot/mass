@@ -20,8 +20,8 @@ const { fetchMovies, fetchSeries } = useItems();
 new Vue({
     router,
     vuetify,
-    created(): void {
-        fetchCrsfToken();
+    async created(): Promise<void> {
+        await fetchCrsfToken();
         fetchUser();
         initializeProfiles();
         fetchMovies();

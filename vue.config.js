@@ -2,8 +2,6 @@ const BundleTracker = require("webpack-bundle-tracker"); // eslint-disable-line
 const CompressionPlugin = require('compression-webpack-plugin'); // eslint-disable-line
 const path = require('path'); // eslint-disable-line
 
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
 const pages = {
     login: {
         title: '😀',
@@ -31,7 +29,6 @@ module.exports = {
     pages: pages,
     publicPath: '/vue',
     outputDir: './public/vue',
-    filenameHashing: false,
     css: {
         extract: { ignoreOrder: true }
     },
@@ -42,15 +39,18 @@ module.exports = {
         plugins: [
             new BundleTracker({ filename: 'webpack-stats.json' }),
             new CompressionPlugin(),
-        // new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+        // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({ analyzerMode: 'static' }),
         ],
     },
     pwa: {
         workboxPluginMode: 'InjectManifest',
         workboxOptions: {
-            swSrc: 'resources/register-service-worker.ts',
+            swSrc: 'resources/ts/register-service-worker.ts',
             swDest: 'service-worker.js',
-        }
+        },
+        manifestOptions: {
+            start_url: '/',
+        },
     },
     chainWebpack: config => {
         config.module

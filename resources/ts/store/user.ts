@@ -7,7 +7,7 @@ const user_store = reactive({
 });
 
 const fetchUser = async (): Promise<void> => {
-    user_store.user = (await axios.get('/user')).data;
+    user_store.user = (await axios.get('/async/user')).data;
 };
 
 const fetchCrsfToken = async (): Promise<void> => {

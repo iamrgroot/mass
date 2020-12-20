@@ -7,7 +7,7 @@ import { VNode } from 'vue/types/umd';
 
 import Maintenance from '@/views/Maintenance.vue';
 
-import { useUser, } from './store/user';
+import { useUser } from '@/store/user';
 
 const { fetchCrsfToken, fetchUser } = useUser();
 
@@ -16,8 +16,8 @@ Vue.config.productionTip = false;
 new Vue({
     router,
     vuetify,
-    created(): void {
-        fetchCrsfToken();
+    async created(): Promise<void> {
+        await fetchCrsfToken();
         fetchUser();
     },
     render: (h): VNode => h(Maintenance)
